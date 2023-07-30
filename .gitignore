@@ -1,0 +1,7 @@
+.vscode
+.idea
+*.sqlite3
+venv
+*pyc
+.env
+migrations

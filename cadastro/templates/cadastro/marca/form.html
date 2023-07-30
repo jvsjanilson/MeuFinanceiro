@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %} Nova {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+    <div class="card mt-5">
+        <div class="card-header">
+            <h4>{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="id_nome">{{form.nome.label}}</label>
+                                <input class="form-control {% if form.errors.nome is not None %} is-invalid {% endif %}" name="nome" id="id_nome"
+                                       maxlength="60"
+                                value="{% if form.nome.value is not None %}{{form.nome.value}}{%endif%}"
+                                />
+                                {% if form.errors.nome is not None %}
+                                    <div class="invalid-feedback">
+                                        {{ form.errors.nome }}
+                                    </div>
+                                {%endif%}
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="btn btn-secondary" href="{% url 'marca-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock conteudo%}
