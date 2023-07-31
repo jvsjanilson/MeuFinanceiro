@@ -1,7 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from cadastro.models import Unidade, Marca, Categoria, Pais
+from cadastro.models import Unidade, Marca, Categoria, Pais, Estado
 from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
@@ -282,3 +282,72 @@ class PaisDeleteView(UserAccessMixin, DeleteView):
     model = Pais
     template_name = 'cadastro/pais/confirm_delete.html'
     success_url = '/pais'
+
+
+class EstadoListView(UserAccessMixin, ListView):
+    permission_required = ["cadastro.view_estado"]
+    login_url = '/estados/'
+    model = Estado
+    template_name = 'cadastro/estado/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        if search:
+            context['search'] = search
+
+        return context
+
+    def get_queryset(self):
+        queryset = super(EstadoListView, self).get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            return queryset.filter(
+                Q(codigo__icontains=search) |
+                Q(uf__icontains=search) |
+                Q(pais__nome__icontains=search) |
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+
+class EstadoCreateView(UserAccessMixin, CreateView):
+    permission_required = ["cadastro.add_estado"]
+    login_url = '/estados/'
+    model = Estado
+
+    template_name = 'cadastro/estado/form.html'
+    fields = ['codigo', 'uf', 'pais', 'nome']
+    success_url = '/estados'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class EstadoUpdateView(UserAccessMixin, UpdateView):
+    permission_required = ["cadastro.change_estado"]
+    login_url = '/estados/'
+    model = Estado
+    template_name = 'cadastro/estado/form.html'
+    fields = ['codigo', 'uf', 'pais', 'nome']
+    success_url = '/estados'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class EstadoDeleteView(UserAccessMixin, DeleteView):
+    permission_required = ["cadastro.delete_estado"]
+    login_url = '/estados/'
+    model = Estado
+    template_name = 'cadastro/estado/confirm_delete.html'
+    success_url = '/estados'
+

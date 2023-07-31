@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from cadastro.views import Home
-
+from django.contrib.auth import views as auth_views
+from erp_kronos import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='auth_logout'),
     path('', Home.as_view(), name='Home'),
     path('', include('cadastro.urls')),
 

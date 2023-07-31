@@ -1,8 +1,12 @@
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom  mt-2 rounded-2 mb-3">
+ <nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom  mt-2 rounded-2 mb-3">
   <div class="container-fluid">
-
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+      data-bs-target="#navbarNavDropdown" 
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Principal</a>
         </li>
@@ -28,6 +32,11 @@
             {% if perms.cadastro.view_pais %}
               <li><a class="dropdown-item" href="{% url 'pais-list'  %}">Países</a></li>
             {% endif %}
+
+            {% if perms.cadastro.view_estado %}
+              <li><a class="dropdown-item" href="{% url 'estado-list'  %}">Estados</a></li>
+            {% endif %}
+
           </ul>
         </li>
 
@@ -63,6 +72,20 @@
           </ul>
         </li>
       </ul>
+      <ul class="navbar-nav mr-auto " style="margin-right: 4rem !important">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Janilson
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <li><a class="dropdown-item" href="{% url 'auth_logout' %}?next=/">Sair</a></li>
+            
+          </ul>
+        </li>
+
+      </ul>
+
     </div>
   </div>
 </nav>
