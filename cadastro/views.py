@@ -1,6 +1,7 @@
 from django.views.generic.list import ListView
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from cadastro.models import Unidade, Marca, Categoria
+from cadastro.models import Unidade, Marca, Categoria, Pais
 from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
@@ -8,8 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
 
 
-def home(request):
-    return render(request, 'base.html')
+class Home(LoginRequiredMixin, TemplateView):
+    template_name = 'base.html'
 
 
 class UserAccessMixin(PermissionRequiredMixin):
@@ -216,3 +217,68 @@ class CategoriaDeleteView(UserAccessMixin, DeleteView):
     model = Categoria
     template_name = 'cadastro/marca/confirm_delete.html'
     success_url = '/categorias'
+
+
+class PaisListView(UserAccessMixin, ListView):
+    permission_required = ["cadastro.view_pais"]
+    login_url = '/pais/'
+    model = Pais
+    template_name = 'cadastro/pais/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        if search:
+            context['search'] = search
+
+        return context
+
+    def get_queryset(self):
+        queryset = super(PaisListView, self).get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            return queryset.filter(
+                Q(codigo__icontains=search) |
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+
+class PaisCreateView(UserAccessMixin, CreateView):
+    permission_required = ["cadastro.add_pais"]
+    login_url = '/pais/'
+    model = Pais
+    template_name = 'cadastro/pais/form.html'
+    fields = ['codigo', 'nome']
+    success_url = '/pais'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class PaisUpdateView(UserAccessMixin, UpdateView):
+    permission_required = ["cadastro.change_pais"]
+    login_url = '/pais/'
+    model = Pais
+    template_name = 'cadastro/pais/form.html'
+    fields = ['codigo', 'nome']
+    success_url = '/pais'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class PaisDeleteView(UserAccessMixin, DeleteView):
+    permission_required = ["cadastro.delete_pais"]
+    login_url = '/pais/'
+    model = Pais
+    template_name = 'cadastro/pais/confirm_delete.html'
+    success_url = '/pais'

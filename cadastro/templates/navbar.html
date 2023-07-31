@@ -12,6 +12,8 @@
             Cadastros
           </a>
           <ul class="dropdown-menu">
+
+
             {% if perms.cadastro.view_unidade %}
               <li><a class="dropdown-item" href="{% url 'unidade-list'  %}">Unidades</a></li>
             {% endif %}
@@ -21,6 +23,10 @@
             {% endif %}
             {% if perms.cadastro.view_marca %}
             <li><a class="dropdown-item" href="{% url 'marca-list'  %}">Marcas</a></li>
+            {% endif %}
+
+            {% if perms.cadastro.view_pais %}
+              <li><a class="dropdown-item" href="{% url 'pais-list'  %}">Países</a></li>
             {% endif %}
           </ul>
         </li>

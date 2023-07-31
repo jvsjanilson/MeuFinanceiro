@@ -1,9 +1,16 @@
 from django.urls import path
 from cadastro.views import UnidadeListView, UnidadeCreateView, \
     UnidadeUpdateView, UnidadeDeleteView, MarcaListView, MarcaCreateView, MarcaUpdateView, \
-    MarcaDeleteView, CategoriaListView, CategoriaCreateView, CategoriaUpdateView, CategoriaDeleteView
+    MarcaDeleteView, CategoriaListView, CategoriaCreateView, CategoriaUpdateView, CategoriaDeleteView, \
+    PaisListView, PaisCreateView, PaisUpdateView, PaisDeleteView
+
 
 urlpatterns = [
+
+    path("pais/", PaisListView.as_view(), name="pais-list"),
+    path("pais/create", PaisCreateView.as_view(), name="pais-create"),
+    path("pais/<int:pk>/update/", PaisUpdateView.as_view(), name="pais-update"),
+    path("pais/<int:pk>/delete/", PaisDeleteView.as_view(), name="pais-delete"),
 
     path("categorias/", CategoriaListView.as_view(), name="categoria-list"),
     path("categorias/create", CategoriaCreateView.as_view(), name="categoria-create"),
