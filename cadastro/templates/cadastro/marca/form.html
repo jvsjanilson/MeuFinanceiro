@@ -14,7 +14,7 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="id_nome">{{form.nome.label}}</label>
-                                <input class="form-control {% if form.errors.nome is not None %} is-invalid {% endif %}" name="nome" id="id_nome"
+                                <input autofocus class="form-control {% if form.errors.nome is not None %} is-invalid {% endif %}" name="nome" id="id_nome"
                                        maxlength="60"
                                 value="{% if form.nome.value is not None %}{{form.nome.value}}{%endif%}"
                                 />

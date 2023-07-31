@@ -215,7 +215,7 @@ class CategoriaDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["cadastro.delete_categoria"]
     login_url = '/categorias/'
     model = Categoria
-    template_name = 'cadastro/marca/confirm_delete.html'
+    template_name = 'cadastro/categoria/confirm_delete.html'
     success_url = '/categorias'
 
 
