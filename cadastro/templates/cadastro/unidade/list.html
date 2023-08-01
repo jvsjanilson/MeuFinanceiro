@@ -2,33 +2,33 @@
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
 
-    <div class="card">
+    <div class="card mb-1">
         <div class="card-header p-1">
-            <div class="d-flex justify-content-center align-items-center">
-                <div>
-                   <h4>Lista de {{ verbose_name_plural }}</h4>
+            <div class="row d-flex align-items-center">
+                <div class="col-auto">
+                    {% if perms.cadastro.add_unidade %}
+                        <div class="my-2" style="padding-left: .5rem">
+                            <a class="btn btn-primary " href="{% url 'unidade-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                        </div>
+                    {% endif %}
+
                 </div>
-            </div>
+
+                <div class="col-auto">
+                    <form  style="padding: .5rem .5rem" method="get">
+                        <div class="input-group ">
+                            <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                            <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div> 
         </div>
         <div class="card-body" style="padding: .5rem .7rem">
-            <div class="mb-1">
-                <div class="row ">
-                    <div class="d-flex">
-                         {% if perms.cadastro.add_unidade %}
-                            <div style="padding-right: .5rem">
-                                <a class="btn btn-primary mb-2" href="{% url 'unidade-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
-                            </div>
-                        {% endif %}
-                        <form  method="get">
-                           <div class="input-group ">
-                               <input name="search" id="search" size="40" class="form-control " type="search" value="{{ search }}">
-                               <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
-                           </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <table class="table mb-1 table-sm table-bordered table-hover ">
+            
+            <table class="table mb-1 table-sm table-bordered table-hover caption-top">
+                <caption style="padding-top: 1px" class="text-center"> <h4  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h4></caption>
                     <thead class="table-secondary ">
                         <tr>
                             <th style="width: 10rem">Codigo</th>
