@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}{{ verbose_name }} {% endblock title %}
+{% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
 
     <div class="card mt-5">
         <div class="card-header">
-            <h4>{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
+            <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
         </div>
 
         <div class="card-body">
@@ -29,7 +29,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-10">
+                        <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="id_nome">{{form.nome.label}}</label>
                                 <input class="form-control {% if form.errors.nome is not None %} is-invalid {% endif %}" name="nome" id="id_nome"
@@ -44,9 +44,36 @@
                             </div>
                         </div>
 
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="id_estado">{{form.estado.label}}</label>
+                                <select class="form-select {% if form.errors.estado is not None %} is-invalid {% endif %}" id="id_estado" name="estado">
+                                    <option>----------------</option>
+                                    {% for i in form.estado.field.queryset.all %}
+                                        <option  {% if i.pk == form.estado.value %}selected{% endif %} value="{{i.pk}}">{{i}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% if form.errors.estado is not None %}
+                                    <div class="invalid-feedback">
+                                        {{ form.errors.estado }}
+                                    </div>
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                            
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <input type="checkbox" id="id_capital" name="capital" {% if form.capital.value == True %}checked{%endif%}/>
+                                <label for="id_capital">{{form.capital.label}} ?</label>
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="btn btn-secondary" href="{% url 'pais-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <a class="btn btn-secondary" href="{% url 'municipio-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </form>
         </div>
     </div>

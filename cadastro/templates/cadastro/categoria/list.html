@@ -3,15 +3,15 @@
 {% block conteudo %}
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header p-1">
             <div class="d-flex justify-content-center align-items-center">
                 <div>
                    <h4>Lista de {{ verbose_name_plural }}</h4>
                 </div>
             </div>
         </div>
-        <div class="card-body" style="padding: .5rem .75rem">
-            <div class="mb-2">
+        <div class="card-body" style="padding: .5rem .7rem">
+            <div class="mb-1">
                 <div class="row ">
                     <div class="d-flex">
                         {% if perms.cadastro.add_marca %}
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-sm table-bordered table-hover">
+            <table class="table mb-1 table-sm table-bordered table-hover">
                     <thead class="table-secondary">
                         <tr>
                             <th>Nome</th>
@@ -40,13 +40,13 @@
                         {% for p in object_list %}
                             <tr>
                                 <td>{{ p.nome }}</td>
-                                <td class="text-center">
+                                <td class="text-center d-flex justify-content-evenly">
                                     {% if perms.cadastro.change_marca %}
-                                         <a class="btn btn-sm btn-warning" href="{% url 'categoria-update' p.pk %}"><i class="bi bi-pencil" ></i></a>
+                                         <a  href="{% url 'categoria-update' p.pk %}"><i class="text-primary bi bi-pencil" ></i></a>
                                     {%endif%}
 
                                     {% if perms.cadastro.delete_marca %}
-                                        <a class="btn btn-sm btn-danger" href="{% url 'categoria-delete' p.pk %}"><i class="bi bi-trash3"></i></a>
+                                        <a  href="{% url 'categoria-delete' p.pk %}"><i class="text-danger bi bi-trash3"></i></a>
                                     {%endif%}
                                 </td>
                             </tr>
@@ -57,7 +57,10 @@
 
                         {% endfor %}
                     </tbody>
+
+                    
                 </table>
+
                 {% include 'paginate.html' %}
         </div>
     </div>

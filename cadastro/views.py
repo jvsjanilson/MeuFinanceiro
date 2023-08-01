@@ -1,7 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from cadastro.models import Unidade, Marca, Categoria, Pais, Estado
+from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio
 from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
@@ -19,14 +19,14 @@ class UserAccessMixin(PermissionRequiredMixin):
             return redirect_to_login(request.get_full_path(),
                                      self.get_login_url(), self.get_redirect_field_name())
         if not self.has_permission():
-            return redirect('/' if self.login_url is None else self.login_url)
+            return redirect('/')
 
         return super(UserAccessMixin, self).dispatch(request, *args, **kwargs)
 
 
 class UnidadeListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_unidade"]
-    login_url = '/unidades/'
+    # login_url = '/unidades/'
     model = Unidade
     template_name = 'cadastro/unidade/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -55,7 +55,6 @@ class UnidadeListView(UserAccessMixin, ListView):
 
 class UnidadeCreateView(UserAccessMixin, CreateView):
     permission_required = ["cadastro.add_unidade"]
-    login_url = '/unidades/'
     model = Unidade
     template_name = 'cadastro/unidade/form.html'
     fields = ['codigo', 'nome']
@@ -69,7 +68,6 @@ class UnidadeCreateView(UserAccessMixin, CreateView):
 
 class UnidadeUpdateView(UserAccessMixin, UpdateView):
     permission_required = ["cadastro.change_unidade"]
-    login_url = '/unidades/'
     model = Unidade
     template_name = 'cadastro/unidade/form.html'
     fields = ['codigo', 'nome']
@@ -83,7 +81,6 @@ class UnidadeUpdateView(UserAccessMixin, UpdateView):
 
 class UnidadeDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["cadastro.delete_unidade"]
-    login_url = '/unidades/'
     model = Unidade
     template_name = 'cadastro/unidade/confirm_delete.html'
     success_url = '/unidades'
@@ -91,7 +88,6 @@ class UnidadeDeleteView(UserAccessMixin, DeleteView):
 
 class MarcaListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_marca"]
-    login_url = '/marcas/'
     model = Marca
     template_name = 'cadastro/marca/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -120,7 +116,6 @@ class MarcaListView(UserAccessMixin, ListView):
 
 class MarcaCreateView(UserAccessMixin, CreateView):
     permission_required = ["cadastro.add_marca"]
-    login_url = '/marcas/'
     model = Marca
     template_name = 'cadastro/marca/form.html'
     fields = ['nome']
@@ -134,7 +129,6 @@ class MarcaCreateView(UserAccessMixin, CreateView):
 
 class MarcaUpdateView(UserAccessMixin, UpdateView):
     permission_required = ["cadastro.change_marca"]
-    login_url = '/marcas/'
     model = Marca
     template_name = 'cadastro/marca/form.html'
     fields = ['nome']
@@ -148,7 +142,6 @@ class MarcaUpdateView(UserAccessMixin, UpdateView):
 
 class MarcaDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["cadastro.delete_marca"]
-    login_url = '/marcas/'
     model = Marca
     template_name = 'cadastro/marca/confirm_delete.html'
     success_url = '/marcas'
@@ -156,7 +149,6 @@ class MarcaDeleteView(UserAccessMixin, DeleteView):
 
 class CategoriaListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_categoria"]
-    login_url = '/categorias/'
     model = Categoria
     template_name = 'cadastro/categoria/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -185,7 +177,6 @@ class CategoriaListView(UserAccessMixin, ListView):
 
 class CategoriaCreateView(UserAccessMixin, CreateView):
     permission_required = ["cadastro.add_categoria"]
-    login_url = '/categorias/'
     model = Categoria
     template_name = 'cadastro/categoria/form.html'
     fields = ['nome']
@@ -199,7 +190,6 @@ class CategoriaCreateView(UserAccessMixin, CreateView):
 
 class CategoriaUpdateView(UserAccessMixin, UpdateView):
     permission_required = ["cadastro.change_categoria"]
-    login_url = '/categorias/'
     model = Categoria
     template_name = 'cadastro/categoria/form.html'
     fields = ['nome']
@@ -213,7 +203,6 @@ class CategoriaUpdateView(UserAccessMixin, UpdateView):
 
 class CategoriaDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["cadastro.delete_categoria"]
-    login_url = '/categorias/'
     model = Categoria
     template_name = 'cadastro/categoria/confirm_delete.html'
     success_url = '/categorias'
@@ -221,7 +210,7 @@ class CategoriaDeleteView(UserAccessMixin, DeleteView):
 
 class PaisListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_pais"]
-    login_url = '/pais/'
+
     model = Pais
     template_name = 'cadastro/pais/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -250,7 +239,6 @@ class PaisListView(UserAccessMixin, ListView):
 
 class PaisCreateView(UserAccessMixin, CreateView):
     permission_required = ["cadastro.add_pais"]
-    login_url = '/pais/'
     model = Pais
     template_name = 'cadastro/pais/form.html'
     fields = ['codigo', 'nome']
@@ -264,7 +252,6 @@ class PaisCreateView(UserAccessMixin, CreateView):
 
 class PaisUpdateView(UserAccessMixin, UpdateView):
     permission_required = ["cadastro.change_pais"]
-    login_url = '/pais/'
     model = Pais
     template_name = 'cadastro/pais/form.html'
     fields = ['codigo', 'nome']
@@ -278,7 +265,6 @@ class PaisUpdateView(UserAccessMixin, UpdateView):
 
 class PaisDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["cadastro.delete_pais"]
-    login_url = '/pais/'
     model = Pais
     template_name = 'cadastro/pais/confirm_delete.html'
     success_url = '/pais'
@@ -286,7 +272,6 @@ class PaisDeleteView(UserAccessMixin, DeleteView):
 
 class EstadoListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_estado"]
-    login_url = '/estados/'
     model = Estado
     template_name = 'cadastro/estado/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -317,7 +302,6 @@ class EstadoListView(UserAccessMixin, ListView):
 
 class EstadoCreateView(UserAccessMixin, CreateView):
     permission_required = ["cadastro.add_estado"]
-    login_url = '/estados/'
     model = Estado
 
     template_name = 'cadastro/estado/form.html'
@@ -332,7 +316,6 @@ class EstadoCreateView(UserAccessMixin, CreateView):
 
 class EstadoUpdateView(UserAccessMixin, UpdateView):
     permission_required = ["cadastro.change_estado"]
-    login_url = '/estados/'
     model = Estado
     template_name = 'cadastro/estado/form.html'
     fields = ['codigo', 'uf', 'pais', 'nome']
@@ -346,8 +329,70 @@ class EstadoUpdateView(UserAccessMixin, UpdateView):
 
 class EstadoDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["cadastro.delete_estado"]
-    login_url = '/estados/'
     model = Estado
     template_name = 'cadastro/estado/confirm_delete.html'
     success_url = '/estados'
 
+
+
+class MunicipioListView(UserAccessMixin, ListView):
+    permission_required = ["cadastro.view_municipio"]
+    model = Municipio
+    template_name = 'cadastro/municipio/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        if search:
+            context['search'] = search
+
+        return context
+
+    def get_queryset(self):
+        queryset = super(MunicipioListView, self).get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            return queryset.filter(
+                Q(codigo__icontains=search) |
+                Q(estado__uf__icontains=search) |
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+
+class MunicipioCreateView(UserAccessMixin, CreateView):
+    permission_required = ["cadastro.add_municipio"]
+    model = Municipio
+
+    template_name = 'cadastro/municipio/form.html'
+    fields = ['codigo', 'nome', 'estado', 'capital']
+    success_url = '/municipios'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class MunicipioUpdateView(UserAccessMixin, UpdateView):
+    permission_required = ["cadastro.change_municipio"]
+    model = Municipio
+    template_name = 'cadastro/municipio/form.html'
+    fields = ['codigo', 'nome', 'estado', 'capital']
+    success_url = '/municipios'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class MunicipioDeleteView(UserAccessMixin, DeleteView):
+    permission_required = ["cadastro.delete_municipio"]
+    model = Municipio
+    template_name = 'cadastro/municipio/confirm_delete.html'
+    success_url = '/municipios'

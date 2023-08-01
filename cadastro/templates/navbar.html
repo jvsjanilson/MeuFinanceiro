@@ -1,4 +1,4 @@
- <nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom  mt-2 rounded-2 mb-3">
+ <nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom  mt-2 rounded-2 mb-1">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
       data-bs-target="#navbarNavDropdown" 
@@ -35,6 +35,10 @@
 
             {% if perms.cadastro.view_estado %}
               <li><a class="dropdown-item" href="{% url 'estado-list'  %}">Estados</a></li>
+            {% endif %}
+
+            {% if perms.cadastro.view_municipio %}
+              <li><a class="dropdown-item" href="{% url 'municipio-list'  %}">Municípios</a></li>
             {% endif %}
 
           </ul>
