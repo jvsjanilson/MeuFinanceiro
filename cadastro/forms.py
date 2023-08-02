@@ -44,9 +44,9 @@ class ProdutoForm(forms.ModelForm):
         widgets = {
             'codigo': TextInputBootstrap(),
             'nome': TextInputBootstrap(),
-            'unidade': SelectBootStrap(),
-            'marca': SelectBootStrap(),
-            'categoria': SelectBootStrap(),
+            'unidade': SelectBootstrap(),
+            'marca': SelectBootstrap(),
+            'categoria': SelectBootstrap(),
             'preco_compra': NumberInputBootstap(),
             'preco_venda': NumberInputBootstap(),
             'estoque': NumberInputBootstap(),

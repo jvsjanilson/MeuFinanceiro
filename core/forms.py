@@ -7,7 +7,7 @@ class TextInputBootstrap(forms.TextInput):
         super().__init__(attrs)
 
 
-class SelectBootStrap(forms.Select):
+class SelectBootstrap(forms.Select):
     def __init__(self, attrs=None, render_value=False):
         attrs = {'class': 'form-select'}
         super().__init__(attrs)
