@@ -69,8 +69,7 @@ class CategoriaAdmin(admin.ModelAdmin):
 class ProdutoAdmin(admin.ModelAdmin):
     list_display = ('codigo', 'nome', 'preco_venda', 'estoque', 'ativo')
     search_fields = ('codigo', 'nome')
-    fields = (('codigo', 'nome'), ('cadastro', 'marca', 'categoria'), ('preco_compra', 'preco_venda'), 'estoque')
-    exclude = ['deleted_at', ]
+    fields = (('codigo', 'nome'), ('unidade', 'marca', 'categoria'), ('preco_compra', 'preco_venda'), 'estoque', 'ativo')
     list_filter = ('categoria', )
     list_per_page = REGISTROS_POR_PAGINA
     actions = ["ativar"]

@@ -41,6 +41,10 @@
               <li><a class="dropdown-item" href="{% url 'municipio-list'  %}">Municípios</a></li>
             {% endif %}
 
+            {% if perms.cadastro.view_produto %}
+              <li><a class="dropdown-item" href="{% url 'produto-list'  %}">Produtos</a></li>
+            {% endif %}
+
           </ul>
         </li>
 

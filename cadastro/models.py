@@ -105,7 +105,7 @@ class Categoria(GenericoModel):
 
 class Produto(GenericoModel):
     codigo = models.CharField('Codigo', max_length=13, unique=True)
-    nome = models.CharField('Nome', max_length=60, null=True, blank=True)
+    nome = models.CharField('Nome', max_length=60)
     unidade = models.ForeignKey(Unidade, on_delete=models.RESTRICT, verbose_name='Unidade')
     marca = models.ForeignKey(Marca, on_delete=models.RESTRICT, verbose_name='Marca')
     categoria = models.ForeignKey(Categoria, on_delete=models.RESTRICT, verbose_name='Categoria')
@@ -116,3 +116,8 @@ class Produto(GenericoModel):
 
     def __str__(self):
         return self.codigo
+    
+    class Meta:
+        verbose_name = 'Produto'
+        verbose_name_plural = 'Produtos'
+
