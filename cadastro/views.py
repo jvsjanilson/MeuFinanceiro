@@ -7,7 +7,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
-from cadastro.forms import ProdutoForm
+from cadastro.forms import ProdutoForm, UnidadeForm
+
+
+class InvalidFormMixin:
+    """
+        Autor: Janilson Varele
+        Mixin para preencher os input com a class is-invalid 
+        do bootstrap quando houver error
+    """
+    def form_invalid(self, form):
+        for field in form.errors:
+            form[field].field.widget.attrs['class'] += ' is-invalid'
+        return self.render_to_response(self.get_context_data(form=form))
+
 
 class Home(LoginRequiredMixin, TemplateView):
     template_name = 'base.html'
@@ -26,7 +39,6 @@ class UserAccessMixin(PermissionRequiredMixin):
 
 class UnidadeListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_unidade"]
-    # login_url = '/unidades/'
     model = Unidade
     template_name = 'cadastro/unidade/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -53,11 +65,11 @@ class UnidadeListView(UserAccessMixin, ListView):
         return queryset
 
 
-class UnidadeCreateView(UserAccessMixin, CreateView):
+class UnidadeCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_unidade"]
     model = Unidade
+    form_class = UnidadeForm
     template_name = 'cadastro/unidade/form.html'
-    fields = ['codigo', 'nome']
     success_url = '/unidades'
 
     def get_context_data(self, **kwargs):
@@ -66,11 +78,11 @@ class UnidadeCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class UnidadeUpdateView(UserAccessMixin, UpdateView):
+class UnidadeUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_unidade"]
     model = Unidade
+    form_class = UnidadeForm
     template_name = 'cadastro/unidade/form.html'
-    fields = ['codigo', 'nome']
     success_url = '/unidades'
 
     def get_context_data(self, **kwargs):
@@ -427,19 +439,12 @@ class ProdutoListView(UserAccessMixin, ListView):
         return queryset    
     
 
-class ProdutoCreateView(UserAccessMixin, CreateView):
+class ProdutoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_produto"]
     model = Produto
     form_class = ProdutoForm
     template_name = 'cadastro/produto/form.html'
-   # fields = ['codigo', 'nome', 'unidade', 'categoria', 'marca', 'preco_venda', 'preco_compra', 'estoque', 'ativo']
     success_url = '/produtos'
-
-    def form_invalid(self, form):
-        for field in form.errors:
-            form[field].field.widget.attrs['class'] += ' is-invalid'
-
-        return self.render_to_response(self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -447,12 +452,11 @@ class ProdutoCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class ProdutoUpdateView(UserAccessMixin, UpdateView):
+class ProdutoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_produto"]
     model = Produto
     form_class = ProdutoForm
     template_name = 'cadastro/produto/form.html'
-    # fields = ['codigo', 'nome', 'unidade', 'categoria', 'marca', 'preco_venda', 'preco_compra', 'estoque', 'ativo']
     success_url = '/produtos'
 
     def get_context_data(self, **kwargs):
