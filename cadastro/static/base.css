@@ -3,3 +3,8 @@
     padding: 1px;
     color: red;
 }
+
+.helptext {
+    font-size: 0.6875rem;
+    color: #666;
+}
