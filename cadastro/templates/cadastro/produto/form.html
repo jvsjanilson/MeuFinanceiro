@@ -10,13 +10,17 @@
         <div class="card-body">
             <form method="post" novalidate>
                     {% csrf_token %}
-
+                    
                     <div class="row">
                         <div class="col-md-2">
                             <div class="mb-3">
                                 <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
                                 {{ form.codigo }} 
 
+                                {%if form.codigo.help_text is not None %}
+                                    <span class="helptext">{{ form.codigo.help_text}}</span>
+                                {%endif%}
+                                
                                 {% if form.errors.codigo is not None %}
                                     {{ form.errors.codigo }}
                                 {%endif%}
