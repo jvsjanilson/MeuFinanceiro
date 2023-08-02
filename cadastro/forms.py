@@ -1,5 +1,5 @@
 from django import forms
-from cadastro.models import Produto, Unidade, Marca, Categoria
+from cadastro.models import Produto, Unidade, Marca, Categoria, Contato
 from core.forms import *
 
 
@@ -55,3 +55,30 @@ class ProdutoForm(forms.ModelForm):
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
     #     self.fields['codigo'].required = False
+
+
+class ContatoForm(forms.ModelForm):
+    class Meta:
+        model = Contato
+        fields = '__all__'
+        widgets = {
+            'razao_social': TextInputBootstrap(),
+            'nome_fantasia': TextInputBootstrap(),
+            'cpf_cnpj': TextInputBootstrap(),
+            'inscricao_estadual': TextInputBootstrap(),
+            'inscricao_municipal': TextInputBootstrap(),
+            'inscricao_suframa': TextInputBootstrap(),
+            'inscricao_cnae': TextInputBootstrap(),
+            'endereco': TextInputBootstrap(),
+            'numero': TextInputBootstrap(),
+            'complemento': TextInputBootstrap(),
+            'bairro': TextInputBootstrap(),
+            'cep': TextInputBootstrap(),
+            'estado': SelectBootstrap(),
+            'municipio': SelectBootstrap(),
+            'celular': TextInputBootstrap(),
+            'fone': TextInputBootstrap(),
+            'email': TextInputBootstrap(),
+            'ativo': CheckboxInputBootstrap(),
+        }
+        

@@ -1,13 +1,21 @@
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto
+from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto, \
+Contato
 from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
-from cadastro.forms import ProdutoForm, UnidadeForm
+from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+
+def municipios(request, estado):
+    data = serialize("json", Municipio.objects.filter(estado=estado), fields=('nome', 'capital'))
+    return HttpResponse(data)
 
 
 class InvalidFormMixin:
@@ -470,3 +478,66 @@ class ProdutoDeleteView(UserAccessMixin, DeleteView):
     model = Produto
     template_name = 'cadastro/produto/confirm_delete.html'
     success_url = '/produtos'    
+
+
+class ContatoListView(UserAccessMixin, ListView):
+    permission_required = ["cadastro.view_contato"]
+    model = Contato
+    template_name = 'cadastro/contato/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        if search:
+            context['search'] = search
+
+        return context
+
+    def get_queryset(self):
+        queryset = super(ContatoListView, self).get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            return queryset.filter(
+                Q(razao_social__icontains=search) |
+                Q(nome_fantasia__icontains=search) |
+                Q(cpf_cnpj__icontains=search) |
+                Q(inscricao_estadual__icontains=search) |
+                Q(celular__icontains=search) |
+                Q(fone__icontains=search) 
+            )
+        return queryset
+
+
+class ContatoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
+    permission_required = ["cadastro.add_contato"]
+    model = Contato
+    form_class = ContatoForm
+    template_name = 'cadastro/contato/form.html'
+    success_url = '/contatos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class ContatoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+    permission_required = ["cadastro.change_contato"]
+    model = Contato
+    form_class = ContatoForm
+    template_name = 'cadastro/contato/form.html'
+    success_url = '/contatos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+
+class ContatoDeleteView(UserAccessMixin, InvalidFormMixin, CreateView):    
+    pass

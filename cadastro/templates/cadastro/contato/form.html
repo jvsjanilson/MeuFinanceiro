@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block js %}
+    <script src="{% static 'js/contato.js' %}"></script>
+{% endblock%}
+
+{% block conteudo %}
+
+    <div class="card">
+        <div class="card-header">
+            <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{form.razao_social.id_for_label}}">{{form.razao_social.label}}</label>
+                                {{ form.razao_social }} 
+
+                                {%if form.razao_social.help_text is not None %}
+                                    <span class="helptext">{{ form.razao_social.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.razao_social is not None %}
+                                    {{ form.errors.razao_social }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{form.nome_fantasia.id_for_label}}">{{form.nome_fantasia.label}}</label>
+                                {{ form.nome_fantasia }} 
+
+                                {%if form.nome_fantasia.help_text is not None %}
+                                    <span class="helptext">{{ form.nome_fantasia.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.nome_fantasia is not None %}
+                                    {{ form.errors.nome_fantasia }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="{{form.cpf_cnpj.id_for_label}}">{{form.cpf_cnpj.label}}</label>
+                                {{ form.cpf_cnpj }} 
+
+                                {%if form.cpf_cnpj.help_text is not None %}
+                                    <span class="helptext">{{ form.cpf_cnpj.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.cpf_cnpj is not None %}
+                                    {{ form.errors.cpf_cnpj }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="{{form.inscricao_estadual.id_for_label}}">{{form.inscricao_estadual.label}}</label>
+                                {{ form.inscricao_estadual }} 
+
+                                {%if form.inscricao_estadual.help_text is not None %}
+                                    <span class="helptext">{{ form.inscricao_estadual.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.inscricao_estadual is not None %}
+                                    {{ form.errors.inscricao_estadual }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="{{form.inscricao_municipal.id_for_label}}">{{form.inscricao_municipal.label}}</label>
+                                {{ form.inscricao_municipal }} 
+
+                                {%if form.inscricao_municipal.help_text is not None %}
+                                    <span class="helptext">{{ form.inscricao_municipal.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.inscricao_municipal is not None %}
+                                    {{ form.errors.inscricao_municipal }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="{{form.inscricao_suframa.id_for_label}}">{{form.inscricao_suframa.label}}</label>
+                                {{ form.inscricao_suframa }} 
+
+                                {%if form.inscricao_suframa.help_text is not None %}
+                                    <span class="helptext">{{ form.inscricao_suframa.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.inscricao_suframa is not None %}
+                                    {{ form.errors.inscricao_suframa }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="{{form.inscricao_cnae.id_for_label}}">{{form.inscricao_cnae.label}}</label>
+                                {{ form.inscricao_cnae }} 
+
+                                {%if form.inscricao_cnae.help_text is not None %}
+                                    <span class="helptext">{{ form.inscricao_cnae.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.inscricao_cnae is not None %}
+                                    {{ form.errors.inscricao_cnae }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="mb-3">
+                                <label for="{{form.endereco.id_for_label}}">{{form.endereco.label}}</label>
+                                {{ form.endereco }} 
+
+                                {%if form.endereco.help_text is not None %}
+                                    <span class="helptext">{{ form.endereco.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.endereco is not None %}
+                                    {{ form.errors.endereco }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="{{form.numero.id_for_label}}">{{form.numero.label}}</label>
+                                {{ form.numero }} 
+
+                                {%if form.numero.help_text is not None %}
+                                    <span class="helptext">{{ form.numero.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.numero is not None %}
+                                    {{ form.errors.numero }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="{{form.cep.id_for_label}}">{{form.cep.label}}</label>
+                                {{ form.cep }} 
+
+                                {%if form.cep.help_text is not None %}
+                                    <span class="helptext">{{ form.cep.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.cep is not None %}
+                                    {{ form.errors.cep }}
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{form.complemento.id_for_label}}">{{form.complemento.label}}</label>
+                                {{ form.complemento }} 
+
+                                {%if form.complemento.help_text is not None %}
+                                    <span class="helptext">{{ form.complemento.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.complemento is not None %}
+                                    {{ form.errors.complemento }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{form.bairro.id_for_label}}">{{form.bairro.label}}</label>
+                                {{ form.bairro }} 
+
+                                {%if form.bairro.help_text is not None %}
+                                    <span class="helptext">{{ form.bairro.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.bairro is not None %}
+                                    {{ form.errors.bairro }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
+                                {{ form.estado }} 
+                                {% if form.errors.estado is not None %}
+                                    {{ form.errors.estado }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="mb-3">
+                                <label for="{{form.municipio.id_for_label}}">{{form.municipio.label}}</label>
+                                {{ form.municipio }} 
+                                {% if form.errors.municipio is not None %}
+                                    {{ form.errors.municipio }}
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div> 
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="{{form.celular.id_for_label}}">{{form.celular.label}}</label>
+                                {{ form.celular }} 
+
+                                {%if form.celular.help_text is not None %}
+                                    <span class="helptext">{{ form.celular.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.celular is not None %}
+                                    {{ form.errors.celular }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="{{form.fone.id_for_label}}">{{form.fone.label}}</label>
+                                {{ form.fone }} 
+
+                                {%if form.fone.help_text is not None %}
+                                    <span class="helptext">{{ form.fone.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.fone is not None %}
+                                    {{ form.errors.fone }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{form.email.id_for_label}}">{{form.email.label}}</label>
+                                {{ form.email }} 
+
+                                {%if form.email.help_text is not None %}
+                                    <span class="helptext">{{ form.email.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.email is not None %}
+                                    {{ form.errors.email }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                    </div> 
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{form.ativo.id_for_label}}">{{form.ativo.label}}</label>
+                                {{ form.ativo }} 
+                            </div>
+                        </div>
+                    </div> 
+                    <hr/>
+                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="btn btn-secondary" href="{% url 'contato-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </form>
+        </div>
+    </div>
+{% endblock conteudo%}

@@ -66,6 +66,10 @@ class Contato(GenericoModel):
 
     def __str__(self):
         return self.razao_social
+    
+    class Meta:
+        verbose_name = 'Contato'
+        verbose_name_plural = 'Contatos'
 
 
 class Unidade(GenericoModel):

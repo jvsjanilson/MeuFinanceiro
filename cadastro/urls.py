@@ -4,12 +4,20 @@ from cadastro.views import UnidadeListView, UnidadeCreateView, \
     MarcaDeleteView, CategoriaListView, CategoriaCreateView, CategoriaUpdateView, CategoriaDeleteView, \
     PaisListView, PaisCreateView, PaisUpdateView, PaisDeleteView, EstadoListView, EstadoCreateView, \
     EstadoUpdateView, EstadoDeleteView, MunicipioListView, MunicipioCreateView, MunicipioUpdateView, \
-    MunicipioDeleteView, ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView
-
+    MunicipioDeleteView, ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, \
+    ContatoListView, ContatoCreateView, ContatoUpdateView, ContatoDeleteView, municipios
+        
 
 urlpatterns = [
+    path('api/municipios/<int:estado>', municipios),
+
+    path("contatos/", ContatoListView.as_view(), name="contato-list"),
+    path("contatos/create", ContatoCreateView.as_view(), name="contato-create"),
+    path("contatos/<int:pk>/update/", ContatoUpdateView.as_view(), name="contato-update"),
+    path("contatos/<int:pk>/delete/", ContatoDeleteView.as_view(), name="contato-delete"),
+
     path("produtos/", ProdutoListView.as_view(), name="produto-list"),
-     path("produtos/create", ProdutoCreateView.as_view(), name="produto-create"),
+    path("produtos/create", ProdutoCreateView.as_view(), name="produto-create"),
     path("produtos/<int:pk>/update/", ProdutoUpdateView.as_view(), name="produto-update"),
     path("produtos/<int:pk>/delete/", ProdutoDeleteView.as_view(), name="produto-delete"),
 
