@@ -22,6 +22,12 @@
               <li><a class="dropdown-item" href="{% url 'contato-list'  %}">Contatos</a></li>
             {% endif %}
 
+            
+            {% if perms.cadastro.view_produto %}
+              <li><a class="dropdown-item" href="{% url 'produto-list'  %}">Produtos</a></li>
+            {% endif %}
+
+
             {% if perms.cadastro.view_unidade %}
               <li><a class="dropdown-item" href="{% url 'unidade-list'  %}">Unidades</a></li>
             {% endif %}
@@ -43,10 +49,6 @@
 
             {% if perms.cadastro.view_municipio %}
               <li><a class="dropdown-item" href="{% url 'municipio-list'  %}">Municípios</a></li>
-            {% endif %}
-
-            {% if perms.cadastro.view_produto %}
-              <li><a class="dropdown-item" href="{% url 'produto-list'  %}">Produtos</a></li>
             {% endif %}
 
           </ul>

@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
-from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm
+from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -134,11 +134,11 @@ class MarcaListView(UserAccessMixin, ListView):
         return queryset
 
 
-class MarcaCreateView(UserAccessMixin, CreateView):
+class MarcaCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_marca"]
     model = Marca
+    form_class = MarcaForm
     template_name = 'cadastro/marca/form.html'
-    fields = ['nome']
     success_url = '/marcas'
 
     def get_context_data(self, **kwargs):
@@ -147,11 +147,11 @@ class MarcaCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class MarcaUpdateView(UserAccessMixin, UpdateView):
+class MarcaUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_marca"]
     model = Marca
+    form_class = MarcaForm
     template_name = 'cadastro/marca/form.html'
-    fields = ['nome']
     success_url = '/marcas'
 
     def get_context_data(self, **kwargs):
@@ -195,11 +195,12 @@ class CategoriaListView(UserAccessMixin, ListView):
         return queryset
 
 
-class CategoriaCreateView(UserAccessMixin, CreateView):
+class CategoriaCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_categoria"]
     model = Categoria
+    form_class = CategoriaForm
     template_name = 'cadastro/categoria/form.html'
-    fields = ['nome']
+    
     success_url = '/categorias'
 
     def get_context_data(self, **kwargs):
@@ -208,11 +209,11 @@ class CategoriaCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class CategoriaUpdateView(UserAccessMixin, UpdateView):
+class CategoriaUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_categoria"]
     model = Categoria
+    form_class = CategoriaForm
     template_name = 'cadastro/categoria/form.html'
-    fields = ['nome']
     success_url = '/categorias'
 
     def get_context_data(self, **kwargs):

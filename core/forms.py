@@ -33,8 +33,19 @@ class SelectBootstrap(forms.Select):
 
 
 
-class NumberInputBootstap(TextInputBootstrap):
-    pass
+class NumberInputBootstap(forms.NumberInput):
+    def __init__(self, attrs=None, render_value=False):
+        old_attrs = attrs
+        if attrs is None:
+            attrs = {}
+            attrs['class'] = 'form-control'
+        else:
+            try:
+                if attrs['class'] != "":
+                    attrs['class'] = old_attrs['class'] + ' form-control'
+            except KeyError:
+                attrs['class'] = 'form-control'
+        super().__init__(attrs)
 
 
 class CheckboxInputBootstrap(forms.CheckboxInput):

@@ -2,26 +2,28 @@
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
 
-    <div class="card mt-5">
+    <div class="card">
         <div class="card-header">
             <h4>{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
         </div>
 
         <div class="card-body">
-            <form method="post">
+            <form method="post" novalidate>
                     {% csrf_token %}
+
                     <div class="row">
+
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="id_nome">{{form.nome.label}}</label>
-                                <input autofocus class="form-control {% if form.errors.nome is not None %} is-invalid {% endif %}" name="nome" id="id_nome"
-                                       maxlength="60"
-                                value="{% if form.nome.value is not None %}{{form.nome.value}}{%endif%}"
-                                />
+                                <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                                {{ form.nome }} 
+
+                                {%if form.nome.help_text is not None %}
+                                    <span class="helptext">{{ form.nome.help_text}}</span>
+                                {%endif%}
+
                                 {% if form.errors.nome is not None %}
-                                    <div class="invalid-feedback">
-                                        {{ form.errors.nome }}
-                                    </div>
+                                    {{ form.errors.nome }}
                                 {%endif%}
                             </div>
                         </div>
@@ -32,11 +34,4 @@
                 </form>
         </div>
     </div>
-
-
-
-
-
-
-
 {% endblock conteudo%}

@@ -97,7 +97,7 @@ class Marca(GenericoModel):
 
 
 class Categoria(GenericoModel):
-    nome = models.CharField('Nome', max_length=60, null=True, blank=True)
+    nome = models.CharField('Nome', max_length=60)
 
     class Meta:
         verbose_name = 'Categoria'
