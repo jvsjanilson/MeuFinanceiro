@@ -42,7 +42,7 @@ class ProdutoForm(forms.ModelForm):
         #     'codigo': 'Codigo do produto 13 caracteres',
         # }
         widgets = {
-            'codigo': TextInputBootstrap(),
+            'codigo': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
             'nome': TextInputBootstrap(),
             'unidade': SelectBootstrap(),
             'marca': SelectBootstrap(),
@@ -62,7 +62,7 @@ class ContatoForm(forms.ModelForm):
         model = Contato
         fields = '__all__'
         widgets = {
-            'razao_social': TextInputBootstrap(),
+            'razao_social': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
             'nome_fantasia': TextInputBootstrap(),
             'cpf_cnpj': TextInputBootstrap(),
             'inscricao_estadual': TextInputBootstrap(),

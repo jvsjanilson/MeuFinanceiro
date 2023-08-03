@@ -3,23 +3,50 @@ from django import forms
 
 class TextInputBootstrap(forms.TextInput):
     def __init__(self, attrs=None, render_value=False):
-        attrs = {'class': 'form-control'}
+        old_attrs = attrs
+        if attrs is None:
+            attrs = {}
+            attrs['class'] = 'form-control'
+        else:
+            try:
+                if attrs['class'] != "":
+                    attrs['class'] = old_attrs['class'] + ' form-control'
+            except KeyError:
+                attrs['class'] = 'form-control'
         super().__init__(attrs)
+
 
 
 class SelectBootstrap(forms.Select):
     def __init__(self, attrs=None, render_value=False):
-        attrs = {'class': 'form-select'}
+        old_attrs = attrs
+        if attrs is None:
+            attrs = {}
+            attrs['class'] = 'form-select'
+        else:
+            try:
+                if attrs['class'] != "":
+                    attrs['class'] = old_attrs['class'] + ' form-select'
+            except KeyError:
+                attrs['class'] = 'form-select'
         super().__init__(attrs)
 
 
-class NumberInputBootstap(forms.NumberInput):
-    def __init__(self, attrs=None, render_value=False):
-        attrs = {'class': 'form-control'}
-        super().__init__(attrs)
+
+class NumberInputBootstap(TextInputBootstrap):
+    pass
 
 
 class CheckboxInputBootstrap(forms.CheckboxInput):
     def __init__(self, attrs=None, render_value=False):
-        attrs = {'class': 'form-check-input'}
-        super().__init__(attrs)
+        old_attrs = attrs
+        if attrs is None:
+            attrs = {}
+            attrs['class'] = 'form-check-input'
+        else:
+            try:
+                if attrs['class'] != "":
+                    attrs['class'] = old_attrs['class'] + ' form-check-input'
+            except KeyError:
+                attrs['class'] = 'form-check-input'
+        super().__init__(attrs)    
