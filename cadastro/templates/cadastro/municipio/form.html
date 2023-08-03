@@ -2,9 +2,9 @@
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
 
-    <div class="card mt-5">
+    <div class="card">
         <div class="card-header">
-            <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+            <h4>{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
         </div>
 
         <div class="card-body">
@@ -14,74 +14,62 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="id_codigo">{{form.codigo.label}}</label>
-                                <input autofocus type="number" class="form-control {% if form.errors.codigo is not None %} is-invalid {% endif %}"
-                                       name="codigo" id="id_codigo" maxlength="3"
-                                       value ="{% if form.codigo.value is not None %}{{form.codigo.value}}{%endif%}"
-                                />
+                                <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
+                                {{ form.codigo }} 
 
-                                {% if form.errors.codigo is not None %}
-                                    <div class="invalid-feedback">
-                                        {{ form.errors.codigo }}
-                                    </div>
+                                {%if form.codigo.help_text is not None %}
+                                    <span class="helptext">{{ form.codigo.help_text}}</span>
                                 {%endif%}
-
+                                
+                                {% if form.errors.codigo is not None %}
+                                    {{ form.errors.codigo }}
+                                {%endif%}
                             </div>
                         </div>
 
                         <div class="col-md-8">
                             <div class="mb-3">
-                                <label for="id_nome">{{form.nome.label}}</label>
-                                <input class="form-control {% if form.errors.nome is not None %} is-invalid {% endif %}" name="nome" id="id_nome"
-                                       maxlength="60"
-                                value="{% if form.nome.value is not None %}{{form.nome.value}}{%endif%}"
-                                />
+                                <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                                {{ form.nome }} 
+
+                                {%if form.nome.help_text is not None %}
+                                    <span class="helptext">{{ form.nome.help_text}}</span>
+                                {%endif%}
+
                                 {% if form.errors.nome is not None %}
-                                    <div class="invalid-feedback">
-                                        {{ form.errors.nome }}
-                                    </div>
+                                    {{ form.errors.nome }}
                                 {%endif%}
                             </div>
                         </div>
-
-
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="id_estado">{{form.estado.label}}</label>
-                                <select class="form-select {% if form.errors.estado is not None %} is-invalid {% endif %}" id="id_estado" name="estado">
-                                    <option>----------------</option>
-                                    {% for i in form.estado.field.queryset.all %}
-                                        <option  {% if i.pk == form.estado.value %}selected{% endif %} value="{{i.pk}}">{{i}}</option>
-                                    {% endfor %}
-                                </select>
+                                <label for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
+                                {{ form.estado }} 
+
+                                {%if form.estado.help_text is not None %}
+                                    <span class="helptext">{{ form.estado.help_text}}</span>
+                                {%endif%}
+                                
                                 {% if form.errors.estado is not None %}
-                                    <div class="invalid-feedback">
-                                        {{ form.errors.estado }}
-                                    </div>
+                                    {{ form.errors.estado }}
                                 {%endif%}
                             </div>
                         </div>
                     </div>
+
 
                     <div class="row">
-                            
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <input type="checkbox" id="id_capital" name="capital" {% if form.capital.value == True %}checked{%endif%}/>
-                                <label for="id_capital">{{form.capital.label}} ?</label>
+                                <label for="{{form.capital.id_for_label}}">{{form.capital.label}}</label>
+                                {{ form.capital }} 
                             </div>
                         </div>
-                    </div>
+                    </div> 
+
                     <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
                     <a class="btn btn-secondary" href="{% url 'municipio-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </form>
         </div>
     </div>
-
-
-
-
-
-
-
 {% endblock conteudo%}

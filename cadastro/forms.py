@@ -1,5 +1,5 @@
 from django import forms
-from cadastro.models import Produto, Unidade, Marca, Categoria, Contato
+from cadastro.models import Produto, Unidade, Marca, Categoria, Contato, Pais, Estado, Municipio
 from core.forms import *
 
 
@@ -79,3 +79,36 @@ class ContatoForm(forms.ModelForm):
             'ativo': CheckboxInputBootstrap(),
         }
         
+
+class PaisForm(forms.ModelForm):
+    class Meta:
+        model = Pais
+        fields = ['codigo', 'nome']
+        widgets = {
+            'codigo': NumberInputBootstap(),
+            'nome': TextInputBootstrap(),
+        }        
+
+
+class EstadoForm(forms.ModelForm):
+    class Meta:
+        model = Estado
+        fields = ['codigo', 'uf', 'nome', 'pais']
+        widgets = {
+            'codigo': NumberInputBootstap(),
+            'uf': TextInputBootstrap(),
+            'nome': TextInputBootstrap(),
+            'pais': SelectBootstrap()
+        }                
+
+
+class MuncipioForm(forms.ModelForm):
+    class Meta:
+        model = Municipio
+        fields = ['codigo', 'nome', 'capital', 'estado']
+        widgets = {
+            'codigo': NumberInputBootstap(),
+            'nome': TextInputBootstrap(),
+            'capital': CheckboxInputBootstrap(),
+            'estado': SelectBootstrap()
+        }                        

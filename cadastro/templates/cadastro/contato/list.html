@@ -26,17 +26,15 @@
             </div> 
         </div>
         <div class="card-body" style="padding: .5rem .7rem">
-            
             <table class="table mb-1 table-sm table-bordered table-hover caption-top">
-                <caption style="padding-top: 1px" class="text-center"> <h4  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h4></caption>
+                <caption style="padding-top: 1px" class="text-center"> <h5  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5></caption>
                     <thead class="table-secondary ">
                         <tr>
-                            <th>Razão Social/Nome</th>
+                            <th>Nome</th>
                             <th>CPF/CNPJ</th>
-                            <th>Insc. Estadual</th>
+                            <th>Insc. Est.</th>
                             <th>Celular</th>
-                            <th>Telefone</th>
-                            <th class="text-center">Ativo?</th>
+                            <th>Ativo</th>
                             <th class="text-center" style="width: 6rem">Ações</th>
                         </tr>
                     </thead>
@@ -47,7 +45,8 @@
                                 <td>{% if m.cpf_cnpj is not None%} {{ m.cpf_cnpj }} {%endif%}</td>
                                 <td>{% if m.inscricao_estadual is not None%} {{ m.inscricao_estadual }} {%endif%}</td>
                                 <td>{% if m.celular is not None%} {{ m.celular }} {%endif%}</td>
-                                <td>{% if m.fone is not None%} {{ m.fone }} {%endif%}</td>
+                                
+
                                 <td class="text-center">
                                     {% if m.ativo == True %} 
                                     <i class="bi bi-check-lg text-success"></i>
@@ -56,7 +55,8 @@
                                     {%endif%}
 
                                 </td>
-                                <td class="text-center  d-flex justify-content-evenly">
+
+                                <td class="text-center d-flex justify-content-evenly">
                                     {% if perms.cadastro.change_contato %}
                                         <a href="{% url 'contato-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a>
                                     {%endif%} 
@@ -68,12 +68,13 @@
                             </tr>
                         {% empty %}
                            <tr>
-                               <td class="text-center" colspan="8">Sem registro</td>
+                               <td class="text-center" colspan="6">Sem registro</td>
                            </tr>
 
                         {% endfor %}
                     </tbody>
                 </table>
+           
                 {% include 'paginate.html' %}
         </div>
     </div>

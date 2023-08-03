@@ -8,7 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
-from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm
+from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
+PaisForm, EstadoForm, MuncipioForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -231,7 +232,6 @@ class CategoriaDeleteView(UserAccessMixin, DeleteView):
 
 class PaisListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_pais"]
-
     model = Pais
     template_name = 'cadastro/pais/list.html'
     paginate_by = REGISTROS_POR_PAGINA
@@ -258,11 +258,11 @@ class PaisListView(UserAccessMixin, ListView):
         return queryset
 
 
-class PaisCreateView(UserAccessMixin, CreateView):
+class PaisCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_pais"]
     model = Pais
+    form_class = PaisForm
     template_name = 'cadastro/pais/form.html'
-    fields = ['codigo', 'nome']
     success_url = '/pais'
 
     def get_context_data(self, **kwargs):
@@ -271,11 +271,11 @@ class PaisCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class PaisUpdateView(UserAccessMixin, UpdateView):
+class PaisUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_pais"]
     model = Pais
+    form_class = PaisForm
     template_name = 'cadastro/pais/form.html'
-    fields = ['codigo', 'nome']
     success_url = '/pais'
 
     def get_context_data(self, **kwargs):
@@ -321,12 +321,11 @@ class EstadoListView(UserAccessMixin, ListView):
         return queryset
 
 
-class EstadoCreateView(UserAccessMixin, CreateView):
+class EstadoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_estado"]
     model = Estado
-
+    form_class = EstadoForm
     template_name = 'cadastro/estado/form.html'
-    fields = ['codigo', 'uf', 'pais', 'nome']
     success_url = '/estados'
 
     def get_context_data(self, **kwargs):
@@ -335,11 +334,11 @@ class EstadoCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class EstadoUpdateView(UserAccessMixin, UpdateView):
+class EstadoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_estado"]
     model = Estado
+    form_class = EstadoForm
     template_name = 'cadastro/estado/form.html'
-    fields = ['codigo', 'uf', 'pais', 'nome']
     success_url = '/estados'
 
     def get_context_data(self, **kwargs):
@@ -385,12 +384,11 @@ class MunicipioListView(UserAccessMixin, ListView):
         return queryset
 
 
-class MunicipioCreateView(UserAccessMixin, CreateView):
+class MunicipioCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["cadastro.add_municipio"]
     model = Municipio
-
+    form_class = MuncipioForm
     template_name = 'cadastro/municipio/form.html'
-    fields = ['codigo', 'nome', 'estado', 'capital']
     success_url = '/municipios'
 
     def get_context_data(self, **kwargs):
@@ -399,11 +397,11 @@ class MunicipioCreateView(UserAccessMixin, CreateView):
         return context
 
 
-class MunicipioUpdateView(UserAccessMixin, UpdateView):
+class MunicipioUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["cadastro.change_municipio"]
     model = Municipio
+    form_class = MuncipioForm
     template_name = 'cadastro/municipio/form.html'
-    fields = ['codigo', 'nome', 'estado', 'capital']
     success_url = '/municipios'
 
     def get_context_data(self, **kwargs):
@@ -491,6 +489,7 @@ class ContatoListView(UserAccessMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        context['count'] = Contato.objects.all().count()
         search = self.request.GET.get('search')
 
         if search:

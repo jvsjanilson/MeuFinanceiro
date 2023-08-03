@@ -17,7 +17,7 @@ class Pais(GenericoModel):
 
 class Estado(GenericoModel):
     codigo = models.IntegerField('Código')
-    uf = models.CharField('UF', max_length=2, default='EX')
+    uf = models.CharField('UF', max_length=2)
     nome = models.CharField('Nome', max_length=120)
     pais = models.ForeignKey(Pais, on_delete=models.RESTRICT, verbose_name='Pais')
 

@@ -28,7 +28,7 @@
         <div class="card-body" style="padding: .5rem .7rem">
             
             <table class="table mb-1 table-sm table-bordered table-hover caption-top">
-                <caption style="padding-top: 1px" class="text-center"> <h4  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h4></caption>
+                <caption style="padding-top: 1px" class="text-center"> <h5 style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5></caption>
                     <thead class="table-secondary ">
                         <tr>
                             <th style="width: 10rem">Codigo</th>
@@ -59,7 +59,7 @@
                             </tr>
                         {% empty %}
                            <tr>
-                               <td class="text-center" colspan="3">Sem registro</td>
+                               <td class="text-center" colspan="6">Sem registro</td>
                            </tr>
 
                         {% endfor %}
