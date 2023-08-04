@@ -134,5 +134,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 formats.DATE_FORMAT = "d/m/Y"
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = 'login/'
 LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE=True

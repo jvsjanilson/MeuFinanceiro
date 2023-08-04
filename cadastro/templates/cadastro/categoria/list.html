@@ -3,27 +3,43 @@
 {% block conteudo %}
 
     <div class="card mb-1">
-        <div class="card-header p-1">
-            <div class="row d-flex align-items-center">
-                <div class="col-auto">
-                    {% if perms.cadastro.add_categoria %}
-                        <div class="my-2" style="padding-left: .5rem">
-                            <a class="btn btn-primary " href="{% url 'categoria-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+        <div class="card-header" style="padding-left: 10px;">
+            <div class="row d-flex  align-items-center">
+                        
+                <div class="col-md-2">
+                    <div class="mb-2">
+                        <div class="d-grid gap-2">
+                            {% if perms.cadastro.add_categoria %}
+                                <a class="btn btn-primary " href="{% url 'categoria-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                            {% endif %}
                         </div>
-                    {% endif %}
-
+                    </div>
                 </div>
 
-                <div class="col-auto">
-                    <form  style="padding: .5rem .5rem" method="get">
-                        <div class="input-group ">
-                            <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
-                            <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
-                        </div>
-                    </form>
-
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <form  method="get">
+                            <div class="input-group ">
+                                <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                                <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                            </div>
+                        </form>
+                    </div>
+                    
                 </div>
-            </div> 
+                {% if search %}
+               <div class="col-md-2">
+                    <div class="mb-2">
+                        <a class="text-danger" href="{% url 'categoria-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
+                    </div>
+                </div>
+                {%endif%}
+                <div class="col-md-auto">
+                    <div class="mb-2">
+                    </div>
+                </div>
+
+            </div>
         </div>
         <div class="card-body" style="padding: .5rem .7rem">
             

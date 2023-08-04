@@ -3,7 +3,7 @@
 {% block conteudo %}
 
     <div class="card mb-1">
-        <div class="card-header p-1">
+        <div class="card-header p-1" style="position: relative;">
             <div class="row d-flex align-items-center">
                 <div class="col-auto">
                     {% if perms.cadastro.add_contato %}
@@ -23,6 +23,9 @@
                     </form>
 
                 </div>
+                {% comment %} <div class="bg-warning" style="position: absolute; text-align: center; margin-right: 0px; padding-right: 0px; right: 2px;width: 200px; top: 2px; border: 1px solid;padding-right: 6px;border-radius: 5px;">
+                    Lista de Contatos
+                </div> {% endcomment %}
             </div> 
         </div>
         <div class="card-body" style="padding: .5rem .7rem">
