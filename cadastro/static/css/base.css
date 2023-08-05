@@ -4,7 +4,6 @@
     color: #dc3545;
     font-size: 80%;
     font-weight: bolder;
-    margin-top: 0.25rem;
 }
 
 .helptext {
@@ -18,4 +17,8 @@
 
 .elevation-2 {
     box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)!important;
+}
+
+.filtro {
+    display: none;
 }
