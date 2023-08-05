@@ -58,6 +58,10 @@ class ContatoForm(forms.ModelForm):
     class Meta:
         model = Contato
         fields = '__all__'
+        # help_texts = {
+        #      'razao_social': 'Conforme lei 8.253/98',
+        #  }
+
         widgets = {
             'razao_social': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
             'nome_fantasia': TextInputBootstrap(),

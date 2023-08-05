@@ -22,3 +22,7 @@
 .filtro {
     display: none;
 }
+
+label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: 600 !important;
+}

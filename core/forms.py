@@ -6,13 +6,13 @@ class TextInputBootstrap(forms.TextInput):
         old_attrs = attrs
         if attrs is None:
             attrs = {}
-            attrs['class'] = 'form-control'
+            attrs['class'] = 'form-control form-control-sm'
         else:
             try:
                 if attrs['class'] != "":
-                    attrs['class'] = old_attrs['class'] + ' form-control'
+                    attrs['class'] = old_attrs['class'] + ' form-control form-control-sm'
             except KeyError:
-                attrs['class'] = 'form-control'
+                attrs['class'] = 'form-control form-control-sm'
         super().__init__(attrs)
 
 
@@ -22,13 +22,13 @@ class SelectBootstrap(forms.Select):
         old_attrs = attrs
         if attrs is None:
             attrs = {}
-            attrs['class'] = 'form-select'
+            attrs['class'] = 'form-select form-select-sm'
         else:
             try:
                 if attrs['class'] != "":
-                    attrs['class'] = old_attrs['class'] + ' form-select'
+                    attrs['class'] = old_attrs['class'] + ' form-select form-select-sm'
             except KeyError:
-                attrs['class'] = 'form-select'
+                attrs['class'] = 'form-select form-select-sm'
         super().__init__(attrs)
 
 
@@ -38,13 +38,13 @@ class NumberInputBootstap(forms.NumberInput):
         old_attrs = attrs
         if attrs is None:
             attrs = {}
-            attrs['class'] = 'form-control'
+            attrs['class'] = 'form-control form-control-sm'
         else:
             try:
                 if attrs['class'] != "":
-                    attrs['class'] = old_attrs['class'] + ' form-control'
+                    attrs['class'] = old_attrs['class'] + ' form-control form-control-sm'
             except KeyError:
-                attrs['class'] = 'form-control'
+                attrs['class'] = 'form-control form-control-sm'
         super().__init__(attrs)
 
 
