@@ -17,10 +17,25 @@
                 <div class="card-header text-center">
                     Autenticação
                 </div>
-
+     
                 <div class="card-body">
                     <form novalidate class="" method="post" action="{% url 'login' %}">
                         {% csrf_token %}
+
+
+                        {% if form.non_field_errors %}
+                        <div class="row">
+                            <div class="col">
+                            {% for error in form.non_field_errors %}
+                                <div class="p-2 alert alert-danger alert-dismissible fade show" role="alert">
+                                    Por favor, verifique o usuário e a senha.
+                                    
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
                         <div class="row">
                             <div class="col">
         
@@ -28,7 +43,7 @@
                                     
                                     {{ form.username.label_tag }}
                                     <input  class="form-control " name="username" id="id_username" autofocus/>
-                                    
+                                    {{ form.username.errors }}
                                 </div>
                                 
                             </div>
@@ -42,6 +57,7 @@
                                     
                                     {{ form.password.label_tag }}
                                     <input type="password" class="form-control " name="password" id="id_password" autofocus/>
+                                    {{ form.password.errors }}
                                 </div>
                             </div>
         

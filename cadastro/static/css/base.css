@@ -1,7 +1,10 @@
 .errorlist {
     list-style: none;
     padding: 1px;
-    color: red;
+    color: #dc3545;
+    font-size: 80%;
+    font-weight: bolder;
+    margin-top: 0.25rem;
 }
 
 .helptext {
