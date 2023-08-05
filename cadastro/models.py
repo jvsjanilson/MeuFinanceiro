@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import GenericoModel
 from core.validators import valida_cpfcnpj
+# from django.core.validators import MinLengthValidator
 
 
 class Pais(GenericoModel):
