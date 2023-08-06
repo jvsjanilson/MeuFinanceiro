@@ -31,6 +31,9 @@
               <li><a class="dropdown-item" href="{% url 'formapagamento-list'  %}">Formas de pagamento</a></li>
             {% endif %}
 
+            {% if perms.cadastro.view_condicaopagamento %}
+              <li><a class="dropdown-item" href="{% url 'condicaopagamento-list'  %}">Condições de pagamento</a></li>
+            {% endif %}
 
             {% if perms.cadastro.view_unidade %}
               <li><a class="dropdown-item" href="{% url 'unidade-list'  %}">Unidades</a></li>
