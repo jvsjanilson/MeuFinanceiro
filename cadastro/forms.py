@@ -128,7 +128,7 @@ class FormaPagamentoForm(forms.ModelForm):
         model = FormaPagamento
         fields = ['codigo', 'tipo_pagamento', 'nome', 'ativo']
         widgets = {
-            'codigo': TextInputBootstrap(),
+            'codigo': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
             'nome': TextInputBootstrap(),
             'tipo_pagamento': SelectBootstrap(),
             'ativo': CheckboxInputBootstrap,

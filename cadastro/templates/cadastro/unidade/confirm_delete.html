@@ -2,12 +2,12 @@
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
     
-    <form class="mt-5 " method="post"> 
+    <form class="mt-2 " method="post"> 
+        <div class="row d-flex justify-content-center align-items-center">
         {% csrf_token %}
-        <div class="form-row d-flex justify-content-center">
             <div class="col-6">
 
-                <div class="card">
+                <div class="card shadow card-outline">
                     <div class="card-header">
                         Confirmação de remoção
                     </div>

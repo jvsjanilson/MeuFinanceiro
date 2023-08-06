@@ -51,3 +51,7 @@ label.required {
     padding-right: 5px !important;
     padding-left: 5px !important;
 }
+
+.card-header {
+    background: transparent;
+}
