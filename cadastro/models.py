@@ -150,7 +150,6 @@ class CondicaoPagamento(GenericoModel):
     tipo_intervalo = models.CharField('Tipo Intervalo', max_length=1,  choices=TipoIntervalo.choices, default=TipoIntervalo.MENSAL)
     intervalo = models.IntegerField('Intervalo')
     numero_maximo_parcela = models.IntegerField('N. Máx. Parcela', default=1)
-    
     dia_fixo = models.BooleanField('Dia Fixo?', default=True)
     ativo = models.BooleanField('Ativo?', default=True)
 
