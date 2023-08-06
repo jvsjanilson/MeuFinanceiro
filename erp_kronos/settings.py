@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'America/Sao_Paulo'
+TIME_ZONE = 'America/Recife'
 
 USE_I18N = True
 
@@ -138,3 +138,9 @@ LOGIN_URL = 'login/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 # SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+
+# TIME= 1
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE= True
+SESSION_COOKIE_AGE = 60*60*9 #9h
+# SESSION_IDLE_TIMEOUT = TIME
