@@ -2,7 +2,7 @@ from django.db import models
 from core.models import GenericoModel
 from core.validators import valida_cpfcnpj
 from cadastro.choices import TipoPagamento, TipoIntervalo, TipoVisibilidade
-# from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Pais(GenericoModel):
@@ -135,7 +135,7 @@ class FormaPagamento(GenericoModel):
     ativo = models.BooleanField('Ativo?', default=True)
 
     def __str__(self):
-        return self.nome
+        return f'{self.codigo} - {self.nome}'
     
     class Meta:
         verbose_name = 'Forma de Pagamento'
@@ -148,8 +148,8 @@ class CondicaoPagamento(GenericoModel):
     formapagamento = models.ForeignKey(FormaPagamento, on_delete=models.CASCADE, verbose_name='Forma Pagamento')
     visibilidade = models.SmallIntegerField('Visibilidade', choices=TipoVisibilidade.choices, default=TipoVisibilidade.AMBOS)
     tipo_intervalo = models.CharField('Tipo Intervalo', max_length=1,  choices=TipoIntervalo.choices, default=TipoIntervalo.MENSAL)
-    intervalo = models.IntegerField('Intervalo')
-    numero_maximo_parcela = models.IntegerField('N. Máx. Parcela', default=1)
+    intervalo = models.IntegerField('Intervalo', default=1, validators=[MinValueValidator(1)])
+    numero_maximo_parcela = models.IntegerField('N. Máx. Parcela', default=1, validators=[MinValueValidator(1), MaxValueValidator(360)])
     dia_fixo = models.BooleanField('Dia Fixo?', default=True)
     ativo = models.BooleanField('Ativo?', default=True)
 
