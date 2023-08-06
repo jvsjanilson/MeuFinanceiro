@@ -147,7 +147,7 @@ class CondicaoPagamento(GenericoModel):
     nome = models.CharField('Nome', max_length=60)
     formapagamento = models.ForeignKey(FormaPagamento, on_delete=models.CASCADE, verbose_name='Forma Pagamento')
     visibilidade = models.SmallIntegerField('Visibilidade', choices=TipoVisibilidade.choices, default=TipoVisibilidade.AMBOS)
-    tipo_intervalo = models.CharField('Tipo Intervalo', max_length=1,  choices=TipoIntervalo, default=TipoIntervalo.MENSAL)
+    tipo_intervalo = models.CharField('Tipo Intervalo', max_length=1,  choices=TipoIntervalo.choices, default=TipoIntervalo.MENSAL)
     intervalo = models.IntegerField('Intervalo')
     numero_maximo_parcela = models.IntegerField('N. Máx. Parcela', default=1)
     
