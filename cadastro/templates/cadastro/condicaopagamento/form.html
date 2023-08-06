@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+<form method="post" novalidate>
+    <div class="card shadow card-outline">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'condicaopagamento-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <h4 class="card-title">{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+                    {% csrf_token %}
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.nome.label_tag }}
+                                {{ form.nome }} 
+
+                                {%if form.nome.help_text %}
+                                    <span class="helptext">{{ form.nome.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.nome is not None %}
+                                    {{ form.errors.nome }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.formapagamento.label_tag }}
+                                {{ form.formapagamento }} 
+
+                                {%if form.formapagamento.help_text %}
+                                    <span class="helptext">{{ form.formapagamento.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.formapagamento is not None %}
+                                    {{ form.errors.formapagamento }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                {{ form.visibilidade.label_tag }}
+                                {{ form.visibilidade }} 
+
+                                {%if form.visibilidade.help_text %}
+                                    <span class="helptext">{{ form.visibilidade.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.visibilidade is not None %}
+                                    {{ form.errors.visibilidade }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                {{ form.tipo_intervalo.label_tag }}
+                                {{ form.tipo_intervalo }} 
+
+                                {%if form.tipo_intervalo.help_text %}
+                                    <span class="helptext">{{ form.tipo_intervalo.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.tipo_intervalo is not None %}
+                                    {{ form.errors.tipo_intervalo }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                {{ form.intervalo.label_tag }}
+                                {{ form.intervalo }} 
+
+                                {%if form.intervalo.help_text %}
+                                    <span class="helptext">{{ form.intervalo.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.intervalo is not None %}
+                                    {{ form.errors.intervalo }}
+                                {%endif%}
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                {{ form.numero_maximo_parcela.label_tag }}
+                                {{ form.numero_maximo_parcela }} 
+
+                                {%if form.numero_maximo_parcela.help_text %}
+                                    <span class="helptext">{{ form.numero_maximo_parcela.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.numero_maximo_parcela is not None %}
+                                    {{ form.errors.numero_maximo_parcela }}
+                                {%endif%}
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <div class="mb-3" style="margin-bottom: 0px !important">
+                                {{ form.dia_fixo.label_tag }}
+                                {{ form.dia_fixo }} 
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                {{ form.ativo.label_tag }}
+                                {{ form.ativo }} 
+                            </div>
+                        </div>
+                    </div> 
+                    
+                </div>
+    </div>
+</form>
+{% endblock conteudo%}
