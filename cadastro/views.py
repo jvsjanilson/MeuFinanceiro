@@ -2,14 +2,14 @@ from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto, \
-Contato
+Contato, FormaPagamento
 from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
-PaisForm, EstadoForm, MuncipioForm
+PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -540,5 +540,69 @@ class ContatoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
 
 
 
-class ContatoDeleteView(UserAccessMixin, InvalidFormMixin, CreateView):    
-    pass
+class ContatoDeleteView(UserAccessMixin, DeleteView):    
+    permission_required = ["cadastro.delete_contato"]
+    model = Contato
+    template_name = 'cadastro/contato/confirm_delete.html'
+    success_url = '/contatos'
+
+
+
+class FormaPagamentoListView(UserAccessMixin, ListView):
+    permission_required = ["cadastro.view_formpagamento"]
+    model = FormaPagamento
+    template_name = 'cadastro/formapagamento/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        if search:
+            context['search'] = search
+
+        return context
+
+    def get_queryset(self):
+        queryset = super(FormaPagamentoListView, self).get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            return queryset.filter(
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+
+class FormaPagamentoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
+    permission_required = ["cadastro.add_formapagamento"]
+    model = FormaPagamento
+    form_class = FormaPagamentoForm
+    template_name = 'cadastro/formapagamento/form.html'
+    success_url = '/formapagamentos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class FormaPagamentoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+    permission_required = ["cadastro.change_formapagamento"]
+    model = FormaPagamento
+    form_class = FormaPagamentoForm
+    template_name = 'cadastro/formapagamento/form.html'
+    success_url = '/formapagamentos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class FormaPagamentoDeleteView(UserAccessMixin, DeleteView):    
+    permission_required = ["cadastro.delete_formpagamento"]
+    model = FormaPagamento
+    template_name = 'cadastro/formapagamento/confirm_delete.html'
+    success_url = '/formapagamentos'

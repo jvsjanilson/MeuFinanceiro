@@ -4,6 +4,7 @@
     color: #dc3545;
     font-size: 80%;
     font-weight: bolder;
+    
 }
 
 .helptext {
@@ -23,6 +24,30 @@
     display: none;
 }
 
-label:not(.form-check-label):not(.custom-file-label) {
+label.required {
+    font-weight: bold;
+    color: var(--body-fg);
+}
+/* label:not(.form-check-label):not(.custom-file-label) {
     font-weight: 600 !important;
+} */
+
+.card-title {
+    float: right;
+    color: #697177 !important;
+    font-weight: 600;
+    margin-bottom: 0px !important;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+.row {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+
+[class*="col"] {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
 }

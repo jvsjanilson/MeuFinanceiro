@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import GenericoModel
 from core.validators import valida_cpfcnpj
+from cadastro.choices import TipoPagamento
 # from django.core.validators import MinLengthValidator
 
 
@@ -125,4 +126,18 @@ class Produto(GenericoModel):
     class Meta:
         verbose_name = 'Produto'
         verbose_name_plural = 'Produtos'
+
+
+class FormaPagamento(GenericoModel):
+    codigo = models.CharField('Codigo', max_length=3, unique=True)
+    tipo_pagamento = models.SmallIntegerField('Tipo Pagto', choices=TipoPagamento.choices, default=TipoPagamento.AVISTA)
+    nome = models.CharField('Nome', max_length=60)
+    ativo = models.BooleanField('Ativo?', default=True)
+
+    def __str__(self):
+        return self.nome
+    
+    class Meta:
+        verbose_name = 'Forma de Pagamento'
+        verbose_name_plural = 'Formas de Pagamento'
 

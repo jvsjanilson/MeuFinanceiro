@@ -1,5 +1,6 @@
 from django import forms
-from cadastro.models import Produto, Unidade, Marca, Categoria, Contato, Pais, Estado, Municipio
+from cadastro.models import Produto, Unidade, Marca, Categoria, Contato, Pais, Estado, Municipio, \
+FormaPagamento
 from core.forms import *
 
 
@@ -55,9 +56,13 @@ class ProdutoForm(forms.ModelForm):
 
 
 class ContatoForm(forms.ModelForm):
+    
     class Meta:
         model = Contato
         fields = '__all__'
+        # labels = {
+        #     "razao_social": "Ola"
+        # }
         # help_texts = {
         #      'razao_social': 'Conforme lei 8.253/98',
         #  }
@@ -116,3 +121,15 @@ class MuncipioForm(forms.ModelForm):
             'capital': CheckboxInputBootstrap(),
             'estado': SelectBootstrap()
         }                        
+
+
+class FormaPagamentoForm(forms.ModelForm):
+    class Meta:
+        model = FormaPagamento
+        fields = ['codigo', 'tipo_pagamento', 'nome', 'ativo']
+        widgets = {
+            'codigo': TextInputBootstrap(),
+            'nome': TextInputBootstrap(),
+            'tipo_pagamento': SelectBootstrap(),
+            'ativo': CheckboxInputBootstrap,
+        }

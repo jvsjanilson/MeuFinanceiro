@@ -5,11 +5,17 @@ from cadastro.views import UnidadeListView, UnidadeCreateView, \
     PaisListView, PaisCreateView, PaisUpdateView, PaisDeleteView, EstadoListView, EstadoCreateView, \
     EstadoUpdateView, EstadoDeleteView, MunicipioListView, MunicipioCreateView, MunicipioUpdateView, \
     MunicipioDeleteView, ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, \
-    ContatoListView, ContatoCreateView, ContatoUpdateView, ContatoDeleteView, municipios
+    ContatoListView, ContatoCreateView, ContatoUpdateView, ContatoDeleteView, municipios, FormaPagamentoListView, \
+    FormaPagamentoDeleteView, FormaPagamentoCreateView, FormaPagamentoUpdateView
         
 
 urlpatterns = [
     path('api/municipios/<int:estado>', municipios),
+
+    path("formapagamentos/", FormaPagamentoListView.as_view(), name="formapagamento-list"),
+    path("formapagamentos/create", FormaPagamentoCreateView.as_view(), name="formapagamento-create"),
+    path("formapagamentos/<int:pk>/update/", FormaPagamentoUpdateView.as_view(), name="formapagamento-update"),
+    path("formapagamentos/<int:pk>/delete/", FormaPagamentoDeleteView.as_view(), name="formapagamento-delete"),
 
     path("contatos/", ContatoListView.as_view(), name="contato-list"),
     path("contatos/create", ContatoCreateView.as_view(), name="contato-create"),

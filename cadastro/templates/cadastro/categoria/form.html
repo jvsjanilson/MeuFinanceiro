@@ -15,7 +15,7 @@
 
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                                {{ form.nome.label_tag }}
                                 {{ form.nome }} 
 
                                 {%if form.nome.help_text is not None %}

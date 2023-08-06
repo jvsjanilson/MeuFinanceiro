@@ -26,6 +26,10 @@
             {% if perms.cadastro.view_produto %}
               <li><a class="dropdown-item" href="{% url 'produto-list'  %}">Produtos</a></li>
             {% endif %}
+            
+            {% if perms.cadastro.view_formapagamento %}
+              <li><a class="dropdown-item" href="{% url 'formapagamento-list'  %}">Formas de pagamento</a></li>
+            {% endif %}
 
 
             {% if perms.cadastro.view_unidade %}

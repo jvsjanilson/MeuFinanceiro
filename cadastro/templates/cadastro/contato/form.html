@@ -7,23 +7,31 @@
 
 {% block conteudo %}
 
-    <div class="card">
+<form method="post" novalidate>
+    <div class="card card-outline">
         <div class="card-header">
-            <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'contato-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+                </div>
+            </div>
         </div>
 
         <div class="card-body">
-            <form method="post" novalidate>
                     {% csrf_token %}
+                    
                     
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="{{form.razao_social.id_for_label}}">{{form.razao_social.label}}</label>
+                                {% comment %} <label for="{{form.razao_social.id_for_label}}">{{form.razao_social.label}} </label> {% endcomment %}
+                                {{ form.razao_social.label_tag }}
                                 {{ form.razao_social }} 
 
                                 {%if form.razao_social.help_text %}
-                                    <span class="helptext">{{ form.razao_social.help_text}}</span>
+                                    <span class="helptext">{{ form.razao_social.help_text|safe}}</span>
                                 {%endif%}
                                 
                                 {% if form.errors.razao_social is not None %}
@@ -34,7 +42,8 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="{{form.nome_fantasia.id_for_label}}">{{form.nome_fantasia.label}}</label>
+                                {{ form.nome_fantasia.label_tag }}
+
                                 {{ form.nome_fantasia }} 
 
                                 {%if form.nome_fantasia.help_text %}
@@ -52,7 +61,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="{{form.cpf_cnpj.id_for_label}}">{{form.cpf_cnpj.label}}</label>
+                                {{ form.cpf_cnpj.label_tag }}
                                 {{ form.cpf_cnpj }} 
 
                                 {%if form.cpf_cnpj.help_text%}
@@ -67,7 +76,7 @@
 
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="{{form.inscricao_estadual.id_for_label}}">{{form.inscricao_estadual.label}}</label>
+                                {{ form.inscricao_estadual.label_tag }}
                                 {{ form.inscricao_estadual }} 
 
                                 {%if form.inscricao_estadual.help_text %}
@@ -82,7 +91,7 @@
 
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="{{form.inscricao_municipal.id_for_label}}">{{form.inscricao_municipal.label}}</label>
+                                {{ form.inscricao_municipal.label_tag }}
                                 {{ form.inscricao_municipal }} 
 
                                 {%if form.inscricao_municipal.help_text %}
@@ -97,7 +106,8 @@
 
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="{{form.inscricao_suframa.id_for_label}}">{{form.inscricao_suframa.label}}</label>
+
+                                {{ form.inscricao_suframa.label_tag }}
                                 {{ form.inscricao_suframa }} 
 
                                 {%if form.inscricao_suframa.help_text  %}
@@ -112,7 +122,7 @@
 
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="{{form.inscricao_cnae.id_for_label}}">{{form.inscricao_cnae.label}}</label>
+                                {{ form.inscricao_cnae.label_tag }}
                                 {{ form.inscricao_cnae }} 
 
                                 {%if form.inscricao_cnae.help_text %}
@@ -130,7 +140,7 @@
                     <div class="row">
                         <div class="col-md-7">
                             <div class="mb-3">
-                                <label for="{{form.endereco.id_for_label}}">{{form.endereco.label}}</label>
+                                {{ form.endereco.label_tag }}
                                 {{ form.endereco }} 
 
                                 {%if form.endereco.help_text %}
@@ -145,7 +155,7 @@
 
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="{{form.numero.id_for_label}}">{{form.numero.label}}</label>
+                                {{ form.numero.label_tag }}
                                 {{ form.numero }} 
 
                                 {%if form.numero.help_text %}
@@ -160,7 +170,7 @@
 
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="{{form.cep.id_for_label}}">{{form.cep.label}}</label>
+                                {{ form.cep.label_tag }}
                                 {{ form.cep }} 
 
                                 {%if form.cep.help_text %}
@@ -178,7 +188,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="{{form.complemento.id_for_label}}">{{form.complemento.label}}</label>
+
+                                {{ form.complemento.label_tag }}
                                 {{ form.complemento }} 
 
                                 {%if form.complemento.help_text %}
@@ -193,7 +204,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="{{form.bairro.id_for_label}}">{{form.bairro.label}}</label>
+                                {{ form.bairro.label_tag }}
                                 {{ form.bairro }} 
 
                                 {%if form.bairro.help_text %}
@@ -210,8 +221,9 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="mb-3">
-                                <label for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
+                                {{ form.estado.label_tag }}
                                 {{ form.estado }} 
+                                
                                 {% if form.errors.estado is not None %}
                                     {{ form.errors.estado }}
                                 {%endif%}
@@ -220,8 +232,9 @@
 
                         <div class="col-md-10">
                             <div class="mb-3">
-                                <label for="{{form.municipio.id_for_label}}">{{form.municipio.label}}</label>
+                                {{ form.municipio.label_tag }}
                                 {{ form.municipio }} 
+
                                 {% if form.errors.municipio is not None %}
                                     {{ form.errors.municipio }}
                                 {%endif%}
@@ -229,11 +242,10 @@
                         </div>
                     </div> 
 
-
                     <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="{{form.celular.id_for_label}}">{{form.celular.label}}</label>
+                                {{ form.celular.label_tag }}
                                 {{ form.celular }} 
 
                                 {%if form.celular.help_text %}
@@ -248,7 +260,7 @@
 
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="{{form.fone.id_for_label}}">{{form.fone.label}}</label>
+                                {{ form.fone.label_tag }}
                                 {{ form.fone }} 
 
                                 {%if form.fone.help_text %}
@@ -263,7 +275,8 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="{{form.email.id_for_label}}">{{form.email.label}}</label>
+
+                                {{ form.email.label_tag }}
                                 {{ form.email }} 
 
                                 {%if form.email.help_text %}
@@ -281,15 +294,14 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="{{form.ativo.id_for_label}}">{{form.ativo.label}}</label>
+                                {{ form.ativo.label_tag }}
                                 {{ form.ativo }} 
                             </div>
                         </div>
                     </div> 
-                    <hr/>
-                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="btn btn-secondary" href="{% url 'contato-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-                </form>
-        </div>
+                    
+                    
+                </div>
     </div>
+            </form>
 {% endblock conteudo%}

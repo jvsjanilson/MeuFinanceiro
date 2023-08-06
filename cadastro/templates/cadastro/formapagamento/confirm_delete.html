@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+    
+    <form class="mt-5 " method="post"> 
+        {% csrf_token %}
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-6">
+
+                <div class="card">
+                    <div class="card-header">
+                        Confirmação de remoção
+                    </div>
+
+                    <div class="card-body">
+                        <label>Deseja realmente remover <strong>{{ object }}</strong> ?</label>
+                    </div>
+                
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-check-lg"></i> Confirmar</button>
+                        <a class="btn btn-secondary" href="{% url 'formapagamento-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+
+    </form>
+    
+   
+{% endblock conteudo%}
+

@@ -22,7 +22,7 @@
                     {% if search %}
                     <div class="col-md-4 align-self-center">
                         <div class="mb-3">
-                            <a class="btn btn-danger" href="{% url 'contato-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
+                            <a class="btn btn-danger" href="{% url 'formapagamento-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
                         </div>
                     </div>
                     {%endif%}
@@ -42,8 +42,8 @@
                 <caption style="padding-top: 1px" > 
                     <div class="row">
                         <div class="col-4 col-md-3 col-lg-2 ">
-                            {% if perms.cadastro.add_contato %}
-                            <a class="btn bg-primary bg-gradient text-white" href="{% url 'contato-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                            {% if perms.cadastro.add_formapagamento %}
+                            <a class="btn bg-primary bg-gradient text-white" href="{% url 'formapagamento-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
                             {% endif %}
                         </div>
 
@@ -57,23 +57,19 @@
                 </caption>
                     <thead class="table-secondary ">
                         <tr>
+                            <th style="width: 7rem">Codigo</th>
                             <th>Nome</th>
-                            <th>CPF/CNPJ</th>
-                            <th>Insc. Est.</th>
-                            <th>Celular</th>
-                            <th>Ativo</th>
+                            <th style="width: 15rem">Tipo Pagamento</th>
+                            <th class="text-center" style="width: 7rem">Ativo?</th>
                             <th class="text-center" style="width: 6rem">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
                         {% for m in object_list %}
                             <tr>
-                                <td>{{ m.razao_social }}</td>
-                                <td>{% if m.cpf_cnpj is not None%} {{ m.cpf_cnpj }} {%endif%}</td>
-                                <td>{% if m.inscricao_estadual is not None%} {{ m.inscricao_estadual }} {%endif%}</td>
-                                <td>{% if m.celular is not None%} {{ m.celular }} {%endif%}</td>
-                                
-
+                                <td>{{ m.codigo }}</td>
+                                <td>{{ m.nome }}</td>
+                                <td>{{ m.get_tipo_pagamento_display }} </td>
                                 <td class="text-center">
                                     {% if m.ativo == True %} 
                                     <i class="bi bi-check-lg text-success"></i>
@@ -84,12 +80,12 @@
                                 </td>
 
                                 <td class="text-center d-flex justify-content-evenly">
-                                    {% if perms.cadastro.change_contato %}
-                                        <a href="{% url 'contato-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a>
+                                    {% if perms.cadastro.change_formapagamento %}
+                                        <a href="{% url 'formapagamento-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a>
                                     {%endif%} 
 
-                                    {% if perms.cadastro.delete_contato %}
-                                        <a  href="{% url 'contato-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i></a>
+                                    {% if perms.cadastro.delete_formapagamento %}
+                                        <a  href="{% url 'formapagamento-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i></a>
                                     {%endif%} 
                                 </td>
                             </tr>
