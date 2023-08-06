@@ -138,14 +138,14 @@ class FormaPagamentoForm(forms.ModelForm):
 class CondicaoPagamentoForm(forms.ModelForm):
     class Meta:
         model = CondicaoPagamento
-        fields = ['nome', 'formapagamento', 'visibilidade', 'tipo_intervalo', 'intervalo', 'numero_maximo_parcela' 'dia_fixo', 'ativo']
+        fields = ['nome', 'formapagamento', 'visibilidade', 'tipo_intervalo', 'intervalo', 'numero_maximo_parcela', 'dia_fixo', 'ativo']
         widgets = {
             'nome': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
             'formapagamento': SelectBootstrap(),
             'visibilidade': SelectBootstrap(),
             'tipo_intervalo': SelectBootstrap(),
             'intervalo': NumberInputBootstap(),
-            'numero_maximo_parcela': SelectBootstrap(),
+            'numero_maximo_parcela': NumberInputBootstap(),
             'dia_fixo': CheckboxInputBootstrap,
             'ativo': CheckboxInputBootstrap,
         }
