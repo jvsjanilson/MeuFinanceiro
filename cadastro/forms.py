@@ -1,6 +1,6 @@
 from django import forms
 from cadastro.models import Produto, Unidade, Marca, Categoria, Contato, Pais, Estado, Municipio, \
-FormaPagamento
+FormaPagamento, CondicaoPagamento
 from core.forms import *
 
 
@@ -131,5 +131,21 @@ class FormaPagamentoForm(forms.ModelForm):
             'codigo': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
             'nome': TextInputBootstrap(),
             'tipo_pagamento': SelectBootstrap(),
+            'ativo': CheckboxInputBootstrap,
+        }
+
+
+class CondicaoPagamentoForm(forms.ModelForm):
+    class Meta:
+        model = CondicaoPagamento
+        fields = ['nome', 'formapagamento', 'visibilidade', 'tipo_intervalo', 'intervalo', 'numero_maximo_parcela' 'dia_fixo', 'ativo']
+        widgets = {
+            'nome': TextInputBootstrap(attrs={'autofocus': 'autofocus'}),
+            'formapagamento': SelectBootstrap(),
+            'visibilidade': SelectBootstrap(),
+            'tipo_intervalo': SelectBootstrap(),
+            'intervalo': NumberInputBootstap(),
+            'numero_maximo_parcela': SelectBootstrap(),
+            'dia_fixo': CheckboxInputBootstrap,
             'ativo': CheckboxInputBootstrap,
         }
