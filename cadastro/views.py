@@ -2,14 +2,14 @@ from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto, \
-Contato, FormaPagamento
+Contato, FormaPagamento, CondicaoPagamento
 from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import redirect_to_login
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
-PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm
+PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -547,7 +547,6 @@ class ContatoDeleteView(UserAccessMixin, DeleteView):
     success_url = '/contatos'
 
 
-
 class FormaPagamentoListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_formpagamento"]
     model = FormaPagamento
@@ -602,7 +601,67 @@ class FormaPagamentoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
 
 
 class FormaPagamentoDeleteView(UserAccessMixin, DeleteView):    
-    permission_required = ["cadastro.delete_formpagamento"]
+    permission_required = ["cadastro.delete_formapagamento"]
     model = FormaPagamento
     template_name = 'cadastro/formapagamento/confirm_delete.html'
     success_url = '/formapagamentos'
+
+
+class CondicaoPagamentoListView(UserAccessMixin, ListView):
+    permission_required = ["cadastro.view_condicaopagamento"]
+    model = CondicaoPagamento
+    template_name = 'cadastro/condicaopagamento/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        if search:
+            context['search'] = search
+
+        return context
+
+    def get_queryset(self):
+        queryset = super(CondicaoPagamentoListView, self).get_queryset()
+        search = self.request.GET.get('search')
+        if search:
+            return queryset.filter(
+                Q(nome__icontains=search)
+            )
+        return queryset
+
+
+class CondicaoPagamentoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
+    permission_required = ["cadastro.add_condicaopagamento"]
+    model = CondicaoPagamento
+    form_class = CondicaoPagamentoForm
+    template_name = 'cadastro/condicaopagamento/form.html'
+    success_url = '/condicaopagamentos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class CondicaoPagamentoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+    permission_required = ["cadastro.change_condicaopagamento"]
+    model = CondicaoPagamento
+    form_class = CondicaoPagamentoForm
+    template_name = 'cadastro/condicaopagamento/form.html'
+    success_url = '/condicaopagamentos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class CondicaoPagamentoDeleteView(UserAccessMixin, DeleteView):    
+    permission_required = ["cadastro.delete_condicaopagamento"]
+    model = CondicaoPagamento
+    template_name = 'cadastro/condicaopagamento/confirm_delete.html'
+    success_url = '/condicaopagamentos'
