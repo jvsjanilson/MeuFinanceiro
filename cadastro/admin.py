@@ -34,7 +34,7 @@ class ContatoAdmin(admin.ModelAdmin):
     list_display = ('razao_social', 'nome_fantasia', 'cpf_cnpj', 'celular', 'ativo')
     fields = (('razao_social', 'nome_fantasia'), ('cpf_cnpj', 'inscricao_estadual'), ('inscricao_municipal',
               'inscricao_suframa', 'inscricao_cnae'), ('endereco', 'numero'), ('complemento', 'bairro', 'cep'),
-              ('estado', 'municipio'), ('celular', 'fone', 'email'))
+              ('estado', 'municipio'), ('celular', 'fone', 'email', 'foto'))
     search_fields = ('razao_social', 'nome_fantasia', 'cpf_cnpj', 'inscricao_estadual', 'celular', 'fone')
     list_per_page = REGISTROS_POR_PAGINA
     actions = ['delete_selected']

@@ -12,6 +12,7 @@ from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm,
 PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
+from django.urls import reverse_lazy, reverse
 
 
 def municipios(request, estado):
@@ -531,14 +532,14 @@ class ContatoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     model = Contato
     form_class = ContatoForm
     template_name = 'cadastro/contato/form.html'
-    success_url = '/contatos'
-
+    # success_url = '/contatos'
+    success_url = reverse_lazy("contato-list")
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
-
-
+  
 
 class ContatoDeleteView(UserAccessMixin, DeleteView):    
     permission_required = ["cadastro.delete_contato"]

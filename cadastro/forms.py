@@ -85,6 +85,7 @@ class ContatoForm(forms.ModelForm):
             'celular': TextInputBootstrap(),
             'fone': TextInputBootstrap(),
             'email': TextInputBootstrap(),
+            'foto': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm'}),
             'ativo': CheckboxInputBootstrap(),
         }
         

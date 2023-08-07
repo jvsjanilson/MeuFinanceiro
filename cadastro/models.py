@@ -64,6 +64,7 @@ class Contato(GenericoModel):
     celular = models.CharField('Celular', max_length=14, null=True, blank=True)
     fone = models.CharField('Telefone', max_length=14, null=True, blank=True)
     email = models.EmailField('E-mail', null=True, blank=True)
+    foto = models.ImageField('Foto', upload_to='clientes/fotos/', null=True, blank=True)
     ativo = models.BooleanField('Ativo?', default=True)
 
     def __str__(self):

@@ -7,7 +7,7 @@
 
 {% block conteudo %}
 
-<form method="post" novalidate>
+<form method="post" novalidate enctype="multipart/form-data">
     <div class="card shadow card-outline">
         <div class="card-header">
             <div class="row">
@@ -20,16 +20,25 @@
         </div>
 
         <div class="card-body">
-                    {% csrf_token %}
-                    
-                    
+            {% csrf_token %}
+            <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="principal-tab" data-bs-toggle="pill" data-bs-target="#principal" type="button" role="tab" aria-controls="principal" aria-selected="true">Principal</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="foto-tab" data-bs-toggle="pill" data-bs-target="#foto" type="button" role="tab" aria-controls="foto" aria-selected="false">Foto</button>
+                </li>
+                
+              </ul>
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="principal" role="tabpanel" aria-labelledby="principal-tab" tabindex="0">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 {% comment %} <label for="{{form.razao_social.id_for_label}}">{{form.razao_social.label}} </label> {% endcomment %}
                                 {{ form.razao_social.label_tag }}
                                 {{ form.razao_social }} 
-
+    
                                 {%if form.razao_social.help_text %}
                                     <span class="helptext">{{ form.razao_social.help_text|safe}}</span>
                                 {%endif%}
@@ -39,13 +48,13 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-6">
                             <div class="mb-3">
                                 {{ form.nome_fantasia.label_tag }}
-
+    
                                 {{ form.nome_fantasia }} 
-
+    
                                 {%if form.nome_fantasia.help_text %}
                                     <span class="helptext">{{ form.nome_fantasia.help_text}}</span>
                                 {%endif%}
@@ -55,15 +64,15 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                     </div>
-
+    
                     <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
                                 {{ form.cpf_cnpj.label_tag }}
                                 {{ form.cpf_cnpj }} 
-
+    
                                 {%if form.cpf_cnpj.help_text%}
                                     <span class="helptext">{{ form.cpf_cnpj.help_text}}</span>
                                 {%endif%}
@@ -73,12 +82,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-2">
                             <div class="mb-3">
                                 {{ form.inscricao_estadual.label_tag }}
                                 {{ form.inscricao_estadual }} 
-
+    
                                 {%if form.inscricao_estadual.help_text %}
                                     <span class="helptext">{{ form.inscricao_estadual.help_text}}</span>
                                 {%endif%}
@@ -88,12 +97,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-2">
                             <div class="mb-3">
                                 {{ form.inscricao_municipal.label_tag }}
                                 {{ form.inscricao_municipal }} 
-
+    
                                 {%if form.inscricao_municipal.help_text %}
                                     <span class="helptext">{{ form.inscricao_municipal.help_text}}</span>
                                 {%endif%}
@@ -103,13 +112,13 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-3">
                             <div class="mb-3">
-
+    
                                 {{ form.inscricao_suframa.label_tag }}
                                 {{ form.inscricao_suframa }} 
-
+    
                                 {%if form.inscricao_suframa.help_text  %}
                                     <span class="helptext">{{ form.inscricao_suframa.help_text}}</span>
                                 {%endif%}
@@ -119,12 +128,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-2">
                             <div class="mb-3">
                                 {{ form.inscricao_cnae.label_tag }}
                                 {{ form.inscricao_cnae }} 
-
+    
                                 {%if form.inscricao_cnae.help_text %}
                                     <span class="helptext">{{ form.inscricao_cnae.help_text}}</span>
                                 {%endif%}
@@ -134,15 +143,15 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                     </div>
-
+    
                     <div class="row">
                         <div class="col-md-7">
                             <div class="mb-3">
                                 {{ form.endereco.label_tag }}
                                 {{ form.endereco }} 
-
+    
                                 {%if form.endereco.help_text %}
                                     <span class="helptext">{{ form.endereco.help_text}}</span>
                                 {%endif%}
@@ -152,12 +161,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-3">
                             <div class="mb-3">
                                 {{ form.numero.label_tag }}
                                 {{ form.numero }} 
-
+    
                                 {%if form.numero.help_text %}
                                     <span class="helptext">{{ form.numero.help_text}}</span>
                                 {%endif%}
@@ -167,12 +176,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-2">
                             <div class="mb-3">
                                 {{ form.cep.label_tag }}
                                 {{ form.cep }} 
-
+    
                                 {%if form.cep.help_text %}
                                     <span class="helptext">{{ form.cep.help_text}}</span>
                                 {%endif%}
@@ -183,15 +192,15 @@
                             </div>
                         </div>
                     </div>
-
-
+    
+    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-
+    
                                 {{ form.complemento.label_tag }}
                                 {{ form.complemento }} 
-
+    
                                 {%if form.complemento.help_text %}
                                     <span class="helptext">{{ form.complemento.help_text}}</span>
                                 {%endif%}
@@ -201,12 +210,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-6">
                             <div class="mb-3">
                                 {{ form.bairro.label_tag }}
                                 {{ form.bairro }} 
-
+    
                                 {%if form.bairro.help_text %}
                                     <span class="helptext">{{ form.bairro.help_text}}</span>
                                 {%endif%}
@@ -216,7 +225,7 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                     </div>
                     <div class="row">
                         <div class="col-md-2">
@@ -229,25 +238,25 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-10">
                             <div class="mb-3">
                                 {{ form.municipio.label_tag }}
                                 {{ form.municipio }} 
-
+    
                                 {% if form.errors.municipio is not None %}
                                     {{ form.errors.municipio }}
                                 {%endif%}
                             </div>
                         </div>
                     </div> 
-
+    
                     <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
                                 {{ form.celular.label_tag }}
                                 {{ form.celular }} 
-
+    
                                 {%if form.celular.help_text %}
                                     <span class="helptext">{{ form.celular.help_text}}</span>
                                 {%endif%}
@@ -257,12 +266,12 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-3">
                             <div class="mb-3">
                                 {{ form.fone.label_tag }}
                                 {{ form.fone }} 
-
+    
                                 {%if form.fone.help_text %}
                                     <span class="helptext">{{ form.fone.help_text}}</span>
                                 {%endif%}
@@ -272,13 +281,13 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                         <div class="col-md-6">
                             <div class="mb-3">
-
+    
                                 {{ form.email.label_tag }}
                                 {{ form.email }} 
-
+    
                                 {%if form.email.help_text %}
                                     <span class="helptext">{{ form.email.help_text}}</span>
                                 {%endif%}
@@ -288,8 +297,10 @@
                                 {%endif%}
                             </div>
                         </div>
-
+    
                     </div> 
+    
+                    
                     
                     <div class="row">
                         <div class="col-md-4">
@@ -300,8 +311,34 @@
                         </div>
                     </div> 
                     
-                    
                 </div>
+                <div class="tab-pane fade" id="foto" role="tabpanel" aria-labelledby="foto-tab" tabindex="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                
+                                {{ form.foto.label_tag }}
+                                {{ form.foto }} 
+    
+                                {%if form.foto.help_text %}
+                                    <span class="helptext">{{ form.foto.help_text}}</span>
+                                {%endif%}
+                                
+                                {% if form.errors.foto is not None %}
+                                    {{ form.errors.foto }}
+                                {%endif%}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+              </div>    
+                    
+                
+                
+                
+        </div>
     </div>
-            </form>
+</form>
 {% endblock conteudo%}
