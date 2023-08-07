@@ -2,175 +2,160 @@
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
 
+<form method="post" novalidate>
     <div class="card shadow card-outline">
+        
         <div class="card-header">
-            {%if save_top %}
             <div class="row">
-                <div class="col-6 col-md-6">
-                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="btn btn-secondary" href="{% url 'produto-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-
-                </div>
-                
-                <div class="col-6 col-md-6 align-self-center d-flex flex-row-reverse">
-
-                    <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
-
+                <div class="col-12 col-md-12">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'produto-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
                 </div>
             </div>
-
-            {%else %}
-                <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
-            {%endif%}
-
-
         </div>
-
+    
         <div class="card-body">
-            <form method="post" novalidate>
                     {% csrf_token %}
                     
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
-                                {{ form.codigo }} 
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
+                        {{ form.codigo }} 
 
-                                {%if form.codigo.help_text  %}
-                                    <span class="helptext">{{ form.codigo.help_text}}</span>
-                                {%endif%}
-                                
-                                {% if form.errors.codigo is not None %}
-                                    {{ form.errors.codigo }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-10">
-                            <div class="mb-3">
-                                <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
-                                {{ form.nome }} 
-
-                                {%if form.nome.help_text  %}
-                                    <span class="helptext">{{ form.nome.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.nome is not None %}
-                                    {{ form.errors.nome }}
-                                {%endif%}
-                            </div>
-                        </div>
-
+                        {%if form.codigo.help_text  %}
+                            <span class="helptext">{{ form.codigo.help_text}}</span>
+                        {%endif%}
+                        
+                        {% if form.errors.codigo is not None %}
+                            {{ form.errors.codigo }}
+                        {%endif%}
                     </div>
+                </div>
 
-                    <div class="row">
+                <div class="col-md-10">
+                    <div class="mb-3">
+                        <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                        {{ form.nome }} 
 
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.unidade.id_for_label}}">{{form.unidade.label}}</label>
-                                {{ form.unidade }} 
+                        {%if form.nome.help_text  %}
+                            <span class="helptext">{{ form.nome.help_text}}</span>
+                        {%endif%}
 
-                                {%if form.unidade.help_text  %}
-                                    <span class="helptext">{{ form.unidade.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.unidade is not None %}
-                                    {{ form.errors.unidade }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.marca.id_for_label}}">{{form.marca.label}}</label>
-                                {{ form.marca }} 
-                                
-                                {%if form.marca.help_text  %}
-                                    <span class="helptext">{{ form.marca.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.marca is not None %}
-                                    {{ form.errors.marca }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.categoria.id_for_label}}">{{form.categoria.label}}</label>
-                                {{ form.categoria }} 
-                                
-                                {%if form.categoria.help_text  %}
-                                    <span class="helptext">{{ form.categoria.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.categoria is not None %}
-                                    {{ form.errors.categoria }}
-                                {%endif%}
-                            </div>
-                        </div>
-
+                        {% if form.errors.nome is not None %}
+                            {{ form.errors.nome }}
+                        {%endif%}
                     </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.preco_compra.id_for_label}}">{{form.preco_compra.label}}</label>
-                                {{ form.preco_compra }} 
+            </div>
 
-                                {%if form.preco_compra.help_text  %}
-                                    <span class="helptext">{{ form.preco_compra.help_text}}</span>
-                                {%endif%}
+            <div class="row">
 
-                                {% if form.errors.preco_compra is not None %}
-                                    {{ form.errors.preco_compra }}
-                                {%endif%}
-                            </div>
-                        </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.unidade.id_for_label}}">{{form.unidade.label}}</label>
+                        {{ form.unidade }} 
 
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.preco_venda.id_for_label}}">{{form.preco_venda.label}}</label>
-                                {{ form.preco_venda }} 
-                                
-                                {%if form.preco_venda.help_text  %}
-                                    <span class="helptext">{{ form.preco_venda.help_text}}</span>
-                                {%endif%}
+                        {%if form.unidade.help_text  %}
+                            <span class="helptext">{{ form.unidade.help_text}}</span>
+                        {%endif%}
 
-                                {% if form.errors.preco_venda is not None %}
-                                    {{ form.errors.preco_venda }}
-                                {%endif%}
-                            </div>
-                        </div>
+                        {% if form.errors.unidade is not None %}
+                            {{ form.errors.unidade }}
+                        {%endif%}
+                    </div>
+                </div>
 
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.estoque.id_for_label}}">{{form.estoque.label}}</label>
-                                {{ form.estoque }} 
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.marca.id_for_label}}">{{form.marca.label}}</label>
+                        {{ form.marca }} 
+                        
+                        {%if form.marca.help_text  %}
+                            <span class="helptext">{{ form.marca.help_text}}</span>
+                        {%endif%}
 
-                                {%if form.estoque.help_text  %}
-                                    <span class="helptext">{{ form.estoque.help_text}}</span>
-                                {%endif%}
+                        {% if form.errors.marca is not None %}
+                            {{ form.errors.marca }}
+                        {%endif%}
+                    </div>
+                </div>
 
-                                {% if form.errors.estoque is not None %}
-                                    {{ form.errors.estoque }}
-                                {%endif%}
-                            </div>
-                        </div>
-                    </div> 
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.categoria.id_for_label}}">{{form.categoria.label}}</label>
+                        {{ form.categoria }} 
+                        
+                        {%if form.categoria.help_text  %}
+                            <span class="helptext">{{ form.categoria.help_text}}</span>
+                        {%endif%}
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.ativo.id_for_label}}">{{form.ativo.label}}</label>
-                                {{ form.ativo }} 
-                            </div>
-                        </div>
-                    </div> 
-                    <hr/>
-                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="btn btn-secondary" href="{% url 'produto-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-                </form>
+                        {% if form.errors.categoria is not None %}
+                            {{ form.errors.categoria }}
+                        {%endif%}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.preco_compra.id_for_label}}">{{form.preco_compra.label}}</label>
+                        {{ form.preco_compra }} 
+
+                        {%if form.preco_compra.help_text  %}
+                            <span class="helptext">{{ form.preco_compra.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.preco_compra is not None %}
+                            {{ form.errors.preco_compra }}
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.preco_venda.id_for_label}}">{{form.preco_venda.label}}</label>
+                        {{ form.preco_venda }} 
+                        
+                        {%if form.preco_venda.help_text  %}
+                            <span class="helptext">{{ form.preco_venda.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.preco_venda is not None %}
+                            {{ form.errors.preco_venda }}
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.estoque.id_for_label}}">{{form.estoque.label}}</label>
+                        {{ form.estoque }} 
+
+                        {%if form.estoque.help_text  %}
+                            <span class="helptext">{{ form.estoque.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.estoque is not None %}
+                            {{ form.errors.estoque }}
+                        {%endif%}
+                    </div>
+                </div>
+            </div> 
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.ativo.id_for_label}}">{{form.ativo.label}}</label>
+                        {{ form.ativo }} 
+                    </div>
+                </div>
+            </div> 
         </div>
     </div>
+</form>
 {% endblock conteudo%}
