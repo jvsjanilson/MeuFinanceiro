@@ -85,7 +85,7 @@
 
                                 <td class="text-center d-flex justify-content-evenly">
                                     {% if perms.cadastro.change_contato %}
-                                        <a href="{% url 'contato-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a>
+                                        <a href="{% url 'contato-update' m.pk %}?page={{ page_obj.number }}"><i class="text-primary bi bi-pencil" ></i></a>
                                     {%endif%} 
 
                                     {% if perms.cadastro.delete_contato %}

@@ -532,9 +532,13 @@ class ContatoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     model = Contato
     form_class = ContatoForm
     template_name = 'cadastro/contato/form.html'
-    # success_url = '/contatos'
-    success_url = reverse_lazy("contato-list")
-    
+    # success_url = reverse_lazy("contato-list")
+
+    def get_success_url(self):
+        page_number = self.request.GET['page']
+        return f'{reverse("contato-list")}?page={page_number}'
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
