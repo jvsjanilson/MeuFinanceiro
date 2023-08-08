@@ -3,7 +3,7 @@ from core.models import GenericoModel
 from cadastro.models import Contato
 from django.contrib.auth.models import User
 from venda.choices import SituacaoPedido
-from cadastro.models import Produto
+from cadastro.models import Produto, CondicaoPagamento
 
 class Pedido(GenericoModel):
     numero = models.CharField('Numero', max_length=20, null=True, blank=True)
@@ -32,3 +32,15 @@ class PedidoItem(GenericoModel):
 
     def __str__(self) -> str:
         return f'Pedido: {self.pedido.pk} - Item: {self.pk}' 
+
+
+
+class PedidoPagamento(GenericoModel):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, verbose_name='Pedido')
+    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT, verbose_name='Condição Pagamento')
+    data_vencimento = models.DateField('Data Vencto')
+    valor_parcela = models.DecimalField('Valor Parcela', max_digits=15, decimal_places=2, default=0)
+
+    def __str__(self) -> str:
+        return f'Número: {self.pk} - Pedido: {self.pedido.pk}'
+    
