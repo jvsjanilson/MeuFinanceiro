@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+<form method="post" novalidate>
+    <div class="card shadow card-outline">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'categoria-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+                    {% csrf_token %}
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                {{ form.nome.label_tag }}
+                                {{ form.nome }} 
+
+                                {%if form.nome.help_text is not None %}
+                                    <span class="helptext">{{ form.nome.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.nome is not None %}
+                                    {{ form.errors.nome }}
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+{% endblock conteudo%}

@@ -28,5 +28,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='auth_logout'),
     path('', Home.as_view(), name='Home'),
     path('', include('cadastro.urls')),
+    path('', include('financeiro.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

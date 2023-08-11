@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+    <div class="card shadow card-outline mb-1">
+        <div class="card-header pb-0" style="">
+            <div class="row d-flex  align-items-center">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-8 col-lg-6 ">
+                            <div class="mb-3">
+                                <form  method="get">
+                                    <div class="input-group ">
+                                        <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                                        <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% if search %}
+                        <div class="col-md-4 align-self-center">
+                            <div class="mb-3">
+                                <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
+                            </div>
+                        </div>
+                        {%endif%}
+
+
+                    </div>
+                </div>
+                <div class="col-md-3 filtro">
+                    <div class="mb-3">
+                        <select class="form-select">
+                            <option>----------------</option>
+                            </select>
+                    </div>
+                </div>
+           </div>
+        </div>
+        <div class="card-body" style="padding: .5rem .7rem">
+            
+            <table class="table mb-1 table-sm table-bordered table-hover caption-top">
+                <caption style="padding-top: 1px" > 
+                    <div class="row">
+                        <div class="col-4 col-md-3 col-lg-2 ">
+                            {% if perms.cadastro.add_contareceber %}
+                            {% comment %} <a class="btn btn-primary " href="{% url 'contareceber-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a> {% endcomment %}
+                            {% endif %}
+                        </div>
+
+                        <div class="col-8 text-center align-self-center ">
+                            <h5  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5>
+                        </div>
+
+                        <div class="col-2">    
+                        </div>
+                    </div>
+                </caption>
+                    <thead class="table-secondary ">
+                        <tr>
+                            <th>Documento</th>
+                            <th>Cliente</th>
+                            <th style="width: 10rem">Data Emissão</th>
+                            <th style="width: 10rem">Data Vencimento</th>
+                            <th style="width: 10rem" class="text-end">Valor</th>
+                            <th class="text-center">Situacao</th>
+                            <th class="text-center" style="width: 6rem">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        {% for m in object_list %}
+                            <tr>
+                                <td>{{ m.documento }}</td>
+                                <td>{{ m.contato }}</td>
+                                <td >{{ m.data_emissao }}</td>
+                                <td>{{ m.data_vencimento }}</td>
+                                <td class="text-end">{{ m.valor_titulo }}</td>
+                                <td class="text-center">{{ m.get_situacao_display }}</td>
+                                <td class="text-center  d-flex justify-content-evenly">
+                                    {% if perms.cadastro.change_contareceber %}
+                                        {% comment %} <a href="{% url 'contareceber-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a> {% endcomment %}
+                                    {%endif%}
+
+                                    {% if perms.cadastro.delete_contareceber %}
+                                        {% comment %} <a  href="{% url 'contareceber-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i></a> {% endcomment %}
+                                    {%endif%}
+                                </td>
+                            </tr>
+                        {% empty %}
+                           <tr>
+                               <td class="text-center" colspan="7">Sem registro</td>
+                           </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% include 'paginate.html' %}
+        </div>
+    </div>
+{% endblock conteudo%}
+

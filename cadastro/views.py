@@ -13,6 +13,7 @@ PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
+from core.views import UserAccessMixin
 
 
 def municipios(request, estado):
@@ -35,16 +36,6 @@ class InvalidFormMixin:
 class Home(LoginRequiredMixin, TemplateView):
     template_name = 'base.html'
 
-
-class UserAccessMixin(PermissionRequiredMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect_to_login(request.get_full_path(),
-                                     self.get_login_url(), self.get_redirect_field_name())
-        if not self.has_permission():
-            return redirect('/')
-
-        return super(UserAccessMixin, self).dispatch(request, *args, **kwargs)
 
 
 class UnidadeListView(UserAccessMixin, ListView):

@@ -16,6 +16,10 @@ class ContaReceber(GenericoModel):
 
     def __str__(self) -> str:
         return self.documento
+    
+    class Meta:
+        verbose_name = 'Conta Receber'
+        verbose_name_plural = 'Contas Receber'
 
 
 
