@@ -44,7 +44,7 @@
                     <div class="row">
                         <div class="col-4 col-md-3 col-lg-2 ">
                             {% if perms.cadastro.add_contareceber %}
-                            {% comment %} <a class="btn btn-primary " href="{% url 'contareceber-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a> {% endcomment %}
+                            <a class="btn btn-primary " href="{% url 'contareceber-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
                             {% endif %}
                         </div>
 
@@ -64,7 +64,7 @@
                             <th style="width: 10rem">Data Vencimento</th>
                             <th style="width: 10rem" class="text-end">Valor</th>
                             <th class="text-center">Situacao</th>
-                            <th class="text-center" style="width: 6rem">Ações</th>
+                            <th class="text-center" style="width: 4rem">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
@@ -76,14 +76,28 @@
                                 <td>{{ m.data_vencimento }}</td>
                                 <td class="text-end">{{ m.valor_titulo }}</td>
                                 <td class="text-center">{{ m.get_situacao_display }}</td>
-                                <td class="text-center  d-flex justify-content-evenly">
-                                    {% if perms.cadastro.change_contareceber %}
-                                        {% comment %} <a href="{% url 'contareceber-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a> {% endcomment %}
-                                    {%endif%}
+                                <td class="text-center ">
 
-                                    {% if perms.cadastro.delete_contareceber %}
+                                    <div class="btn-group d-grid">
+                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-list-ul"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {% if perms.cadastro.change_contareceber %}
+                                            {% comment %} <a href="{% url 'contareceber-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a> {% endcomment %}
+                                            <li><a class="dropdown-item" href="{% url 'contareceber-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i> Editar</a></li>
+                                        {%endif%}
+                                        {% if perms.cadastro.delete_contareceber %}
                                         {% comment %} <a  href="{% url 'contareceber-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i></a> {% endcomment %}
-                                    {%endif%}
+                                        <li><a class="dropdown-item" href="{% url 'contareceber-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i> Remover</a></li>
+                                        {%endif%}
+                                        <li><a class="dropdown-item" href="{% url 'contareceber-delete' m.pk %}"><i class="text-success bi bi-cash-stack"></i> Baixar</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'contareceber-delete' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>
+                                        </ul>
+                                    </div>
+                                   
+
+                                   
                                 </td>
                             </tr>
                         {% empty %}
