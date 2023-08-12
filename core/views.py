@@ -12,3 +12,15 @@ class UserAccessMixin(PermissionRequiredMixin):
             return redirect('/')
 
         return super(UserAccessMixin, self).dispatch(request, *args, **kwargs)
+
+
+class InvalidFormMixin:
+    """
+        Autor: Janilson Varele
+        Mixin para preencher os input com a class is-invalid 
+        do bootstrap quando houver error
+    """
+    def form_invalid(self, form):
+        for field in form.errors:
+            form[field].field.widget.attrs['class'] += ' is-invalid'
+        return self.render_to_response(self.get_context_data(form=form))
