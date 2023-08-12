@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+<form method="post" novalidate>
+    <div class="card shadow card-outline">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+                    {% csrf_token %}
+
+                  
+
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                {{ form.documento.label_tag }}
+                                {{ form.documento }} 
+
+                                {%if form.documento.help_text is not None %}
+                                    <span class="helptext">{{ form.documento.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.documento is not None %}
+                                    {{ form.errors.documento }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="mb-3">
+                                {{ form.parcela.label_tag }}
+                                {{ form.parcela }} 
+
+                                {%if form.parcela.help_text is not None %}
+                                    <span class="helptext">{{ form.parcela.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.parcela is not None %}
+                                    {{ form.errors.parcela }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="mb-3">
+                                <label for="{{form.contato.id_for_label}}">{{form.contato.label}}</label>
+                                {{ form.contato }} 
+                                
+                                {%if form.contato.help_text  %}
+                                    <span class="helptext">{{ form.contato.help_text}}</span>
+                                {%endif%}
+        
+                                {% if form.errors.contato is not None %}
+                                    {{ form.errors.contato }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                {{ form.data_emissao.label_tag }}
+                                {{ form.data_emissao }} 
+
+                                {%if form.data_emissao.help_text is not None %}
+                                    <span class="helptext">{{ form.data_emissao.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.data_emissao is not None %}
+                                    {{ form.errors.data_emissao }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                {{ form.data_vencimento.label_tag }}
+                                {{ form.data_vencimento }} 
+
+                                {%if form.data_vencimento.help_text is not None %}
+                                    <span class="helptext">{{ form.data_vencimento.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.data_vencimento is not None %}
+                                    {{ form.errors.data_vencimento }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                {{ form.valor_titulo.label_tag }}
+                                {{ form.valor_titulo }} 
+
+                                {%if form.valor_titulo.help_text is not None %}
+                                    <span class="helptext">{{ form.valor_titulo.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.valor_titulo is not None %}
+                                    {{ form.errors.valor_titulo }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form.observacao.label_tag }}
+                                {{ form.observacao }} 
+
+                                {%if form.observacao.help_text is not None %}
+                                    <span class="helptext">{{ form.observacao.help_text}}</span>
+                                {%endif%}
+
+                                {% if form.errors.observacao is not None %}
+                                    {{ form.errors.observacao }}
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+                </div>
+            </form>
+
+            
+{% endblock conteudo%}
