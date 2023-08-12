@@ -61,3 +61,26 @@ class CheckboxInputBootstrap(forms.CheckboxInput):
             except KeyError:
                 attrs['class'] = 'form-check-input'
         super().__init__(attrs)    
+
+
+
+class DateInputBootstrap(forms.DateInput):
+    def __init__(self, attrs=None, render_value=False, format=None):
+
+        old_attrs = attrs
+        if attrs is None:
+            attrs = {}
+            attrs['class'] = 'form-control form-control-sm'
+            attrs['type'] = 'date'
+        else:
+            try:
+                if attrs['class'] != "":
+                    attrs['class'] = old_attrs['class'] + ' form-control form-control-sm'
+                if attrs['type'] != "":
+                    attrs['type'] = old_attrs['type'] + ' date'
+            except KeyError:
+                attrs['class'] = 'form-control form-control-sm'
+                attrs['type'] = 'date'
+        super().__init__(attrs)
+        self.format = format or None
+
