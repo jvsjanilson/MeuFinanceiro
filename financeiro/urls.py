@@ -1,10 +1,10 @@
 from django.urls import path
-from financeiro.views import ContaReceberListView
+from financeiro.views import ContaReceberListView, ContaReceberCreate, ContaReceberUpdateView, ContaReceberDeleteView
 
 urlpatterns = [
     path("contarecebers/", ContaReceberListView.as_view(), name="contareceber-list"),
-    # path("condicaopagamentos/create", CondicaoPagamentoCreateView.as_view(), name="condicaopagamento-create"),
-    # path("condicaopagamentos/<int:pk>/update/", CondicaoPagamentoUpdateView.as_view(), name="condicaopagamento-update"),
-    # path("condicaopagamentos/<int:pk>/delete/", CondicaoPagamentoDeleteView.as_view(), name="condicaopagamento-delete"),
+    path("contarecebers/create", ContaReceberCreate.as_view(), name="contareceber-create"),
+    path("contarecebers/<int:pk>/update/", ContaReceberUpdateView.as_view(), name="contareceber-update"),
+    path("contarecebers/<int:pk>/delete/", ContaReceberDeleteView.as_view(), name="contareceber-delete"),
 
 ]
