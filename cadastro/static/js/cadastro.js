@@ -1,5 +1,11 @@
 django.jQuery().ready(function(){
     removeErrorElementos();
+
+    setTimeout(function(){
+        django.jQuery(".alert").fadeOut("slow", function(){
+            $(this).alert("close");
+        });
+    },2000);
 });
 
 /**

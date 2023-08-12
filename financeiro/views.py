@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.shortcuts import redirect
 from core.views import UserAccessMixin, InvalidFormMixin
 from financeiro.forms import ContaReceberForm
+from django.urls import reverse_lazy, reverse
 
 
 class ContaReceberListView(UserAccessMixin, ListView):
@@ -38,7 +39,7 @@ class ContaReceberListView(UserAccessMixin, ListView):
 
 
 
-class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
+class ContaReceberCreate(UserAccessMixin, InvalidFormMixin,  CreateView):
     permission_required = ["financeiro.add_contareceber"]
     model = ContaReceber
     form_class = ContaReceberForm
@@ -47,13 +48,10 @@ class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
     
-    def form_invalid(self, form):
-        print(form)
-        return super().form_invalid(form)    
+
     
 class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     permission_required = ["financeiro.change_contareceber"]
@@ -66,10 +64,16 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
+    
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.situacao != 1:
+            return redirect('/contarecebers')
+        return super().get(request, *args, **kwargs)  
 
 
 class ContaReceberDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["financeiro.delete_contareceber"]
     model = ContaReceber
     template_name = 'financeiro/contareceber/confirm_delete.html'
-    success_url = '/contarecebers'
+    success_url = reverse_lazy('contareceber-list')

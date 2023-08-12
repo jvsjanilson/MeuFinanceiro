@@ -1,9 +1,10 @@
+from django.forms.models import BaseModelForm
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto, \
 Contato, FormaPagamento, CondicaoPagamento
-from core.constants import REGISTROS_POR_PAGINA
+from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_UPDATED_SUCCESS, MSG_DELETED_SUCCESS, MSG_FORM_ERROR
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -14,6 +15,8 @@ from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
 from core.views import UserAccessMixin, InvalidFormMixin
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def municipios(request, estado):
@@ -32,6 +35,7 @@ class UnidadeListView(UserAccessMixin, ListView):
     model = Unidade
     template_name = 'cadastro/unidade/list.html'
     paginate_by = REGISTROS_POR_PAGINA
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,37 +59,44 @@ class UnidadeListView(UserAccessMixin, ListView):
         return queryset
 
 
-class UnidadeCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
+class UnidadeCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
     permission_required = ["cadastro.add_unidade"]
     model = Unidade
     form_class = UnidadeForm
     template_name = 'cadastro/unidade/form.html'
     success_url = '/unidades'
+    success_message = MSG_CREATED_SUCCESS
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
+        
 
-
-class UnidadeUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+class UnidadeUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, UpdateView):
     permission_required = ["cadastro.change_unidade"]
     model = Unidade
     form_class = UnidadeForm
     template_name = 'cadastro/unidade/form.html'
     success_url = '/unidades'
+    success_message = MSG_UPDATED_SUCCESS
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
 
-class UnidadeDeleteView(UserAccessMixin, DeleteView):
+class UnidadeDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteView ):
     permission_required = ["cadastro.delete_unidade"]
     model = Unidade
     template_name = 'cadastro/unidade/confirm_delete.html'
-    success_url = '/unidades'
+    success_url = reverse_lazy('unidade-list')
+    success_message = MSG_DELETED_SUCCESS
 
 
 class MarcaListView(UserAccessMixin, ListView):
