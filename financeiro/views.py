@@ -5,7 +5,8 @@ from core.constants import REGISTROS_POR_PAGINA
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect
-from core.views import UserAccessMixin
+from core.views import UserAccessMixin, InvalidFormMixin
+from financeiro.forms import ContaReceberForm
 
 
 class ContaReceberListView(UserAccessMixin, ListView):
@@ -35,3 +36,40 @@ class ContaReceberListView(UserAccessMixin, ListView):
             )
         return queryset
 
+
+
+class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
+    permission_required = ["financeiro.add_contareceber"]
+    model = ContaReceber
+    form_class = ContaReceberForm
+    template_name = 'financeiro/contareceber/form.html'
+    success_url = '/contarecebers'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+    
+    def form_invalid(self, form):
+        print(form)
+        return super().form_invalid(form)    
+    
+class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+    permission_required = ["financeiro.change_contareceber"]
+    model = ContaReceber
+    form_class = ContaReceberForm
+    template_name = 'financeiro/contareceber/form.html'
+    success_url = '/contarecebers'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class ContaReceberDeleteView(UserAccessMixin, DeleteView):
+    permission_required = ["financeiro.delete_contareceber"]
+    model = ContaReceber
+    template_name = 'financeiro/contareceber/confirm_delete.html'
+    success_url = '/contarecebers'
