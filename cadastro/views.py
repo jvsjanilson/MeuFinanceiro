@@ -13,24 +13,13 @@ PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
-from core.views import UserAccessMixin
+from core.views import UserAccessMixin, InvalidFormMixin
 
 
 def municipios(request, estado):
     data = serialize("json", Municipio.objects.filter(estado=estado), fields=('nome', 'capital'))
     return HttpResponse(data)
 
-
-class InvalidFormMixin:
-    """
-        Autor: Janilson Varele
-        Mixin para preencher os input com a class is-invalid 
-        do bootstrap quando houver error
-    """
-    def form_invalid(self, form):
-        for field in form.errors:
-            form[field].field.widget.attrs['class'] += ' is-invalid'
-        return self.render_to_response(self.get_context_data(form=form))
 
 
 class Home(LoginRequiredMixin, TemplateView):
