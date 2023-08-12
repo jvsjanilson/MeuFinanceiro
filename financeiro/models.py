@@ -2,17 +2,18 @@ from django.db import models
 from core.models import GenericoModel
 from financeiro.choices import SituacaoFinanceiro
 from cadastro.models import CondicaoPagamento, Contato
+from django.core.validators import MinValueValidator
 
 
 class ContaReceber(GenericoModel):
     documento = models.CharField('Documento', max_length=20)
-    parcela = models.IntegerField('Parcela', default=1)
+    parcela = models.IntegerField('Parcela', default=1, validators=[MinValueValidator(1)])
     contato = models.ForeignKey(Contato, on_delete=models.RESTRICT, verbose_name='Cliente')
     data_emissao = models.DateField('Data Emissão')
     data_vencimento = models.DateField('Data Vencto')
-    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0)
+    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(0)])
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
-    situacao = models.IntegerField('Situação', choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
+    situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
 
     def __str__(self) -> str:
         return self.documento
