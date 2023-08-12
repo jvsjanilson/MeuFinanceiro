@@ -33,7 +33,6 @@ urlpatterns = [
     path("produtos/<int:pk>/update/", ProdutoUpdateView.as_view(), name="produto-update"),
     path("produtos/<int:pk>/delete/", ProdutoDeleteView.as_view(), name="produto-delete"),
 
-
     path("municipios/", MunicipioListView.as_view(), name="municipio-list"),
     path("municipios/create", MunicipioCreateView.as_view(), name="municipio-create"),
     path("municipios/<int:pk>/update/", MunicipioUpdateView.as_view(), name="municipio-update"),
@@ -58,7 +57,6 @@ urlpatterns = [
     path("marcas/create", MarcaCreateView.as_view(), name="marca-create"),
     path("marcas/<int:pk>/update/", MarcaUpdateView.as_view(), name="marca-update"),
     path("marcas/<int:pk>/delete/", MarcaDeleteView.as_view(), name="marca-delete"),
-
 
     path("unidades/", UnidadeListView.as_view(), name="unidade-list"),
     path("unidades/create", UnidadeCreateView.as_view(), name="unidade-create"),

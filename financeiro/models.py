@@ -23,18 +23,21 @@ class ContaReceber(GenericoModel):
         verbose_name_plural = 'Contas Receber'
 
 
-
 class BaixaReceber(GenericoModel):
     contareceber = models.ForeignKey(ContaReceber, on_delete=models.CASCADE)
     condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT, verbose_name='Condição Pagamento')
     valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(0.01)])
     data_baixa = models.DateField()
 
     def __str__(self) -> str:
         return f'Documento: {self.contareceber.documento}'
+
+    class Meta:
+        verbose_name = 'Baixa Receber'
+        verbose_name_plural = 'Baixas Receber'
     
 
 class ContaPagar(GenericoModel):

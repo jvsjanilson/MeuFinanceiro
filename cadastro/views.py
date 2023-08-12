@@ -1,21 +1,18 @@
-from django.forms.models import BaseModelForm
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto, \
-Contato, FormaPagamento, CondicaoPagamento
-from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_UPDATED_SUCCESS, MSG_DELETED_SUCCESS, MSG_FORM_ERROR
+    Contato, FormaPagamento, CondicaoPagamento
+from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_UPDATED_SUCCESS, \
+    MSG_DELETED_SUCCESS, MSG_FORM_ERROR
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
-from django.shortcuts import render, redirect
-from django.contrib.auth.views import redirect_to_login
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
-PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
+    PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
 from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
 from core.views import UserAccessMixin, InvalidFormMixin
-from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -24,10 +21,8 @@ def municipios(request, estado):
     return HttpResponse(data)
 
 
-
 class Home(LoginRequiredMixin, TemplateView):
     template_name = 'base.html'
-
 
 
 class UnidadeListView(UserAccessMixin, ListView):
@@ -35,7 +30,6 @@ class UnidadeListView(UserAccessMixin, ListView):
     model = Unidade
     template_name = 'cadastro/unidade/list.html'
     paginate_by = REGISTROS_POR_PAGINA
-    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,7 +61,6 @@ class UnidadeCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, 
     success_url = '/unidades'
     success_message = MSG_CREATED_SUCCESS
     
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
@@ -346,7 +339,6 @@ class EstadoDeleteView(UserAccessMixin, DeleteView):
     success_url = '/estados'
 
 
-
 class MunicipioListView(UserAccessMixin, ListView):
     permission_required = ["cadastro.view_municipio"]
     model = Municipio
@@ -407,7 +399,6 @@ class MunicipioDeleteView(UserAccessMixin, DeleteView):
     model = Municipio
     template_name = 'cadastro/municipio/confirm_delete.html'
     success_url = '/municipios'
-
 
 
 class ProdutoListView(UserAccessMixin, ListView):
@@ -528,7 +519,6 @@ class ContatoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     def get_success_url(self):
         page_number = self.request.GET['page']
         return f'{reverse("contato-list")}?page={page_number}'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

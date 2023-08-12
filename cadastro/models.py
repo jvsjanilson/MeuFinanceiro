@@ -27,7 +27,6 @@ class Estado(GenericoModel):
         verbose_name = 'Estado'
         verbose_name_plural = 'Estados'
 
-
     def __str__(self):
         return self.uf
 
@@ -141,7 +140,6 @@ class FormaPagamento(GenericoModel):
     class Meta:
         verbose_name = 'Forma de Pagamento'
         verbose_name_plural = 'Formas de Pagamento'
-
 
 
 class CondicaoPagamento(GenericoModel):

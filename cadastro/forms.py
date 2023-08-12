@@ -1,6 +1,5 @@
-from django import forms
 from cadastro.models import Produto, Unidade, Marca, Categoria, Contato, Pais, Estado, Municipio, \
-FormaPagamento, CondicaoPagamento
+    FormaPagamento, CondicaoPagamento
 from core.forms import *
 
 
@@ -14,7 +13,6 @@ class UnidadeForm(forms.ModelForm):
         }
 
 
-
 class MarcaForm(forms.ModelForm):
     class Meta:
         model = Marca
@@ -24,7 +22,6 @@ class MarcaForm(forms.ModelForm):
         }
 
 
-
 class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria
@@ -32,7 +29,6 @@ class CategoriaForm(forms.ModelForm):
         widgets = {
             'nome': TextInputBootstrap(),
         }
-
 
 
 class ProdutoForm(forms.ModelForm):

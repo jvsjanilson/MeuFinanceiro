@@ -54,6 +54,7 @@
                         <div class="col-md-9">
                             <div class="mb-3">
                                 <label for="{{form.contato.id_for_label}}">{{form.contato.label}}</label>
+                                {{ form.contato.label_tag }}
                                 {{ form.contato }} 
                                 
                                 {%if form.contato.help_text  %}
@@ -133,7 +134,7 @@
 
                     </div>
                 </div>
-            </form>
+</form>
 
             
 {% endblock conteudo%}

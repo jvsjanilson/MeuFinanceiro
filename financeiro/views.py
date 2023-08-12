@@ -1,13 +1,41 @@
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.views.generic.list import ListView
-from django.views.generic import CreateView, UpdateView, DeleteView
-from financeiro.models import ContaReceber
+from django.views.generic import CreateView, UpdateView, DeleteView, FormView
+from financeiro.models import ContaReceber, BaixaReceber
 from core.constants import REGISTROS_POR_PAGINA
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect
 from core.views import UserAccessMixin, InvalidFormMixin
-from financeiro.forms import ContaReceberForm
+from financeiro.forms import ContaReceberForm, BaixaReceberForm
 from django.urls import reverse_lazy, reverse
+from django.contrib import messages
+from financeiro.choices import SituacaoFinanceiro
+from django.db.models import Sum
+
+
+class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
+    template_name = 'financeiro/baixareceber/form.html'
+    form_class = BaixaReceberForm
+    success_url = reverse_lazy('contareceber-list')
+    permission_required = ['financeiro.add_baixareceber']
+    model = BaixaReceber
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        contareceber = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['conta'] = contareceber
+        return context
+    
+
+    def get(self, request, *args, **kwargs):
+        conta = ContaReceber.objects.get(pk=kwargs['contareceber'])
+        if conta.situacao == SituacaoFinanceiro.PAGO_TOTAL:
+            messages.add_message(request, messages.WARNING, 'Titulo ja foi pago totalmente.')
+            return redirect('/contarecebers')
+        self.object = None
+        return super().get(request, *args, **kwargs)
 
 
 class ContaReceberListView(UserAccessMixin, ListView):
@@ -38,8 +66,7 @@ class ContaReceberListView(UserAccessMixin, ListView):
         return queryset
 
 
-
-class ContaReceberCreate(UserAccessMixin, InvalidFormMixin,  CreateView):
+class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["financeiro.add_contareceber"]
     model = ContaReceber
     form_class = ContaReceberForm
@@ -50,7 +77,6 @@ class ContaReceberCreate(UserAccessMixin, InvalidFormMixin,  CreateView):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
-    
 
     
 class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
@@ -67,7 +93,9 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        
         if self.object.situacao != 1:
+            messages.add_message(request, messages.WARNING, 'Titulo pago ou parcialmente pago não pode ser editado.')
             return redirect('/contarecebers')
         return super().get(request, *args, **kwargs)  
 

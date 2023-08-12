@@ -2,12 +2,13 @@
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
 
-<form method="post" novalidate>
+<form method="post" novalidate>{% csrf_token %}
+    <input type="hidden" name="contareceber" value="{{ conta.pk }}"/>
     <div class="card shadow card-outline">
         <div class="card-header">
             <div class="row">
                 <div class="col-12 col-md-12">
-                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Baixar</button>
                     <a class="text-white btn bg-secondary bg-gradient" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                     <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
                 </div>
@@ -15,125 +16,163 @@
         </div>
 
         <div class="card-body">
-                    {% csrf_token %}
-
-                  
-
-                    <div class="row">
-
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                {{ form.documento.label_tag }}
-                                {{ form.documento }} 
-
-                                {%if form.documento.help_text is not None %}
-                                    <span class="helptext">{{ form.documento.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.documento is not None %}
-                                    {{ form.errors.documento }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-1">
-                            <div class="mb-3">
-                                {{ form.parcela.label_tag }}
-                                {{ form.parcela }} 
-
-                                {%if form.parcela.help_text is not None %}
-                                    <span class="helptext">{{ form.parcela.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.parcela is not None %}
-                                    {{ form.errors.parcela }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-9">
-                            <div class="mb-3">
-                                <label for="{{form.contato.id_for_label}}">{{form.contato.label}}</label>
-                                {{ form.contato }} 
-                                
-                                {%if form.contato.help_text  %}
-                                    <span class="helptext">{{ form.contato.help_text}}</span>
-                                {%endif%}
-        
-                                {% if form.errors.contato is not None %}
-                                    {{ form.errors.contato }}
-                                {%endif%}
-                            </div>
-                        </div>
-
+           
+                <div class="row">
+                    <div class="col-md-2">
+                         <div class="mb-3">
+                            <label>Documento:</label>
+                            <input class="form-control form-control-sm" type="text" disabled value="{{ conta.documento }}" />
+                             
+                         </div>
                     </div>
-                    <div class="row">
-                        
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                {{ form.data_emissao.label_tag }}
-                                {{ form.data_emissao }} 
-
-                                {%if form.data_emissao.help_text is not None %}
-                                    <span class="helptext">{{ form.data_emissao.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.data_emissao is not None %}
-                                    {{ form.errors.data_emissao }}
-                                {%endif%}
-                            </div>
+                    <div class="col-md-1">
+                         <div class="mb-3">
+                            <label>Parcela:</label>
+                            <input class="form-control form-control-sm" type="text" disabled value="{{ conta.parcela }}" />
+                             
+                         </div>
+                    </div>
+    
+                    <div class="col-md-5">
+                        <div class="mb-3">
+                           <label>Cliente:</label>
+                           <input class="form-control form-control-sm" type="text" disabled value="{{ conta.contato.razao_social }}" />
+                            
                         </div>
+                   </div>
 
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                {{ form.data_vencimento.label_tag }}
-                                {{ form.data_vencimento }} 
-
-                                {%if form.data_vencimento.help_text is not None %}
-                                    <span class="helptext">{{ form.data_vencimento.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.data_vencimento is not None %}
-                                    {{ form.errors.data_vencimento }}
-                                {%endif%}
-                            </div>
+                   <div class="col-md-2">
+                        <div class="mb-3">
+                            <label>Vencimento:</label>
+                            <input class="form-control form-control-sm" type="text" disabled value="{{ conta.data_vencimento }}" />
                         </div>
+                    </div>
 
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                {{ form.valor_titulo.label_tag }}
-                                {{ form.valor_titulo }} 
-
-                                {%if form.valor_titulo.help_text is not None %}
-                                    <span class="helptext">{{ form.valor_titulo.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.valor_titulo is not None %}
-                                    {{ form.errors.valor_titulo }}
-                                {%endif%}
-                            </div>
+                   <div class="col-md-2">
+                        <div class="mb-3">
+                            <label>Valor Titulo:</label>
+                            <input class="form-control form-control-sm" type="text" disabled value="{{ conta.valor_titulo }}" />
                         </div>
+                    </div>
+                   
+                </div> <!-- fim row -->
+            
 
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                {{ form.observacao.label_tag }}
-                                {{ form.observacao }} 
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.condicaopagamento.label_tag }}
+                        {{ form.condicaopagamento }}
 
-                                {%if form.observacao.help_text is not None %}
-                                    <span class="helptext">{{ form.observacao.help_text}}</span>
-                                {%endif%}
+                        {%if form.condicaopagamento.help_text  %}
+                            <span class="helptext">{{ form.condicaopagamento.help_text}}</span>
+                        {%endif%}
 
-                                {% if form.errors.observacao is not None %}
-                                    {{ form.errors.observacao }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        
-
+                        {% if form.errors.condicaopagamento is not None %}
+                            {{ form.errors.condicaopagamento }}
+                        {%endif%}
                     </div>
                 </div>
-            </form>
 
-            
-{% endblock conteudo%}
+                <div class="col-md-1">
+                    <div class="mb-3">
+                        {{ form.valor_juros.label_tag }}
+                        {{ form.valor_juros }}
+
+                        {%if form.valor_juros.help_text  %}
+                            <span class="helptext">{{ form.valor_juros.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.valor_juros is not None %}
+                            {{ form.errors.valor_juros }}
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        {{ form.valor_multa.label_tag }}
+                        {{ form.valor_multa }}
+
+                        {%if form.valor_multa.help_text  %}
+                            <span class="helptext">{{ form.valor_multa.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.valor_multa is not None %}
+                            {{ form.errors.valor_multa }}
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        {{ form.valor_desconto.label_tag }}
+                        {{ form.valor_desconto }}
+
+                        {%if form.valor_desconto.help_text  %}
+                            <span class="helptext">{{ form.valor_desconto.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.valor_desconto is not None %}
+                            {{ form.errors.valor_desconto }}
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        {{ form.valor_pago.label_tag }}
+                        {{ form.valor_pago }}
+
+                        {%if form.valor_pago.help_text  %}
+                            <span class="helptext">{{ form.valor_pago.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.valor_pago is not None %}
+                            {{ form.errors.valor_pago }}
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        {{ form.data_baixa.label_tag }}
+                        {{ form.data_baixa }}
+
+                        {%if form.data_baixa.help_text  %}
+                            <span class="helptext">{{ form.data_baixa.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.data_baixa is not None %}
+                            {{ form.errors.data_baixa }}
+                        {%endif%}
+                    </div>
+                </div>
+
+
+
+
+            </div> <!-- fim row -->
+            {% comment %} <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.contareceber.label_tag }}
+                        {{ form.contareceber }}
+
+                        {%if form.contareceber.help_text  %}
+                            <span class="helptext">{{ form.contareceber.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.contareceber is not None %}
+                            {{ form.errors.contareceber }}
+                        {%endif%}
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div> <!-- fim body -->
+
+    </div>
+
+</form>
+
+
+{% endblock conteudo %}
