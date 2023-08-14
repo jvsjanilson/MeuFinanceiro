@@ -24,8 +24,12 @@ class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         contareceber = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
+        total_pago = BaixaReceber.objects.filter(contareceber=self.kwargs['contareceber']).aggregate(total=Sum('valor_pago'))['total']
+        saldo = contareceber.valor_titulo - total_pago
+
         context['verbose_name'] = self.model._meta.verbose_name.title
         context['conta'] = contareceber
+        context['saldo'] = saldo
         return context
     
 
