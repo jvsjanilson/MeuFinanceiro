@@ -1,5 +1,6 @@
+from typing import Any
 from django.forms.models import BaseModelForm
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from financeiro.models import ContaReceber, BaixaReceber
@@ -25,6 +26,9 @@ class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
         context = super().get_context_data(**kwargs)
         contareceber = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
         total_pago = BaixaReceber.objects.filter(contareceber=self.kwargs['contareceber']).aggregate(total=Sum('valor_pago'))['total']
+        if total_pago is None:
+            total_pago = 0
+        
         saldo = contareceber.valor_titulo - total_pago
 
         context['verbose_name'] = self.model._meta.verbose_name.title
@@ -40,6 +44,12 @@ class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
             return redirect('/contarecebers')
         self.object = None
         return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print(request)
+        print(self.kwargs)
+
+        return super().post(request, *args, **kwargs)
 
 
 class ContaReceberListView(UserAccessMixin, ListView):
@@ -68,6 +78,8 @@ class ContaReceberListView(UserAccessMixin, ListView):
                 Q(contato__razao_social__icontains=search)
             )
         return queryset
+    
+    
 
 
 class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):

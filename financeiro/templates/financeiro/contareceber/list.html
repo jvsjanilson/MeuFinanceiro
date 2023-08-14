@@ -62,9 +62,11 @@
                             <tr>
                                 <th>Documento</th>
                                 <th>Cliente</th>
-                                <th style="width: 10rem">Data Emissão</th>
-                                <th style="width: 10rem">Data Vencimento</th>
-                                <th style="width: 10rem" class="text-end">Valor</th>
+                                <th style="width: 7rem">Data Emissão</th>
+                                <th style="width: 7rem">Data Vencto</th>
+                                <th style="width: 7rem" class="text-end">Valor</th>
+                                <th style="width: 7rem" class="text-end">Saldo Pagar</th>
+                                <th style="width: 7rem" class="text-end">Total Pago</th>
                                 <th class="text-center">Situacao</th>
                                 <th class="text-center" style="width: 4rem">Ações</th>
                             </tr>
@@ -77,6 +79,8 @@
                                     <td >{{ m.data_emissao }}</td>
                                     <td>{{ m.data_vencimento }}</td>
                                     <td class="text-end">{{ m.valor_titulo }}</td>
+                                    <td class="text-end">{{ m.saldo_pagar }}</td>
+                                    <td class="text-end">{{ m.total_pago }}</td>
                                     <td class="text-center">{{ m.get_situacao_display }}</td>
                                     <td class="text-center ">
 
@@ -105,7 +109,7 @@
                                 </tr>
                             {% empty %}
                             <tr>
-                                <td class="text-center" colspan="7">Sem registro</td>
+                                <td class="text-center" colspan="9">Sem registro</td>
                             </tr>
 
                             {% endfor %}
