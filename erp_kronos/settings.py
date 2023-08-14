@@ -138,6 +138,9 @@ MEDIA_ROOT = 'data/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 formats.DATE_FORMAT = "d/m/Y"
+THOUSAND_SEPARATOR='.',
+USE_THOUSAND_SEPARATOR=True
+
 LOGIN_URL = 'login/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
