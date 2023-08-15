@@ -46,9 +46,6 @@ class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print(request)
-        print(self.kwargs)
-
         return super().post(request, *args, **kwargs)
 
 
@@ -121,3 +118,10 @@ class ContaReceberDeleteView(UserAccessMixin, DeleteView):
     model = ContaReceber
     template_name = 'financeiro/contareceber/confirm_delete.html'
     success_url = reverse_lazy('contareceber-list')
+
+    def get(self, request, *args, **kwargs):
+        conta = ContaReceber.objects.get(pk=self.kwargs['pk'])
+        if conta.situacao != 1:
+            messages.add_message(request, messages.WARNING, "Título pago ou parcialmente pago não pode ser removido.")
+            return redirect('/contarecebers')
+        return super().get(request, *args, **kwargs)
