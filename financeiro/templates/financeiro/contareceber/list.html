@@ -11,7 +11,7 @@
                             <div class="mb-3">
                                 <form  method="get">
                                     <div class="input-group ">
-                                        <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                                        <input autofocus name="search" id="search" class="form-control " type="search" value="{{ search }}">
                                         <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
                                     </div>
                                 </form>
@@ -20,7 +20,7 @@
                         {% if search %}
                         <div class="col-md-4 align-self-center">
                             <div class="mb-3">
-                                <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
+                                <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpar</a>
                             </div>
                         </div>
                         {%endif%}
@@ -67,7 +67,7 @@
                                 <th style="width: 7rem" class="text-end">Valor</th>
                                 <th style="width: 7rem" class="text-end">Saldo Pagar</th>
                                 <th style="width: 7rem" class="text-end">Total Pago</th>
-                                <th class="text-center">Situacao</th>
+                                <th class="text-center">Situação</th>
                                 <th class="text-center" style="width: 4rem">Ações</th>
                             </tr>
                         </thead>
@@ -85,7 +85,7 @@
                                     <td class="text-center ">
 
                                         <div class="btn-group d-grid">
-                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-list-ul"></i>
                                             </button>
                                             <ul class="dropdown-menu">

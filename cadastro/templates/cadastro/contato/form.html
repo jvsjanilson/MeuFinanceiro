@@ -331,6 +331,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                
+                                {%if object.foto.url is not None %}
+                               <img height="150" width="150" src=" {{ object.foto.url }}">
+                               {%endif%}
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
               </div>    
