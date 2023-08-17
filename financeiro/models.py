@@ -11,11 +11,11 @@ from decimal import Decimal
 
 class ContaReceber(GenericoModel):
     documento = models.CharField('Documento', max_length=20)
-    parcela = models.IntegerField('Parcela', default=1, validators=[MinValueValidator(1)])
+    parcela = models.IntegerField('Parcela', default=1, validators=[MinValueValidator(limit_value=1)])
     contato = models.ForeignKey(Contato, on_delete=models.RESTRICT, verbose_name='Cliente')
     data_emissao = models.DateField('Data Emissão')
     data_vencimento = models.DateField('Data Vencto')
-    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(0)])
+    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.01'))])
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
     situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
 
@@ -42,10 +42,10 @@ class ContaReceber(GenericoModel):
 class BaixaReceber(GenericoModel):
     contareceber = models.ForeignKey(ContaReceber, on_delete=models.CASCADE, related_name='baixas')
     condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT, verbose_name='Condição Pagamento')
-    valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(0.01)])
+    valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.00'))])
+    valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.00'))])
+    valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.00'))])
+    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.01'))])
     data_baixa = models.DateField()
 
     def __str__(self) -> str:

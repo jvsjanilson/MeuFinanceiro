@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from itertools import cycle
 from core.constants import LENGTH_CNPJ, LENGTH_CPF
+from django.core.validators import  RegexValidator
 
 
 def valida_cpfcnpj(value):
@@ -29,3 +30,10 @@ def valida_cpfcnpj(value):
     else:
         raise ValidationError(_('O tamanho do CPF/CNPJ %(value)s é inválido. '), params={'value': value})
 
+
+def number_only(value):
+    RegexValidator(r'^[0-9]*$', 'Somente números.').__call__(value)
+
+
+def letter_only(value):
+    RegexValidator(r'^[a-zA-Z\s]*$', 'Somente letras sem acentos.').__call__(value)

@@ -97,7 +97,6 @@ class ContaReceberListView(UserAccessMixin, ListView):
     
     
 
-
 class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
     permission_required = ["financeiro.add_contareceber"]
     model = ContaReceber
