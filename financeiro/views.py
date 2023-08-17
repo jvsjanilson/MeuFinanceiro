@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
@@ -13,7 +13,26 @@ from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from financeiro.choices import SituacaoFinanceiro
 from django.db.models import Sum
+from financeiro.forms import BaixaReceberForm
 
+
+class EstornoTituloReceber(FormView):
+    success_url = reverse_lazy('contareceber-list')
+    template_name = 'financeiro/baixareceber/estorno.html'
+    form_class = BaixaReceberForm
+    success_url = reverse_lazy('contareceber-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        baixas = BaixaReceber.objects.filter(contareceber = self.kwargs['contareceber'])
+        context['baixas'] = baixas
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        print(self.kwargs)
+        return super().post(request, *args, **kwargs)
+    
+    
 
 class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
     template_name = 'financeiro/baixareceber/form.html'

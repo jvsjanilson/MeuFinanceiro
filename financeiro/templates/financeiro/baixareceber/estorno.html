@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+
+<form method="post" novalidate> {% csrf_token %}
+    <div class="form-row d-flex justify-content-center">
+        <div class="col-6">
+            <h4 class="text-center">Lista das baixas</h4>
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Documento</th>
+                        <th>Data Baixa</th>
+                        <th>Valor Pago</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for m in baixas %}
+                    <tr>
+                        <td>{{ m.contareceber.documento }}</td>
+                        <td>{{ m.data_baixa }}</td>
+                        <td>{{ m.valor_pago }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            
+            <button type="submit" class="btn btn-danger"><i class="bi bi-check-lg"></i> Confirmar estorno</button>
+            <a class="btn btn-secondary" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+        </div>
+    </div>
+</form>
+
+{% endblock conteudo %}
