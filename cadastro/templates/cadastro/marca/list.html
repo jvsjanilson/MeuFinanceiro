@@ -3,32 +3,60 @@
 {% block conteudo %}
 
     <div class="card shadow card-outline mb-1">
-        <div class="card-header p-1">
-            <div class="row d-flex align-items-center">
-                <div class="col-auto">
-                    {% if perms.cadastro.add_marca %}
-                        <div class="my-2" style="padding-left: .5rem">
-                            <a class="btn btn-primary " href="{% url 'marca-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+        <div class="card-header pb-0" style="">
+            <div class="row d-flex  align-items-center">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-8 col-lg-6 ">
+                            <div class="mb-3">
+                                <form  method="get">
+                                    <div class="input-group ">
+                                        <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                                        <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    {% endif %}
-
-                </div>
-
-                <div class="col-auto">
-                    <form  style="padding: .5rem .5rem" method="get">
-                        <div class="input-group ">
-                            <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
-                            <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                        {% if search %}
+                        <div class="col-md-4 align-self-center">
+                            <div class="mb-3">
+                                <a class="btn btn-danger" href="{% url 'marca-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
+                            </div>
                         </div>
-                    </form>
+                        {%endif%}
 
+
+                    </div>
                 </div>
-            </div> 
+                <div class="col-md-3 filtro">
+                    <div class="mb-3">
+                        <select class="form-select">
+                            <option>----------------</option>
+                            </select>
+                    </div>
+                </div>
+           </div>
         </div>
+
         <div class="card-body" style="padding: .5rem .7rem">
             
             <table class="table mb-1 table-sm table-bordered table-hover caption-top">
-                <caption style="padding-top: 1px" class="text-center"> <h5 style="margin-bottom: 1px">Lista de {{ verbose_name_plural }}</h5></caption>
+                <caption style="padding-top: 1px" > 
+                    <div class="row">
+                        <div class="col-4 col-md-3 col-lg-2 ">
+                            {% if perms.cadastro.add_marca %}
+                            <a class="btn btn-primary " href="{% url 'marca-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-8 text-center align-self-center ">
+                            <h5  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5>
+                        </div>
+
+                        <div class="col-2">    
+                        </div>
+                    </div>
+                </caption>
                     <thead class="table-secondary ">
                         <tr>
                             <th>Nome</th>
