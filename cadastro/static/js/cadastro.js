@@ -5,7 +5,7 @@ django.jQuery().ready(function(){
         django.jQuery(".alert").fadeOut("slow", function(){
             $(this).alert("close");
         });
-    },3000);
+    },4000);
 });
 
 /**
