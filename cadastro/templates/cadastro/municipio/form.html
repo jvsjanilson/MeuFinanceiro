@@ -1,75 +1,77 @@
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
-
+<form method="post" novalidate>
+    {% csrf_token %}
     <div class="card shadow card-outline">
         <div class="card-header">
-            <h4>{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
+            <div class="row d-flex align-items-center">
+                <div class="col">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'municipio-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </div>
+                <div class="col-auto">
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+                </div>
+            </div>
         </div>
 
         <div class="card-body">
-            <form method="post" novalidate>
-                    {% csrf_token %}
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
+                        {{ form.codigo }} 
 
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
-                                {{ form.codigo }} 
-
-                                {%if form.codigo.help_text is not None %}
-                                    <span class="helptext">{{ form.codigo.help_text}}</span>
-                                {%endif%}
-                                
-                                {% if form.errors.codigo is not None %}
-                                    {{ form.errors.codigo }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
-                                {{ form.nome }} 
-
-                                {%if form.nome.help_text is not None %}
-                                    <span class="helptext">{{ form.nome.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.nome is not None %}
-                                    {{ form.errors.nome }}
-                                {%endif%}
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
-                                {{ form.estado }} 
-
-                                {%if form.estado.help_text is not None %}
-                                    <span class="helptext">{{ form.estado.help_text}}</span>
-                                {%endif%}
-                                
-                                {% if form.errors.estado is not None %}
-                                    {{ form.errors.estado }}
-                                {%endif%}
-                            </div>
-                        </div>
+                        {%if form.codigo.help_text is not None %}
+                            <span class="helptext">{{ form.codigo.help_text}}</span>
+                        {%endif%}
+                        
+                        {% if form.errors.codigo is not None %}
+                            {{ form.errors.codigo }}
+                        {%endif%}
                     </div>
+                </div>
 
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                        {{ form.nome }} 
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="{{form.capital.id_for_label}}">{{form.capital.label}}</label>
-                                {{ form.capital }} 
-                            </div>
-                        </div>
-                    </div> 
+                        {%if form.nome.help_text is not None %}
+                            <span class="helptext">{{ form.nome.help_text}}</span>
+                        {%endif%}
 
-                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="btn btn-secondary" href="{% url 'municipio-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-                </form>
+                        {% if form.errors.nome is not None %}
+                            {{ form.errors.nome }}
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label for="{{form.estado.id_for_label}}">{{form.estado.label}}</label>
+                        {{ form.estado }} 
+
+                        {%if form.estado.help_text is not None %}
+                            <span class="helptext">{{ form.estado.help_text}}</span>
+                        {%endif%}
+                        
+                        {% if form.errors.estado is not None %}
+                            {{ form.errors.estado }}
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="{{form.capital.id_for_label}}">{{form.capital.label}}</label>
+                        {{ form.capital }} 
+                    </div>
+                </div>
+            </div> 
         </div>
     </div>
+ </form>
 {% endblock conteudo%}
