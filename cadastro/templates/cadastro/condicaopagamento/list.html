@@ -41,18 +41,16 @@
             <table class="table mb-1 table-sm table-bordered table-hover caption-top">
                 <caption style="padding-top: 1px" > 
                     <div class="row">
-                        <div class="col-6 col-md-4 col-lg-3 ">
+                        <div class="col-auto">
                             {% if perms.cadastro.add_condicaopagamento %}
-                            <a class="btn bg-primary bg-gradient text-white" href="{% url 'condicaopagamento-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                            <a class="btn btn-primary " href="{% url 'condicaopagamento-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
                             {% endif %}
                         </div>
 
-                        <div class="col-6 text-center align-self-center ">
+                        <div class="col text-center align-self-center ">
                             <h5  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5>
                         </div>
 
-                        <div class="col-2">    
-                        </div>
                     </div>
                 </caption>
                     <thead class="table-secondary ">

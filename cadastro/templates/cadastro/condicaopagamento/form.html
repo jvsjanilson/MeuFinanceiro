@@ -5,14 +5,16 @@
 <form method="post" novalidate>
     <div class="card shadow card-outline">
         <div class="card-header">
-            <div class="row">
-                <div class="col-12 col-md-12">
+            <div class="row d-flex align-items-center">
+                <div class="col">
                     <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
                     <a class="text-white btn bg-secondary bg-gradient" href="{% url 'condicaopagamento-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-                    <h4 class="card-title">{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
+                </div>
+                <div class="col-auto">
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
                 </div>
             </div>
-        </div>
+        </div> 
         <div class="card-body">
                     {% csrf_token %}
 

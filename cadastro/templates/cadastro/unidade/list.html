@@ -42,18 +42,16 @@
             <table class="table mb-1 table-sm table-bordered table-hover caption-top">
                 <caption style="padding-top: 1px" > 
                     <div class="row">
-                        <div class="col-4 col-md-3 col-lg-2 ">
+                        <div class="col-auto">
                             {% if perms.cadastro.add_unidade %}
                             <a class="btn btn-primary " href="{% url 'unidade-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
                             {% endif %}
                         </div>
 
-                        <div class="col-8 text-center align-self-center ">
+                        <div class="col text-center align-self-center ">
                             <h5  style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5>
                         </div>
 
-                        <div class="col-2">    
-                        </div>
                     </div>
                 </caption>
                     <thead class="table-secondary ">
