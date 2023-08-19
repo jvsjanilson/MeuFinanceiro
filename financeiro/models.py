@@ -4,8 +4,6 @@ from financeiro.choices import SituacaoFinanceiro
 from cadastro.models import CondicaoPagamento, Contato
 from django.core.validators import MinValueValidator
 from django.db.models import Sum
-from django.db.models.functions import Coalesce, Cast
-from django.db.models import FloatField
 from decimal import Decimal
 
 
@@ -19,7 +17,7 @@ class ContaReceber(GenericoModel):
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
     situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.documento
     
     @property
@@ -28,12 +26,11 @@ class ContaReceber(GenericoModel):
 
     @property
     def total_pago(self) -> float:
-        total_pago =  self.baixas.aggregate(saldo=Sum('valor_pago'))['saldo']
+        total_pago = self.baixas.aggregate(saldo=Sum('valor_pago'))['saldo']
         if total_pago is None:
-            total_pago =  Decimal('0.00')
+            total_pago = Decimal('0.00')
         return total_pago
 
-    
     class Meta:
         verbose_name = 'Conta Receber'
         verbose_name_plural = 'Contas Receber'
@@ -41,20 +38,25 @@ class ContaReceber(GenericoModel):
 
 class BaixaReceber(GenericoModel):
     contareceber = models.ForeignKey(ContaReceber, on_delete=models.CASCADE, related_name='baixas')
-    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT, verbose_name='Condição Pagamento')
-    valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.00'))])
-    valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.00'))])
-    valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.00'))])
-    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.01'))])
+    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT,
+                                          verbose_name='Condição Pagamento')
+    valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(
+        limit_value=Decimal('0.00'))])
+    valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(
+        limit_value=Decimal('0.00'))])
+    valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(
+        limit_value=Decimal('0.00'))])
+    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(
+        limit_value=Decimal('0.01'))])
     data_baixa = models.DateField()
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f'Documento: {self.contareceber.documento}'
 
     class Meta:
         verbose_name = 'Baixa Receber'
         verbose_name_plural = 'Baixas Receber'
-    
+
 
 class ContaPagar(GenericoModel):
     documento = models.CharField('Documento', max_length=20)
@@ -66,9 +68,8 @@ class ContaPagar(GenericoModel):
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
     situacao = models.IntegerField('Situação', choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.documento
-
 
 
 class BaixaPagar(GenericoModel):
@@ -80,5 +81,5 @@ class BaixaPagar(GenericoModel):
     valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     data_baixa = models.DateField()
 
-    def __str__(self) -> str:
-        return f'Documento: {self.contapagar.documento}'    
+    def __str__(self):
+        return f'Documento: {self.contapagar.documento}'

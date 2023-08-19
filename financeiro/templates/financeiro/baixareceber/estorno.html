@@ -4,27 +4,37 @@
 
 
 <form method="post" novalidate> {% csrf_token %}
+    <input type="hidden" name="contareceber" value="{{ conta.pk }}">
     <div class="form-row d-flex justify-content-center">
         <div class="col-6">
             <h4 class="text-center">Lista das baixas</h4>
-            <table class="table table-sm table-striped table-bordered">
-                <thead>
+            <table class="table table-sm table-striped table-bordered table-hover">
+                <thead  class="table-secondary ">
                     <tr>
-                        <th>Documento</th>
-                        <th>Data Baixa</th>
-                        <th>Valor Pago</th>
+                        <th style="width: 10rem">Documento</th>
+                        <th>Cond. Pagto</th>
+                        <th style="width: 7rem" >Data Baixa</th>
+                        <th class="text-end">Valor Pago</th>
                     </tr>
                 </thead>
+                
 
-                <tbody>
+                <tbody class="table-group-divider">
                     {% for m in baixas %}
-                    <tr>
+                    <tr col>
                         <td>{{ m.contareceber.documento }}</td>
+                        <td>{{ m.condicaopagamento.nome }}</td>
                         <td>{{ m.data_baixa }}</td>
-                        <td>{{ m.valor_pago }}</td>
+                        <td class="text-end" >{{ m.valor_pago }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-end fw-bold" colspan="3">Total Pago: </td>
+                        <td class="text-end fw-bold">{{ conta.total_pago }}</td>
+                    </tr>
+                </tfoot>
 
             </table>
             

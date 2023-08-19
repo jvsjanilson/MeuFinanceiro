@@ -316,7 +316,16 @@
                 </div>
                 <div class="tab-pane fade" id="foto" role="tabpanel" aria-labelledby="foto-tab" tabindex="0">
                     <div class="row">
-                        <div class="col-md-12">
+                         <div class="col-auto">
+                            <div class="mb-3">
+
+                                {%if object.foto.url is not None %}
+                               <img height="150" width="150" src=" {{ object.foto.url }}">
+                               {%endif%}
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
                             <div class="mb-3">
                                 
                                 {{ form.foto.label_tag }}
@@ -332,18 +341,10 @@
                                 
                             </div>
                         </div>
+
+
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                
-                                {%if object.foto.url is not None %}
-                               <img height="150" width="150" src=" {{ object.foto.url }}">
-                               {%endif%}
-                                
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 
               </div>    

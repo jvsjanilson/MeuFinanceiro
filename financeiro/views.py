@@ -1,6 +1,4 @@
-from typing import Any, Dict
-from django.forms.models import BaseModelForm
-from django.http import HttpRequest, HttpResponse
+import decimal
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from financeiro.models import ContaReceber, BaixaReceber
@@ -8,33 +6,53 @@ from core.constants import REGISTROS_POR_PAGINA
 from django.db.models import Q
 from django.shortcuts import redirect
 from core.views import UserAccessMixin, InvalidFormMixin
-from financeiro.forms import ContaReceberForm, BaixaReceberForm
-from django.urls import reverse_lazy, reverse
+from financeiro.forms import ContaReceberForm
+from django.urls import reverse_lazy
 from django.contrib import messages
 from financeiro.choices import SituacaoFinanceiro
-from django.db.models import Sum
 from financeiro.forms import BaixaReceberForm
+from django.db.models import ProtectedError
 
 
-class EstornoTituloReceber(FormView):
+class EstornarContaReceber(UserAccessMixin, FormView):
     success_url = reverse_lazy('contareceber-list')
     template_name = 'financeiro/baixareceber/estorno.html'
     form_class = BaixaReceberForm
-    success_url = reverse_lazy('contareceber-list')
+    permission_required = ['financeiro.add_baixareceber']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        baixas = BaixaReceber.objects.filter(contareceber = self.kwargs['contareceber'])
+        baixas = BaixaReceber.objects.filter(contareceber=self.kwargs['contareceber'])
+        conta = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
         context['baixas'] = baixas
+        context['conta'] = conta
         return context
-    
-    def post(self, request, *args, **kwargs):
-        print(self.kwargs)
-        return super().post(request, *args, **kwargs)
-    
-    
 
-class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
+    def get(self, request, *args, **kwargs):
+        baixas = BaixaReceber.objects.filter(contareceber=kwargs['contareceber'])
+        if len(baixas) == 0:
+            messages.add_message(request, messages.INFO, 'Sem baixa para estorno')
+            return redirect('/contarecebers')
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        conta = request.POST.get('contareceber')
+        if conta is not None:
+            try:
+                BaixaReceber.objects.filter(contareceber=conta).delete()
+                receber = ContaReceber.objects.get(pk=conta)
+                receber.situacao = SituacaoFinanceiro.ABERTO
+                receber.save()
+
+                messages.add_message(request, messages.SUCCESS, 'Titulo estornado com sucesso.')
+                return redirect('/contarecebers')
+            except ProtectedError:
+                messages.add_message(request, messages.ERROR, 'Erro ao estornar titulo.')
+                return redirect('/contarecebers')
+        return super().post(request, *args, **kwargs)
+
+
+class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
     template_name = 'financeiro/baixareceber/form.html'
     form_class = BaixaReceberForm
     success_url = reverse_lazy('contareceber-list')
@@ -43,29 +61,31 @@ class BaixarTitulo(UserAccessMixin, InvalidFormMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        contareceber = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
-        total_pago = BaixaReceber.objects.filter(contareceber=self.kwargs['contareceber']).aggregate(total=Sum('valor_pago'))['total']
-        if total_pago is None:
-            total_pago = 0
-        
-        saldo = contareceber.valor_titulo - total_pago
-
+        conta = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
         context['verbose_name'] = self.model._meta.verbose_name.title
-        context['conta'] = contareceber
-        context['saldo'] = saldo
+        context['conta'] = conta
         return context
-    
 
     def get(self, request, *args, **kwargs):
+
         conta = ContaReceber.objects.get(pk=kwargs['contareceber'])
         if conta.situacao == SituacaoFinanceiro.PAGO_TOTAL:
             messages.add_message(request, messages.WARNING, 'Titulo ja foi pago totalmente.')
             return redirect('/contarecebers')
-        self.object = None
+        # self.object = None
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        self.object = None
+        context = self.get_context_data()
+        conta = ContaReceber.objects.get(pk=kwargs['contareceber'])
+
+        if decimal.Decimal(request.POST.get('valor_pago')) > conta.saldo_pagar:
+            messages.add_message(request, messages.WARNING,
+                                 'Valor do pagamento maior que o saldo devedor. Informe um valor menor ou igual.')
+            return self.render_to_response(context)
+        else:
+            return super().post(request, *args, **kwargs)
 
 
 class ContaReceberListView(UserAccessMixin, ListView):
@@ -94,7 +114,6 @@ class ContaReceberListView(UserAccessMixin, ListView):
                 Q(contato__razao_social__icontains=search)
             )
         return queryset
-    
     
 
 class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):

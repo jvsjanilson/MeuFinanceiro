@@ -97,7 +97,10 @@
                                                 {% if perms.cadastro.add_baixareceber %}
                                                     <li><a class="dropdown-item" href="{% url 'baixareceber-baixar' m.pk %}"><i class="text-success bi bi-cash-stack"></i> Baixar</a></li>
                                                 {%endif%}
-                                            <li><a class="dropdown-item" href="{% url 'baixareceber-estornar' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>
+
+                                                {% if perms.cadastro.delete_baixareceber %}
+                                                    <li><a class="dropdown-item" href="{% url 'baixareceber-estornar' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>
+                                                {%endif%}
                                             </ul>
                                         </div>
                                     
