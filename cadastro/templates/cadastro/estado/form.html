@@ -1,80 +1,87 @@
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
-
+<form method="post" novalidate>
+    {% csrf_token %}
     <div class="card shadow card-outline">
         <div class="card-header">
-            <h4>{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
-        </div>
+            <div class="row d-flex align-items-center">
+                <div class="col">
+                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'estado-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </div>
+                <div class="col-auto">
+                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+                </div>
+            </div>
+        </div>        
 
         <div class="card-body">
-            <form method="post" novalidate>
-                    {% csrf_token %}
+            
 
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
-                                {{ form.codigo }} 
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
+                        {{ form.codigo }} 
 
-                                {%if form.codigo.help_text is not None %}
-                                    <span class="helptext">{{ form.codigo.help_text}}</span>
-                                {%endif%}
+                        {%if form.codigo.help_text is not None %}
+                            <span class="helptext">{{ form.codigo.help_text}}</span>
+                        {%endif%}
 
-                                {% if form.errors.codigo is not None %}
-                                    {{ form.errors.codigo }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="{{form.uf.id_for_label}}">{{form.uf.label}}</label>
-                                {{ form.uf }} 
-
-                                {%if form.uf.help_text is not None %}
-                                    <span class="helptext">{{ form.uf.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.uf is not None %}
-                                    {{ form.errors.uf }}
-                                {%endif%}
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <div class="mb-3">
-                                <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
-                                {{ form.nome }} 
-
-                                {%if form.nome.help_text is not None %}
-                                    <span class="helptext">{{ form.nome.help_text}}</span>
-                                {%endif%}
-
-                                {% if form.errors.nome is not None %}
-                                    {{ form.errors.nome }}
-                                {%endif%}
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="{{form.pais.id_for_label}}">{{form.pais.label}}</label>
-                                {{ form.pais }} 
-
-                                {%if form.pais.help_text is not None %}
-                                    <span class="helptext">{{ form.pais.help_text}}</span>
-                                {%endif%}
-                                
-                                {% if form.errors.pais is not None %}
-                                    {{ form.errors.pais }}
-                                {%endif%}
-                            </div>
-                        </div>
-
+                        {% if form.errors.codigo is not None %}
+                            {{ form.errors.codigo }}
+                        {%endif%}
                     </div>
-                    <button class="btn btn-success" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="btn btn-secondary" href="{% url 'estado-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-                </form>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label for="{{form.uf.id_for_label}}">{{form.uf.label}}</label>
+                        {{ form.uf }} 
+
+                        {%if form.uf.help_text is not None %}
+                            <span class="helptext">{{ form.uf.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.uf is not None %}
+                            {{ form.errors.uf }}
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                        {{ form.nome }} 
+
+                        {%if form.nome.help_text is not None %}
+                            <span class="helptext">{{ form.nome.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.nome is not None %}
+                            {{ form.errors.nome }}
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="{{form.pais.id_for_label}}">{{form.pais.label}}</label>
+                        {{ form.pais }} 
+
+                        {%if form.pais.help_text is not None %}
+                            <span class="helptext">{{ form.pais.help_text}}</span>
+                        {%endif%}
+                        
+                        {% if form.errors.pais is not None %}
+                            {{ form.errors.pais }}
+                        {%endif%}
+                    </div>
+                </div>
+
+            </div>
+            
         </div>
     </div>
+</form>
 {% endblock conteudo%}
