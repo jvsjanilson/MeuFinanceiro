@@ -6,13 +6,16 @@ from django.contrib import messages
 
 
 class UserAccessMixin(PermissionRequiredMixin):
+    fail_url = None
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect_to_login(request.get_full_path(),
                                      self.get_login_url(), self.get_redirect_field_name())
         if not self.has_permission():
-            return redirect('/')
-
+            if self.fail_url is None:
+                return redirect('/')
+            else:
+                return redirect(self.fail_url)
         return super(UserAccessMixin, self).dispatch(request, *args, **kwargs)
 
 
@@ -44,3 +47,4 @@ class DeleteExceptionMixin:
             return self.render_to_response(context)
 
         return res
+    
