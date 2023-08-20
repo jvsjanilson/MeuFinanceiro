@@ -60,6 +60,7 @@ class UnidadeCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, 
     template_name = 'cadastro/unidade/form.html'
     success_url = '/unidades'
     success_message = MSG_CREATED_SUCCESS
+    fail_url = '/unidades'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -126,6 +127,7 @@ class MarcaCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = MarcaForm
     template_name = 'cadastro/marca/form.html'
     success_url = '/marcas'
+    fail_url = '/marcas'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -160,6 +162,7 @@ class CategoriaListView(UserAccessMixin, ListView):
     template_name = 'cadastro/categoria/list.html'
     paginate_by = REGISTROS_POR_PAGINA
     ordering = ('-id',)
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -187,8 +190,8 @@ class CategoriaCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     model = Categoria
     form_class = CategoriaForm
     template_name = 'cadastro/categoria/form.html'
-    
     success_url = '/categorias'
+    fail_url = '/categorias'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -251,6 +254,7 @@ class PaisCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = PaisForm
     template_name = 'cadastro/pais/form.html'
     success_url = '/pais'
+    fail_url = '/pais'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -315,6 +319,7 @@ class EstadoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = EstadoForm
     template_name = 'cadastro/estado/form.html'
     success_url = '/estados'
+    fail_url = '/estados'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -378,6 +383,7 @@ class MunicipioCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = MuncipioForm
     template_name = 'cadastro/municipio/form.html'
     success_url = '/municipios'
+    fail_url = '/municipios'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -440,6 +446,7 @@ class ProdutoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = ProdutoForm
     template_name = 'cadastro/produto/form.html'
     success_url = '/produtos'
+    fail_url = '/produtos'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -508,6 +515,7 @@ class ContatoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = ContatoForm
     template_name = 'cadastro/contato/form.html'
     success_url = '/contatos'
+    fail_url = '/contatos'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -573,6 +581,7 @@ class FormaPagamentoCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = FormaPagamentoForm
     template_name = 'cadastro/formapagamento/form.html'
     success_url = '/formapagamentos'
+    fail_url = '/formapagamentos'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -634,6 +643,7 @@ class CondicaoPagamentoCreateView(UserAccessMixin, InvalidFormMixin, CreateView)
     form_class = CondicaoPagamentoForm
     template_name = 'cadastro/condicaopagamento/form.html'
     success_url = '/condicaopagamentos'
+    fail_url = '/condicaopagamentos'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
