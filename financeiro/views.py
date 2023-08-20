@@ -58,6 +58,7 @@ class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
     success_url = reverse_lazy('contareceber-list')
     permission_required = ['financeiro.add_baixareceber']
     model = BaixaReceber
+    fail_url = '/contarecebers'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,12 +68,10 @@ class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
         return context
 
     def get(self, request, *args, **kwargs):
-
         conta = ContaReceber.objects.get(pk=kwargs['contareceber'])
         if conta.situacao == SituacaoFinanceiro.PAGO_TOTAL:
             messages.add_message(request, messages.WARNING, 'Titulo ja foi pago totalmente.')
             return redirect('/contarecebers')
-        # self.object = None
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
