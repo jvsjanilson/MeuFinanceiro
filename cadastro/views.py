@@ -5,14 +5,14 @@ from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, 
     Contato, FormaPagamento, CondicaoPagamento
 from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_UPDATED_SUCCESS, \
     MSG_DELETED_SUCCESS, MSG_FORM_ERROR
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
     PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
-from core.views import UserAccessMixin, InvalidFormMixin
+from core.views import UserAccessMixin, InvalidFormMixin, DeleteExceptionMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -84,7 +84,7 @@ class UnidadeUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, 
         return super().form_invalid(form)
 
 
-class UnidadeDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteView ):
+class UnidadeDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_unidade"]
     model = Unidade
     template_name = 'cadastro/unidade/confirm_delete.html'
@@ -146,11 +146,12 @@ class MarcaUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class MarcaDeleteView(UserAccessMixin, DeleteView):
+class MarcaDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_marca"]
     model = Marca
     template_name = 'cadastro/marca/confirm_delete.html'
     success_url = '/marcas'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class CategoriaListView(UserAccessMixin, ListView):
@@ -208,11 +209,12 @@ class CategoriaUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class CategoriaDeleteView(UserAccessMixin, DeleteView):
+class CategoriaDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_categoria"]
     model = Categoria
     template_name = 'cadastro/categoria/confirm_delete.html'
     success_url = '/categorias'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class PaisListView(UserAccessMixin, ListView):
@@ -269,11 +271,12 @@ class PaisUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class PaisDeleteView(UserAccessMixin, DeleteView):
+class PaisDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_pais"]
     model = Pais
     template_name = 'cadastro/pais/confirm_delete.html'
     success_url = '/pais'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class EstadoListView(UserAccessMixin, ListView):
@@ -332,11 +335,12 @@ class EstadoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class EstadoDeleteView(UserAccessMixin, DeleteView):
+class EstadoDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_estado"]
     model = Estado
     template_name = 'cadastro/estado/confirm_delete.html'
     success_url = '/estados'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class MunicipioListView(UserAccessMixin, ListView):
@@ -394,11 +398,12 @@ class MunicipioUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class MunicipioDeleteView(UserAccessMixin, DeleteView):
+class MunicipioDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_municipio"]
     model = Municipio
     template_name = 'cadastro/municipio/confirm_delete.html'
     success_url = '/municipios'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class ProdutoListView(UserAccessMixin, ListView):
@@ -456,11 +461,12 @@ class ProdutoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class ProdutoDeleteView(UserAccessMixin, DeleteView):
+class ProdutoDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
     permission_required = ["cadastro.delete_produto"]
     model = Produto
     template_name = 'cadastro/produto/confirm_delete.html'
-    success_url = '/produtos'    
+    success_url = '/produtos'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class ContatoListView(UserAccessMixin, ListView):
@@ -526,11 +532,12 @@ class ContatoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
   
 
-class ContatoDeleteView(UserAccessMixin, DeleteView):    
+class ContatoDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):    
     permission_required = ["cadastro.delete_contato"]
     model = Contato
     template_name = 'cadastro/contato/confirm_delete.html'
     success_url = '/contatos'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class FormaPagamentoListView(UserAccessMixin, ListView):
@@ -586,11 +593,12 @@ class FormaPagamentoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class FormaPagamentoDeleteView(UserAccessMixin, DeleteView):    
+class FormaPagamentoDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):    
     permission_required = ["cadastro.delete_formapagamento"]
     model = FormaPagamento
     template_name = 'cadastro/formapagamento/confirm_delete.html'
     success_url = '/formapagamentos'
+    success_message = MSG_DELETED_SUCCESS
 
 
 class CondicaoPagamentoListView(UserAccessMixin, ListView):
@@ -646,8 +654,9 @@ class CondicaoPagamentoUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView)
         return context
 
 
-class CondicaoPagamentoDeleteView(UserAccessMixin, DeleteView):    
+class CondicaoPagamentoDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):    
     permission_required = ["cadastro.delete_condicaopagamento"]
     model = CondicaoPagamento
     template_name = 'cadastro/condicaopagamento/confirm_delete.html'
     success_url = '/condicaopagamentos'
+    success_message = MSG_DELETED_SUCCESS
