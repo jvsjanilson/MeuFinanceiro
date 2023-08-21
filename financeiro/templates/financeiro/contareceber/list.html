@@ -71,7 +71,7 @@
                         </thead>
                         <tbody class="table-group-divider">
                             {% for m in object_list %}
-                                <tr>
+                                <tr class="{% if m.vencido == True %}table-danger{% endif %} ">
                                     <td>{{ m.documento }}</td>
                                     <td>{{ m.contato }}</td>
                                     <td >{{ m.data_emissao }}</td>

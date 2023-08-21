@@ -1,4 +1,5 @@
 import decimal
+import datetime
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from financeiro.models import ContaReceber, BaixaReceber
@@ -12,6 +13,7 @@ from django.contrib import messages
 from financeiro.choices import SituacaoFinanceiro
 from financeiro.forms import BaixaReceberForm
 from django.db.models import ProtectedError
+from django.db.models import Case, Value, When
 
 
 class EstornarContaReceber(UserAccessMixin, FormView):
@@ -106,12 +108,21 @@ class ContaReceberListView(UserAccessMixin, ListView):
 
     def get_queryset(self):
         queryset = super(ContaReceberListView, self).get_queryset()
+       
         search = self.request.GET.get('search')
         if search:
             return queryset.filter(
                 Q(documento__icontains=search) |
                 Q(contato__razao_social__icontains=search)
             )
+        
+        queryset = queryset.annotate(
+            vencido=Case(
+                When(data_vencimento__lt = datetime.date.today(), then=Value(True)),
+                When(data_vencimento__gte = datetime.date.today(), then=Value(False)),
+                default=Value(False)
+            )
+        )
         return queryset
     
 
