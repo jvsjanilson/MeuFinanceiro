@@ -4,38 +4,56 @@
 
     <div class="card shadow card-outline mb-1">
         <div class="card-header pb-0" style="">
-            <div class="row d-flex  align-items-center">
-                <div class="col-md-9">
-                    <div class="row">
-                        <div class="col-md-8 col-lg-6 ">
-                            <div class="mb-3">
-                                <form  method="get">
-                                    <div class="input-group ">
-                                        <input autofocus name="search" id="search" class="form-control " type="search" value="{{ search }}">
-                                        <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
-                                    </div>
-                                </form>
+            <form  method="get">
+                <div class="row d-flex  align-items-center">
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-6 ">
+                                <div class="mb-3">
+                                    
+                                        <div class="input-group ">
+                                            <input autofocus name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                                            <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                                        </div>
+                                
+                                </div>
                             </div>
-                        </div>
-                        {% if search %}
-                        <div class="col-md-4 align-self-center">
-                            <div class="mb-3">
-                                <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpar</a>
+                            {% if search or data_inicial or data_final %}
+                            <div class="col-md-4 align-self-center">
+                                <div class="mb-3">
+                                    <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpar</a>
+                                </div>
                             </div>
-                        </div>
-                        {%endif%}
+                            {%endif%}
 
 
+                        </div>
+                    </div>
+                    <div class="col-md-5 ">
+                        <div class="row">
+                            <div class="col-4"> 
+                                <div class="mb-3">
+                                    <select class="form-select" name="tipo_filtro_data">
+                                        <option {% if tipo_filtro_data == "1" %}selected{% endif %} value="1">Emissão</option>
+                                        <option {% if tipo_filtro_data == "2" %}selected{% endif %} value="2">Vencto</option>
+                                        
+                                    </select>
+                                </div>
+                            </div> 
+                            <div class="col-4"> 
+                                <div class="mb-3">
+                                    <input class="form-control" type="date" name="data_inicial" value="{{ data_inicial }}"/>
+                                </div>
+                            </div> 
+                            <div class="col-4"> 
+                                <div class="mb-3">
+                                    <input class="form-control" type="date" name="data_final" value="{{ data_final }}" />
+                                </div>
+                            </div> 
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3 filtro">
-                    <div class="mb-3">
-                        <select class="form-select">
-                            <option>----------------</option>
-                            </select>
-                    </div>
-                </div>
-           </div>
+            </form>
         </div>
         <div class="card-body" style="padding: .5rem .7rem">
             
