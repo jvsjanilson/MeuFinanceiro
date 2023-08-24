@@ -5,10 +5,10 @@
     <div class="card shadow card-outline mb-1">
         <div class="card-header pb-0" style="">
             <form  method="get">
-                <div class="row d-flex  align-items-center">
-                    <div class="col-md-8">
+                <div class="row d-flex justify-content-between ">
+                    <div class="col-md-6">
                         <div class="row">
-                            <div class="col-md-8 col-lg-6 ">
+                            <div class="col-md-8 ">
                                 <div class="mb-3">
                                     <div class="input-group ">
                                         <input autofocus name="search" id="search" class="form-control " type="search" value="{{ search }}">
@@ -16,7 +16,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {% if search or data_inicial or data_final %}
+                            {% if search or emissao_inicial or emissao_final or vencto_inicial or vencto_final %}
                             <div class="col-md-4 align-self-center">
                                 <div class="mb-3">
                                     <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpar</a>
@@ -25,44 +25,7 @@
                             {%endif%}
                         </div>
                     </div>
-                    <div class="col-md-4 ">
-                        <div class="row">
-                            <div class="col-6"> 
-                                <div class="mb-3">
-                                    <select class="form-select" name="tipo_filtro_data">
-                                        <option {% if tipo_filtro_data == "1" %}selected{% endif %} value="1">Emissão</option>
-                                        <option {% if tipo_filtro_data == "2" %}selected{% endif %} value="2">Vencto</option>
-                                    </select>
-                                </div>
-                            </div> 
-                            <div class="col-auto"> 
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Período
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <div class="px-3">
-                                        <label for="data_inicial">De</label>
-                                        <input type="date" id="data_inicial" name="data_inicial" value="{{ data_inicial }}" class="form-control form-control-sm" />
-
-                                        <label for="data_final">Até</label>
-                                        <input type="date" id="data_final" name="data_final" value="{{ data_final }}" class="form-control form-control-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                            {% comment %} <div class="col-4"> 
-                                <div class="mb-3">
-                                    <input class="form-control" type="date" name="data_inicial" value="{{ data_inicial }}"/>
-                                </div>
-                            </div> 
-                            <div class="col-4"> 
-                                <div class="mb-3">
-                                    <input class="form-control" type="date" name="data_final" value="{{ data_final }}" />
-                                </div>
-                            </div>  {% endcomment %}
-                        </div>
-                    </div>
+                    <div class="col-md-auto "> {% include "financeiro/contareceber/filtro.html" %} </div>
                 </div>
             </form>
         </div>

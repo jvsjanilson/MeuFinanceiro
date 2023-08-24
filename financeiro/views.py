@@ -100,22 +100,32 @@ class ContaReceberListView(UserAccessMixin, ListView):
         context['verbose_name'] = self.model._meta.verbose_name.title
         context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
         search = self.request.GET.get('search')
-        tipo_filtro_data = self.request.GET.get('tipo_filtro_data')
-        data_inicial = self.request.GET.get('data_inicial')
-        data_final = self.request.GET.get('data_final')
 
-        if data_inicial is None:
-            context['data_inicial'] = ""
+        emissao_inicial = self.request.GET.get('emissao_inicial')
+        emissao_final = self.request.GET.get('emissao_final')
+
+        vencto_inicial = self.request.GET.get('vencto_inicial')
+        vencto_final = self.request.GET.get('vencto_final')
+
+        if emissao_inicial is None:
+            context['emissao_inicial'] = ""
         else:
-            context['data_inicial'] = data_inicial
+            context['emissao_inicial'] = emissao_inicial
 
-        if data_final is None:
-            context['data_final'] = ""
+        if emissao_final is None:
+            context['emissao_final'] = ""
         else:
-            context['data_final'] = data_final
+            context['emissao_final'] = emissao_final
 
-        if tipo_filtro_data:
-            context['tipo_filtro_data'] = tipo_filtro_data
+        if vencto_inicial is None:
+            context['vencto_inicial'] = ""
+        else:
+            context['vencto_inicial'] = vencto_inicial
+
+        if vencto_final is None:
+            context['vencto_final'] = ""
+        else:
+            context['vencto_final'] = vencto_final
 
         if search:
             context['search'] = search
@@ -126,44 +136,40 @@ class ContaReceberListView(UserAccessMixin, ListView):
         queryset = super(ContaReceberListView, self).get_queryset()
        
         search = self.request.GET.get('search')
-        tipo_filtro_data = self.request.GET.get('tipo_filtro_data')
-        data_inicial = self.request.GET.get('data_inicial')
-        data_final = self.request.GET.get('data_final')
-        print(data_inicial)
-        print(data_final)
+        emissao_inicial = self.request.GET.get('emissao_inicial')
+        emissao_final = self.request.GET.get('emissao_final')
+        vencto_inicial = self.request.GET.get('vencto_inicial')
+        vencto_final = self.request.GET.get('vencto_final')
 
         if search:
             queryset = queryset.filter(
                 Q(documento__icontains=search) |
                 Q(contato__razao_social__icontains=search)
             )
-        
 
-        if tipo_filtro_data == "1":
-            if data_inicial:
-                queryset = queryset.filter(
-                    data_emissao__gte = data_inicial
-                )
-            if data_final:
-                queryset = queryset.filter(
-                    data_emissao__lte = data_final
-                )
+        if emissao_inicial:
+            queryset = queryset.filter(
+                data_emissao__gte=emissao_inicial
+            )
+        if emissao_final:
+            queryset = queryset.filter(
+                data_emissao__lte=emissao_final
+            )
 
-        if tipo_filtro_data == "2":
-            if data_inicial:
-                queryset = queryset.filter(
-                    data_vencimento__gte = data_inicial
-                )
-            if data_final:
-                queryset = queryset.filter(
-                    data_vencimento__lte = data_final
-                )
+        if vencto_inicial:
+            queryset = queryset.filter(
+                data_vencimento__gte=vencto_inicial
+            )
 
+        if vencto_final:
+            queryset = queryset.filter(
+                data_vencimento__lte=vencto_final
+            )
 
         queryset = queryset.annotate(
             vencido=Case(
-                When(data_vencimento__lt = datetime.date.today(), then=Value(True)),
-                When(data_vencimento__gte = datetime.date.today(), then=Value(False)),
+                When(data_vencimento__lt=datetime.date.today(), then=Value(True)),
+                When(data_vencimento__gte=datetime.date.today(), then=Value(False)),
                 default=Value(False)
             )
         )
