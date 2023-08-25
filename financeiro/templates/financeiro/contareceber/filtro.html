@@ -1,25 +1,26 @@
+
 <div class="row">
     <div class="col-auto">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle"
                     type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-            <span style="display: none">●</span>Situação
+                    aria-expanded="false">{% if situacao_aberto or situacao_pago_parcial or situacao_pago_total %}<span>●</span>{%endif%} Situação
             </button>
+
             <div style="width: 11rem" class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
                 <div class="form-check">
-                    <label class="form-check-label" >Aberto</label>
-                    <input class="form-check-input" type="checkbox" name="aberto" id="aberto" value="Aberto">
+                    <label class="form-check-label" >Aberto {{situacao_aberto}}</label>
+                    <input class="form-check-input" type="checkbox" name="situacao_aberto" {% if situacao_aberto is not None %}checked{%endif%} >
                 </div>
 
                 <div class="form-check">
                     <label class="form-check-label" >Pago Parcial</label>
-                    <input class="form-check-input" type="checkbox" name="pago_parcial" id="pago_parcial">
+                    <input class="form-check-input" type="checkbox" name="situacao_pago_parcial" {% if situacao_pago_parcial is not None %}checked{%endif%}>
                 </div>
 
                 <div class="form-check">
                     <label class="form-check-label" >Pago Total</label>
-                    <input class="form-check-input" type="checkbox" name="pago_total" id="pagto">
+                    <input class="form-check-input" type="checkbox" name="situacao_pago_total" {% if situacao_pago_total is not None %}checked{%endif%}>
                 </div>
 
             </div>
@@ -30,7 +31,7 @@
     <div class="dropdown">
         <button   class="btn btn-secondary dropdown-toggle"
                 type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">{% if emissao_inicial or emissao_final or vencto_inicial or vencto_final %}<span>●</span>{%endif%} Período        </button>
+                aria-expanded="false">{% if emissao_inicial or emissao_final or vencto_inicial or vencto_final %}<span>●</span>{%endif%} Período</button>
         <div style="width: 11rem" class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
              <div class="row">
                 <div class="col-12" >

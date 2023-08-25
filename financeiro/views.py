@@ -107,6 +107,19 @@ class ContaReceberListView(UserAccessMixin, ListView):
         vencto_inicial = self.request.GET.get('vencto_inicial')
         vencto_final = self.request.GET.get('vencto_final')
 
+        situacao_aberto = self.request.GET.get('situacao_aberto')
+        situacao_pago_parcial = self.request.GET.get('situacao_pago_parcial')
+        situacao_pago_total = self.request.GET.get('situacao_pago_total')
+
+        if situacao_aberto is not None:
+            context['situacao_aberto'] = situacao_aberto
+
+        if situacao_pago_parcial is not None:
+            context['situacao_pago_parcial'] = situacao_pago_parcial
+
+        if situacao_pago_total is not None:
+            context['situacao_pago_total'] = situacao_pago_total
+
         if emissao_inicial is None:
             context['emissao_inicial'] = ""
         else:
@@ -140,11 +153,30 @@ class ContaReceberListView(UserAccessMixin, ListView):
         emissao_final = self.request.GET.get('emissao_final')
         vencto_inicial = self.request.GET.get('vencto_inicial')
         vencto_final = self.request.GET.get('vencto_final')
+        situacao_aberto = self.request.GET.get('situacao_aberto')
+        situacao_pago_parcial = self.request.GET.get('situacao_pago_parcial')
+        situacao_pago_total = self.request.GET.get('situacao_pago_total')
 
         if search:
             queryset = queryset.filter(
                 Q(documento__icontains=search) |
                 Q(contato__razao_social__icontains=search)
+            )
+
+        lista = []
+
+        if situacao_aberto:
+            lista.append(SituacaoFinanceiro.ABERTO)
+
+        if situacao_pago_parcial:
+            lista.append(SituacaoFinanceiro.PAGO_PARCIAL)
+
+        if situacao_pago_total:
+            lista.append(SituacaoFinanceiro.PAGO_TOTAL)
+
+        if len(lista) > 0:
+            queryset = queryset.filter(
+                situacao__in=lista
             )
 
         if emissao_inicial:

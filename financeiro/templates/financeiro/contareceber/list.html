@@ -11,12 +11,13 @@
                             <div class="col-md-8 ">
                                 <div class="mb-3">
                                     <div class="input-group ">
+
                                         <input autofocus name="search" id="search" class="form-control " type="search" value="{{ search }}">
                                         <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
                                     </div>
                                 </div>
                             </div>
-                            {% if search or emissao_inicial or emissao_final or vencto_inicial or vencto_final %}
+                            {% if search or emissao_inicial or emissao_final or vencto_inicial or vencto_final or situacao_aberto or situacao_pago_parcial or situacao_pago_total %}
                             <div class="col-md-4 align-self-center">
                                 <div class="mb-3">
                                     <a class="btn btn-danger" href="{% url 'contareceber-list' %}"><i class="bi bi-trash"></i> Limpar</a>
