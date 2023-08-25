@@ -51,6 +51,7 @@
                     
                         <thead class="table-secondary ">
                             <tr>
+                                <th class="text-center" style="width: 4rem">Ações</th>
                                 <th>Documento</th>
                                 <th>Nome do Cliente</th>
                                 <th style="width: 7rem">Data Emissão</th>
@@ -59,24 +60,14 @@
                                 <th style="width: 7rem" class="text-end">Saldo Pagar</th>
                                 <th style="width: 7rem" class="text-end">Total Pago</th>
                                 <th class="text-center">Situação</th>
-                                <th class="text-center" style="width: 4rem">Ações</th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
                             {% for m in object_list %}
-                                <tr class="{% if m.vencido == True %}table-danger{% endif %} ">
-                                    <td>{{ m.documento }}</td>
-                                    <td>{{ m.contato }}</td>
-                                    <td >{{ m.data_emissao }}</td>
-                                    <td>{{ m.data_vencimento }}</td>
-                                    <td class="text-end">{{ m.valor_titulo }}</td>
-                                    <td class="text-end">{{ m.saldo_pagar }}</td>
-                                    <td class="text-end">{{ m.total_pago }}</td>
-                                    <td class="text-center">{{ m.get_situacao_display }}</td>
-                                    <td class="text-center ">
-
+                                    <tr >
+                                        <td class="text-center ">
                                         <div class="btn-group d-grid">
-                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button  class="btn btn-secondary btn-sm dropdown-toggle option-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-list-ul"></i>
                                             </button>
                                             <ul class="dropdown-menu">
@@ -96,10 +87,16 @@
                                                 {%endif%}
                                             </ul>
                                         </div>
-                                    
-
-                                    
                                     </td>
+                                    <td>{{ m.documento }}</td>
+                                    <td>{{ m.contato }}</td>
+                                    <td >{{ m.data_emissao }}</td>
+                                    <td class="text-center {% if m.vencido == True %}text-danger{% endif %} ">{% if m.vencido == True %}<span class="text-danger">●</span>{% endif %} {{ m.data_vencimento }}</td>
+                                    <td class="text-end">{{ m.valor_titulo }}</td>
+                                    <td class="text-end">{{ m.saldo_pagar }}</td>
+                                    <td class="text-end">{{ m.total_pago }}</td>
+                                    <td class="text-center {% if m.situacao != 1 %} text-primary {%endif%} ">{{ m.get_situacao_display }}</td>
+
                                 </tr>
                             {% empty %}
                             <tr>
