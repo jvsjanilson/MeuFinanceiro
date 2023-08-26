@@ -1,45 +1,59 @@
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
-
-
-<form method="post" novalidate> {% csrf_token %}
+<form class="mt-4" method="post" novalidate> {% csrf_token %}
     <input type="hidden" name="contareceber" value="{{ conta.pk }}">
     <div class="form-row d-flex justify-content-center">
         <div class="col-6">
-            <h4 class="text-center">Lista das baixas</h4>
-            <table class="table table-sm table-striped table-bordered table-hover">
-                <thead  class="table-secondary ">
-                    <tr>
-                        <th style="width: 10rem">Documento</th>
-                        <th>Cond. Pagto</th>
-                        <th style="width: 7rem" >Data Baixa</th>
-                        <th class="text-end">Valor Pago</th>
-                    </tr>
-                </thead>
-                
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Lista das baixas</h4>
+                </div>
 
-                <tbody class="table-group-divider">
-                    {% for m in baixas %}
-                    <tr col>
-                        <td>{{ m.contareceber.documento }}</td>
-                        <td>{{ m.condicaopagamento.nome }}</td>
-                        <td>{{ m.data_baixa }}</td>
-                        <td class="text-end" >{{ m.valor_pago }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td class="text-end fw-bold" colspan="3">Total Pago: </td>
-                        <td class="text-end fw-bold">{{ conta.total_pago }}</td>
-                    </tr>
-                </tfoot>
+                <div class="card-body m-1 p-1">
+                    <table class="mb-2 table table-sm table-striped table-bordered table-hover">
+                        <thead  class="table-secondary ">
+                            <tr>
+                                <th style="width: 10rem">Documento</th>
+                                <th>Cond. Pagto</th>
+                                <th style="width: 7rem" >Data Baixa</th>
+                                <th class="text-end">Valor Pago</th>
+                            </tr>
+                        </thead>
+                        
+        
+                        <tbody class="table-group-divider">
+                            {% for m in baixas %}
+                            <tr col>
+                                <td>{{ m.contareceber.documento }}</td>
+                                <td>{{ m.condicaopagamento.nome }}</td>
+                                <td>{{ m.data_baixa }}</td>
+                                <td class="text-end" >{{ m.valor_pago }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-end fw-bold" colspan="3">Total Pago: </td>
+                                <td class="text-end fw-bold">{{ conta.total_pago }}</td>
+                            </tr>
+                        </tfoot>
+        
+                    </table>
+                </div>
 
-            </table>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-check-lg"></i> Confirmar estorno</button>
+                    <a class="btn btn-secondary" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </div>
+
+
+            </div>
+
+
             
-            <button type="submit" class="btn btn-danger"><i class="bi bi-check-lg"></i> Confirmar estorno</button>
-            <a class="btn btn-secondary" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+            
+            
         </div>
     </div>
 </form>
