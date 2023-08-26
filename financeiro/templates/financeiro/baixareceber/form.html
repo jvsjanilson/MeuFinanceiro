@@ -65,20 +65,7 @@
             
 
             <div class="row">
-                <div class="col-md-3">
-                    <div class="mb-3">
-                        {{ form.condicaopagamento.label_tag }}
-                        {{ form.condicaopagamento }}
 
-                        {%if form.condicaopagamento.help_text  %}
-                            <span class="helptext">{{ form.condicaopagamento.help_text}}</span>
-                        {%endif%}
-
-                        {% if form.errors.condicaopagamento is not None %}
-                            {{ form.errors.condicaopagamento }}
-                        {%endif%}
-                    </div>
-                </div>
 
                 <div class="col-md-1">
                     <div class="mb-3">
@@ -153,7 +140,21 @@
                         {%endif%}
                     </div>
                 </div>
+                
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.condicaopagamento.label_tag }}
+                        {{ form.condicaopagamento }}
 
+                        {%if form.condicaopagamento.help_text  %}
+                            <span class="helptext">{{ form.condicaopagamento.help_text}}</span>
+                        {%endif%}
+
+                        {% if form.errors.condicaopagamento is not None %}
+                            {{ form.errors.condicaopagamento }}
+                        {%endif%}
+                    </div>
+                </div>
 
 
 

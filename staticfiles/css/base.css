@@ -90,6 +90,8 @@ fieldset > legend {
     font-size: small !important;
     text-transform: uppercase;
     color: #357AAA;
+    font-family: 'Roboto';
+    
 }
 
 .table {
@@ -99,13 +101,14 @@ fieldset > legend {
 }
 
 .table-sm th {
-    text-align: center !important;
+    /* text-align: center !important; */
 }
 
 .table-sm td {
     vertical-align: middle !important;
     font-size: 15px !important;
     /* font-size: small !important; */
+    font-family: 'Roboto';
 }
 
 tfoot tr td {

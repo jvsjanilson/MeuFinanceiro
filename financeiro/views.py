@@ -39,11 +39,21 @@ class EstornarContaReceber(UserAccessMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         conta = request.POST.get('contareceber')
+        ids = request.POST.getlist('check')
+
         if conta is not None:
+            if len(ids) == 0:
+                messages.add_message(request, messages.ERROR, 'Nenhum titulo foi marcado para estorno.')
+                return redirect('/contarecebers')
             try:
-                BaixaReceber.objects.filter(contareceber=conta).delete()
+                BaixaReceber.objects.filter(contareceber=conta, pk__in=ids).delete()
                 receber = ContaReceber.objects.get(pk=conta)
-                receber.situacao = SituacaoFinanceiro.ABERTO
+
+                if BaixaReceber.objects.filter(contareceber=conta).exists():
+                    receber.situacao = SituacaoFinanceiro.PAGO_PARCIAL
+                else:
+                    receber.situacao = SituacaoFinanceiro.ABERTO
+
                 receber.save()
 
                 messages.add_message(request, messages.SUCCESS, 'Titulo estornado com sucesso.')
@@ -86,6 +96,7 @@ class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
                                  'Valor do pagamento maior que o saldo devedor. Informe um valor menor ou igual.')
             return self.render_to_response(context)
         else:
+            messages.add_message(request, messages.SUCCESS, 'Baixa efetuada com sucesso.')
             return super().post(request, *args, **kwargs)
 
 

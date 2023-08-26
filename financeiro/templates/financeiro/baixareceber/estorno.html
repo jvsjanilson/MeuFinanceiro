@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
+
 <form class="mt-4" method="post" novalidate> {% csrf_token %}
     <input type="hidden" name="contareceber" value="{{ conta.pk }}">
     <div class="form-row d-flex justify-content-center">
@@ -14,31 +15,30 @@
                     <table class="mb-2 table table-sm table-striped table-bordered table-hover">
                         <thead  class="table-secondary ">
                             <tr>
+                                <th class="text-center"><input id="ckeck-total" class="form-check-input" type="checkbox" checked /></th>
                                 <th style="width: 10rem">Documento</th>
                                 <th>Cond. Pagto</th>
-                                <th style="width: 7rem" >Data Baixa</th>
+                                <th class="text-center" style="width: 7rem" >Data Baixa</th>
                                 <th class="text-end">Valor Pago</th>
                             </tr>
                         </thead>
-                        
-        
                         <tbody class="table-group-divider">
                             {% for m in baixas %}
-                            <tr col>
+                            <tr>
+                                <td class="text-center"><input checked value="{{m.pk}}" name="check" class="form-check-input" type="checkbox" /></td>
                                 <td>{{ m.contareceber.documento }}</td>
                                 <td>{{ m.condicaopagamento.nome }}</td>
-                                <td>{{ m.data_baixa }}</td>
+                                <td class="text-center" >{{ m.data_baixa }}</td>
                                 <td class="text-end" >{{ m.valor_pago }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td class="text-end fw-bold" colspan="3">Total Pago: </td>
+                                <td class="text-end fw-bold" colspan="4">Total Pago: </td>
                                 <td class="text-end fw-bold">{{ conta.total_pago }}</td>
                             </tr>
                         </tfoot>
-        
                     </table>
                 </div>
 
@@ -46,14 +46,7 @@
                     <button type="submit" class="btn btn-danger"><i class="bi bi-check-lg"></i> Confirmar estorno</button>
                     <a class="btn btn-secondary" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </div>
-
-
             </div>
-
-
-            
-            
-            
         </div>
     </div>
 </form>

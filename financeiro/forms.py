@@ -13,7 +13,7 @@ class BaixaReceberForm(forms.ModelForm):
             'valor_juros': NumberInputBootstap(),
             'valor_multa': NumberInputBootstap(),
             'valor_desconto': NumberInputBootstap(),
-            'valor_pago': NumberInputBootstap(),
+            'valor_pago': NumberInputBootstap(attrs={'autofocus': 'true'}),
             'data_baixa': DateInputBootstrap(format='%Y-%m-%d'),
         }
 
