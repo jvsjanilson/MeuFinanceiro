@@ -200,7 +200,7 @@ class ContaReceberListView(UserAccessMixin, ListView):
 
         queryset = queryset.annotate(
             vencido=Case(
-                When(data_vencimento__lt=datetime.date.today(), then=Value(True)),
+                When(situacao__in=[SituacaoFinanceiro.ABERTO, SituacaoFinanceiro.PAGO_PARCIAL], data_vencimento__lt=datetime.date.today() , then=Value(True)),
                 When(data_vencimento__gte=datetime.date.today(), then=Value(False)),
                 default=Value(False)
             )
