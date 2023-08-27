@@ -5,10 +5,11 @@ from cadastro.models import CondicaoPagamento, Contato
 from django.core.validators import MinValueValidator
 from django.db.models import Sum
 from decimal import Decimal
+from core.validators import alfa_numerico
 
 
 class ContaReceber(GenericoModel):
-    documento = models.CharField('Documento', max_length=20)
+    documento = models.CharField('Documento', max_length=20, validators=[alfa_numerico])
     parcela = models.IntegerField('Parcela', default=1, validators=[MinValueValidator(limit_value=1)])
     contato = models.ForeignKey(Contato, on_delete=models.RESTRICT, verbose_name='Cliente')
     data_emissao = models.DateField('Data Emissão')
