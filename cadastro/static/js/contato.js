@@ -3,19 +3,56 @@ django.jQuery().ready(function(){
     django.jQuery("#id_estado").on('change', function(e) {
         loadMunicipios(e.target.value);
     });
-   
+    
+    django.jQuery("#cep-search").on('click', function(e) {
+        let cep = django.jQuery("#id_cep").val()
+        if (cep) {
+            consultaCep(cep)
+        }
+    });
+  
 });
+
+async function consultaCep(cep) {
+    await django.jQuery.ajax({
+        method: 'get',
+        url: '/api/consulta/cep/'+cep,
+        success: (res) => {
+            if (res) {
+                django.jQuery("#id_endereco").val(res.logradouro);
+                django.jQuery("#id_bairro").val(res.bairro);
+                django.jQuery("#id_complemento").val(res.complemento);
+                django.jQuery("#id_estado option").filter((_, a) => { 
+                    return django.jQuery(a).text() == res.uf 
+                }).prop("selected", true);
+
+                django.jQuery("#id_municipio option").remove();
+                res.municipios.forEach((e) => {
+                    django.jQuery("#id_municipio").append(`
+                        <option ${e.selected ? 'selected' : ''}
+                            value=${e.id}>${e.nome}
+                        </option>
+                    `);
+                })
+
+                django.jQuery("#id_numero").focus();
+            }
+
+        }
+    })
+}
+
 
 /**
  * Carrega os municipios conforme
  * o estado informado por parametro
  * @param {int} estado 
  */
-function loadMunicipios(estado) {
+async function loadMunicipios(estado) {
     let municipioSelected = django.jQuery("#id_municipio").val();
      django.jQuery("#id_municipio option").remove();
     if (estado != "" && estado != undefined) {
-        django.jQuery.ajax({
+       await django.jQuery.ajax({
             method: 'get',
             url: '/api/municipios/'+estado,
             success: (res) => {
