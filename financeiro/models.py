@@ -6,14 +6,15 @@ from django.core.validators import MinValueValidator
 from django.db.models import Sum
 from decimal import Decimal
 from core.validators import alfa_numerico
+import datetime
 
 
 class ContaReceber(GenericoModel):
     documento = models.CharField('Documento', max_length=20, validators=[alfa_numerico])
     parcela = models.IntegerField('Parcela', default=1, validators=[MinValueValidator(limit_value=1)])
     contato = models.ForeignKey(Contato, on_delete=models.RESTRICT, verbose_name='Cliente')
-    data_emissao = models.DateField('Data Emissão')
-    data_vencimento = models.DateField('Data Vencto')
+    data_emissao = models.DateField('Data Emissão', default=datetime.date.today())
+    data_vencimento = models.DateField('Data Vencto', default=datetime.date.today())
     valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.01'))])
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
     situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
