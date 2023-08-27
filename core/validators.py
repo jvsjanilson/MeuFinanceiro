@@ -37,3 +37,7 @@ def number_only(value):
 
 def letter_only(value):
     RegexValidator(r'^[a-zA-Z\s]*$', 'Somente letras sem acentos.').__call__(value)
+
+
+def alfa_numerico(value):
+    RegexValidator(r'^[a-zA-Z0-9\s]*$', 'Somente letras e números').__call__(value)
