@@ -1,5 +1,7 @@
 import decimal
 import datetime
+from typing import Any
+from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from financeiro.models import ContaReceber, BaixaReceber
@@ -38,18 +40,20 @@ class EstornarContaReceber(UserAccessMixin, FormView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        conta = request.POST.get('contareceber')
+        pk = request.POST.get('contareceber')
         ids = request.POST.getlist('check')
+        baixas = self.get_context_data()['baixas']
 
-        if conta is not None:
+        if pk is not None:
             if len(ids) == 0:
                 messages.add_message(request, messages.ERROR, 'Nenhum titulo foi marcado para estorno.')
-                return redirect('/contarecebers')
+                conta = ContaReceber.objects.get(pk=request.POST.get('contareceber'))
+                return self.render_to_response({'baixas': baixas, 'conta': conta} )
             try:
-                BaixaReceber.objects.filter(contareceber=conta, pk__in=ids).delete()
-                receber = ContaReceber.objects.get(pk=conta)
+                BaixaReceber.objects.filter(contareceber=pk, pk__in=ids).delete()
+                receber = ContaReceber.objects.get(pk=pk)
 
-                if BaixaReceber.objects.filter(contareceber=conta).exists():
+                if BaixaReceber.objects.filter(contareceber=pk).exists():
                     receber.situacao = SituacaoFinanceiro.PAGO_PARCIAL
                 else:
                     receber.situacao = SituacaoFinanceiro.ABERTO
@@ -99,12 +103,32 @@ class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
             messages.add_message(request, messages.SUCCESS, 'Baixa efetuada com sucesso.')
             return super().post(request, *args, **kwargs)
 
+def checa_filtro_preenchido(request):
+    search = request.GET.get('search')
+    emissao_inicial = request.GET.get('emissao_inicial')
+    emissao_final = request.GET.get('emissao_final')
+    vencto_inicial = request.GET.get('vencto_inicial')
+    vencto_final = request.GET.get('vencto_final')
+    situacao_aberto = request.GET.get('situacao_aberto')
+    situacao_pago_parcial = request.GET.get('situacao_pago_parcial')
+    situacao_pago_total = request.GET.get('situacao_pago_total')
+
+    if (search == "" and emissao_inicial == "" and emissao_final == "" and vencto_inicial == "" 
+        and vencto_final == "" and situacao_pago_total is None and situacao_pago_parcial is None and situacao_aberto is None):
+        return True
+    else:
+        return False
 
 class ContaReceberListView(UserAccessMixin, ListView):
     permission_required = ["financeiro.view_contareceber"]
     model = ContaReceber
     template_name = 'financeiro/contareceber/list.html'
     paginate_by = REGISTROS_POR_PAGINA
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        if checa_filtro_preenchido(request):
+            return redirect('/contarecebers')
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -131,24 +155,16 @@ class ContaReceberListView(UserAccessMixin, ListView):
         if situacao_pago_total is not None:
             context['situacao_pago_total'] = situacao_pago_total
 
-        if emissao_inicial is None:
-            context['emissao_inicial'] = ""
-        else:
+        if emissao_inicial is None and emissao_inicial != "":
             context['emissao_inicial'] = emissao_inicial
 
-        if emissao_final is None:
-            context['emissao_final'] = ""
-        else:
+        if emissao_final is not None and emissao_final != "":
             context['emissao_final'] = emissao_final
 
-        if vencto_inicial is None:
-            context['vencto_inicial'] = ""
-        else:
+        if vencto_inicial is None and vencto_inicial != "":
             context['vencto_inicial'] = vencto_inicial
 
-        if vencto_final is None:
-            context['vencto_final'] = ""
-        else:
+        if vencto_final is None and vencto_final != "":
             context['vencto_final'] = vencto_final
 
         if search:
