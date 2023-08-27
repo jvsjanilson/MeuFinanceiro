@@ -21,12 +21,13 @@ from django.db.models import Case, Value, When
 def consulta_cep(request, cep):
     consulta = requests.get(f'https://viacep.com.br/ws/{cep}/json')
     json = consulta.json()
-    municipios = Municipio.objects.filter(estado=1).values('id', 'nome', 'capital').annotate(
+    municipios = Municipio.objects.filter(estado__uf=json['uf']).values('id', 'nome').annotate(
         selected=Case(
             When(codigo=json['ibge'], then=Value(True)),
             default=Value(False)
         )
     )
+
     json["municipios"] = list(municipios)
     return JsonResponse(json)
 
