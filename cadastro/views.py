@@ -451,7 +451,8 @@ class ProdutoListView(UserAccessMixin, ListView):
         if search:
             return queryset.filter(
                 Q(codigo__icontains=search) |
-                Q(nome__icontains=search)
+                Q(nome__icontains=search) |
+                Q(marca__nome__icontains=search)
             )
         return queryset    
     
