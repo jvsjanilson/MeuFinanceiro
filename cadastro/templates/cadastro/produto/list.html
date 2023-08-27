@@ -61,6 +61,7 @@
                             <th style="width: 10rem">Unidade</th>
                             <th style="width: 15rem">Marca</th>
                             <th style="width: 10rem" class="text-end">Preço Venda</th>
+                            <th style="width: 8rem" class="text-end">Estoque</th>
                             <th class="text-center" style="width: 6rem">Ações</th>
                         </tr>
                     </thead>
@@ -72,6 +73,7 @@
                                 <td>{{ m.unidade }}</td>
                                 <td>{{ m.marca }}</td>
                                 <td  class="text-end">{{ m.preco_venda }}</td>
+                                <td class="text-end" >{{ m.estoque }}</td>
                                 <td class="text-center  d-flex justify-content-evenly">
                                     {% if perms.cadastro.change_produto %}
                                         <a href="{% url 'produto-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a>

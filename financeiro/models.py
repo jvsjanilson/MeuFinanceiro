@@ -16,7 +16,8 @@ class ContaReceber(GenericoModel):
     data_emissao = models.DateField('Data Emissão', default=timezone.now)
     data_vencimento = models.DateField('Data Vencto', default=timezone.now)
     valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0,
-                                       validators=[MinValueValidator(limit_value=Decimal('0.01'))])
+                                       validators=[MinValueValidator(limit_value=Decimal('0.01'),
+                                                                     message='Informe um valor maior que 0,00')])
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
     situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices,
                                    default=SituacaoFinanceiro.ABERTO)
