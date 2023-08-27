@@ -29,7 +29,7 @@ class ContaReceberForm(forms.ModelForm):
         model = ContaReceber
         fields = ['documento', 'parcela', 'contato', 'data_emissao', 'data_vencimento', 'valor_titulo', 'observacao', 'situacao']
         widgets = {
-            'documento': TextInputBootstrap(),
+            'documento': TextInputBootstrap(attrs={'autofocus': 'true'}),
             'parcela': NumberInputBootstap(),
             'contato': SelectBootstrap(),
             'data_emissao': DateInputBootstrap(format='%Y-%m-%d'),
