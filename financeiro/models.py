@@ -15,9 +15,11 @@ class ContaReceber(GenericoModel):
     contato = models.ForeignKey(Contato, on_delete=models.RESTRICT, verbose_name='Cliente')
     data_emissao = models.DateField('Data Emissão', default=timezone.now)
     data_vencimento = models.DateField('Data Vencto', default=timezone.now)
-    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.01'))])
+    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0,
+                                       validators=[MinValueValidator(limit_value=Decimal('0.01'))])
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
-    situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
+    situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices,
+                                   default=SituacaoFinanceiro.ABERTO)
 
     def __str__(self):
         return self.documento
@@ -76,7 +78,8 @@ class ContaPagar(GenericoModel):
 
 class BaixaPagar(GenericoModel):
     contapagar = models.ForeignKey(ContaPagar, on_delete=models.CASCADE)
-    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT, verbose_name='Condição Pagamento')
+    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT,
+                                          verbose_name='Condição Pagamento')
     valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0)
