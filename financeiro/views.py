@@ -187,7 +187,8 @@ class ContaReceberListView(UserAccessMixin, ListView):
         if search:
             queryset = queryset.filter(
                 Q(documento__icontains=search) |
-                Q(contato__razao_social__icontains=search)
+                Q(contato__razao_social__icontains=search) |
+                Q(contato__cpf_cnpj__icontains=search)
             )
 
         lista = []
