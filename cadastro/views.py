@@ -9,11 +9,26 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
     PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
 from core.views import UserAccessMixin, InvalidFormMixin, DeleteExceptionMixin
 from django.contrib.messages.views import SuccessMessageMixin
+import requests
+from django.db.models import Case, Value, When
+
+
+def consulta_cep(request, cep):
+    consulta = requests.get(f'https://viacep.com.br/ws/{cep}/json')
+    json = consulta.json()
+    municipios = Municipio.objects.filter(estado=1).values('id', 'nome', 'capital').annotate(
+        selected=Case(
+            When(codigo=json['ibge'], then=Value(True)),
+            default=Value(False)
+        )
+    )
+    json["municipios"] = list(municipios)
+    return JsonResponse(json)
 
 
 def municipios(request, estado):
