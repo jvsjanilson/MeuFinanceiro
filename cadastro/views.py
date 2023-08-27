@@ -587,7 +587,8 @@ class FormaPagamentoListView(UserAccessMixin, ListView):
         search = self.request.GET.get('search')
         if search:
             return queryset.filter(
-                Q(nome__icontains=search)
+                Q(nome__icontains=search) |
+                Q(codigo__icontains=search)
             )
         return queryset
 
