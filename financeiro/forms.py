@@ -1,5 +1,5 @@
 from core.forms import *
-from financeiro.models import ContaReceber, BaixaReceber
+from financeiro.models import ContaReceber, BaixaReceber, ContaPagar
 
 
 class BaixaReceberForm(forms.ModelForm):
@@ -27,7 +27,25 @@ class ContaReceberForm(forms.ModelForm):
 
     class Meta:
         model = ContaReceber
-        fields = ['documento', 'parcela', 'contato', 'data_emissao', 'data_vencimento', 'valor_titulo', 'observacao', 'situacao']
+        fields = ['documento', 'parcela', 'contato', 'data_emissao', 'data_vencimento', 'valor_titulo', 'observacao',
+                  'situacao']
+        widgets = {
+            'documento': TextInputBootstrap(attrs={'autofocus': 'true'}),
+            'parcela': NumberInputBootstap(),
+            'contato': SelectBootstrap(),
+            'data_emissao': DateInputBootstrap(format='%Y-%m-%d'),
+            'data_vencimento': DateInputBootstrap(format='%Y-%m-%d'),
+            'valor_titulo': NumberInputBootstap(),
+            'observacao': TextInputBootstrap(),
+            'situacao': SelectBootstrap()
+        }
+
+
+class ContaPagarForm(forms.ModelForm):
+    class Meta:
+        model = ContaPagar
+        fields = ['documento', 'parcela', 'contato', 'data_emissao', 'data_vencimento', 'valor_titulo', 'observacao',
+                  'situacao']
         widgets = {
             'documento': TextInputBootstrap(attrs={'autofocus': 'true'}),
             'parcela': NumberInputBootstap(),

@@ -4,12 +4,12 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
-from financeiro.models import ContaReceber, BaixaReceber
+from financeiro.models import ContaReceber, BaixaReceber, ContaPagar
 from core.constants import REGISTROS_POR_PAGINA
 from django.db.models import Q
 from django.shortcuts import redirect
 from core.views import UserAccessMixin, InvalidFormMixin
-from financeiro.forms import ContaReceberForm
+from financeiro.forms import ContaReceberForm, ContaPagarForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 from financeiro.choices import SituacaoFinanceiro
@@ -103,6 +103,7 @@ class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
             messages.add_message(request, messages.SUCCESS, 'Baixa efetuada com sucesso.')
             return super().post(request, *args, **kwargs)
 
+
 def checa_filtro_preenchido(request):
     search = request.GET.get('search')
     emissao_inicial = request.GET.get('emissao_inicial')
@@ -118,6 +119,7 @@ def checa_filtro_preenchido(request):
         return True
     else:
         return False
+
 
 class ContaReceberListView(UserAccessMixin, ListView):
     permission_required = ["financeiro.view_contareceber"]
@@ -282,3 +284,42 @@ class ContaReceberDeleteView(UserAccessMixin, DeleteView):
             messages.add_message(request, messages.WARNING, "Título pago ou parcialmente pago não pode ser removido.")
             return redirect('/contarecebers')
         return super().get(request, *args, **kwargs)
+
+
+class ContaPagarListView(UserAccessMixin, ListView):
+    permission_required = ["financeiro.view_contapagar"]
+    model = ContaPagar
+    template_name = 'financeiro/contapagar/list.html'
+    paginate_by = REGISTROS_POR_PAGINA
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        return context
+
+
+class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+    permission_required = ["financeiro.change_contapagar"]
+    model = ContaPagar
+    form_class = ContaPagarForm
+    template_name = 'financeiro/contapagar/form.html'
+    success_url = '/contapagars'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
+
+class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
+    permission_required = ["financeiro.add_contapagar"]
+    model = ContaPagar
+    form_class = ContaPagarForm
+    template_name = 'financeiro/contapagar/form.html'
+    success_url = '/contapagars'
+
+
+class ContaPagarDeleteView(UserAccessMixin, DeleteView):
+    pass
+

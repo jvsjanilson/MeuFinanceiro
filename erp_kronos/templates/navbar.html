@@ -67,11 +67,11 @@
           </a>
           <ul class="dropdown-menu">
               {% if perms.financeiro.view_contapagar %}
-                <li><a class="dropdown-item" href="#">Contas a Pagar</a></li>
+                <li><a class="dropdown-item" href="{% url 'contapagar-list' %}">Contas a Pagar</a></li>
               {% endif %}  
 
               {% if perms.financeiro.view_contareceber %}
-                <li><a class="dropdown-item" href="{% url 'contareceber-list'  %}">Contas a Receber</a></li>
+                <li><a class="dropdown-item" href="{% url 'contareceber-list' %}">Contas a Receber</a></li>
               {% endif %}
           </ul>
         </li>

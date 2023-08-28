@@ -7,6 +7,7 @@ from django.contrib import messages
 
 class UserAccessMixin(PermissionRequiredMixin):
     fail_url = None
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect_to_login(request.get_full_path(),

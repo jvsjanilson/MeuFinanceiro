@@ -64,14 +64,22 @@ class BaixaReceber(GenericoModel):
 
 
 class ContaPagar(GenericoModel):
-    documento = models.CharField('Documento', max_length=20)
+    documento = models.CharField('Documento', max_length=20, validators=[alfa_numerico])
     parcela = models.IntegerField('Parcela', default=1)
     contato = models.ForeignKey(Contato, on_delete=models.RESTRICT, verbose_name='Fornecedor')
-    data_emissao = models.DateField('Data Emissão')
-    data_vencimento = models.DateField('Data Vencto')
-    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0)
+    data_emissao = models.DateField('Data Emissão', default=timezone.now)
+    data_vencimento = models.DateField('Data Vencto', default=timezone.now)
+    valor_titulo = models.DecimalField('Vlr. Titulo', max_digits=15, decimal_places=2, default=0,
+                                       validators=[MinValueValidator(limit_value=Decimal('0.01'),
+                                                                     message='Informe um valor maior que 0,00')])
     observacao = models.CharField('Observação', max_length=500, null=True, blank=True)
-    situacao = models.IntegerField('Situação', choices=SituacaoFinanceiro.choices, default=SituacaoFinanceiro.ABERTO)
+    situacao = models.IntegerField('Situação', null=True, blank=True, choices=SituacaoFinanceiro.choices,
+                                   default=SituacaoFinanceiro.ABERTO)
+
+    class Meta:
+        verbose_name = 'Conta pagar'
+        verbose_name_plural = 'Contas pagar'
+        # unique_together = ['documento', 'parcela', 'contato']
 
     def __str__(self):
         return self.documento

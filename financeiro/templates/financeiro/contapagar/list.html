@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+    <div class="card shadow card-outline mb-1">
+        <div class="card-header pb-0" style="">
+            <form  method="get">
+                <div class="row d-flex justify-content-between ">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8 ">
+                                <div class="mb-3">
+                                    <div class="input-group ">
+                                        <input placeholder="Documento, Nome do Cliente e CPF/CNPJ" autofocus name="search" id="search" class="form-control " type="search" value="{{ search }}">
+                                        <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if search or emissao_inicial or emissao_final or vencto_inicial or vencto_final or situacao_aberto or situacao_pago_parcial or situacao_pago_total %}
+                            <div class="col-md-4 align-self-center">
+                                <div class="mb-3">
+                                    <a class="btn btn-danger" href="{% url 'contapagar-list' %}"><i class="bi bi-trash"></i> Limpar</a>
+                                </div>
+                            </div>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="col-md-auto "> {% include "financeiro/contapagar/filtro.html" %} </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body" style="padding: .5rem .7rem">
+            
+            <div class="row mb-2">
+                <div class="col-auto ">
+                    {% if perms.cadastro.add_contareceber %}
+                    <a class="btn btn-primary " href="{% url 'contapagar-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                    {% endif %}
+                </div>
+
+                <div class="col text-center align-self-center ">
+                    <h5 class="text-muted" style="margin-bottom: 1px">Lista de {{ verbose_name_plural }} </h5>
+                </div>
+                
+            </div>
+            
+            <div class="table-responsive-sm">
+            
+                <table class="table mb-1 table-sm table-bordered table-hover caption-top">
+                    
+                        <thead class="table-secondary ">
+                            <tr>
+                                <th class="text-center" style="width: 4rem">Ações</th>
+                                <th>Documento</th>
+                                <th>Nome do Fornecedor</th>
+                                <th style="width: 7rem">Data Emissão</th>
+                                <th style="width: 7rem">Data Vencto</th>
+                                <th style="width: 7rem" class="text-end">Valor</th>
+                                <th style="width: 7rem" class="text-end">Saldo Pagar</th>
+                                <th style="width: 7rem" class="text-end">Total Pago</th>
+                                <th class="text-center">Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for m in object_list %}
+                                    <tr >
+                                        <td class="text-center ">
+                                        <div class="btn-group d-grid">
+                                            <button  class="btn btn-secondary btn-sm dropdown-toggle option-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-list-ul"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                            {% if perms.cadastro.change_contareceber %}
+                                                    <li><a class="dropdown-item" href="{% url 'contapagar-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i> Editar</a></li>
+                                                {%endif%}
+
+                                                {% if perms.cadastro.delete_contareceber %}
+                                                    <li><a class="dropdown-item" href="{% url 'contapagar-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i> Remover</a></li>
+                                                {%endif%}
+<!--                                                {% if perms.cadastro.add_baixareceber %}-->
+<!--                                                    <li><a class="dropdown-item" href="{% url 'baixareceber-baixar' m.pk %}"><i class="text-success bi bi-cash-stack"></i> Baixar</a></li>-->
+<!--                                                {%endif%}-->
+
+<!--                                                {% if perms.cadastro.delete_baixareceber %}-->
+<!--                                                    <li><a class="dropdown-item" href="{% url 'baixareceber-estornar' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>-->
+<!--                                                {%endif%}-->
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>{{ m.documento }}</td>
+                                    <td>{{ m.contato }}</td>
+                                    <td >{{ m.data_emissao }}</td>
+                                    <td class="text-center {% if m.vencido == True %}text-danger{% endif %} ">{% if m.vencido == True %}<span class="text-danger">●</span>{% endif %} {{ m.data_vencimento }}</td>
+                                    <td class="text-end">{{ m.valor_titulo }}</td>
+                                    <td class="text-end">{{ m.saldo_pagar }}</td>
+                                    <td class="text-end">{{ m.total_pago }}</td>
+                                    <td class="text-center {% if m.situacao != 1 %} text-primary {%endif%} ">{{ m.get_situacao_display }}</td>
+
+                                </tr>
+                            {% empty %}
+                            <tr>
+                                <td class="text-center" colspan="9">Sem registro</td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% include 'paginate.html' %}
+                </div>
+        </div>
+    </div>
+{% endblock conteudo%}
+
