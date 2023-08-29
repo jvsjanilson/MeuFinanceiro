@@ -296,7 +296,108 @@ class ContaPagarListView(UserAccessMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
+        search = self.request.GET.get('search')
+
+        emissao_inicial = self.request.GET.get('emissao_inicial')
+        emissao_final = self.request.GET.get('emissao_final')
+
+        vencto_inicial = self.request.GET.get('vencto_inicial')
+        vencto_final = self.request.GET.get('vencto_final')
+
+        situacao_aberto = self.request.GET.get('situacao_aberto')
+        situacao_pago_parcial = self.request.GET.get('situacao_pago_parcial')
+        situacao_pago_total = self.request.GET.get('situacao_pago_total')
+
+        if situacao_aberto is not None:
+            context['situacao_aberto'] = situacao_aberto
+
+        if situacao_pago_parcial is not None:
+            context['situacao_pago_parcial'] = situacao_pago_parcial
+
+        if situacao_pago_total is not None:
+            context['situacao_pago_total'] = situacao_pago_total
+
+        if emissao_inicial is not None and emissao_inicial != "":
+            context['emissao_inicial'] = emissao_inicial
+
+        if emissao_final is not None and emissao_final != "":
+            context['emissao_final'] = emissao_final
+
+        if vencto_inicial is not None and vencto_inicial != "":
+            context['vencto_inicial'] = vencto_inicial
+
+        if vencto_final is not None and vencto_final != "":
+            context['vencto_final'] = vencto_final
+
+        if search:
+            context['search'] = search
+        print(emissao_inicial)
+        print(context)
         return context
+
+    def get_queryset(self):
+        queryset = super(ContaPagarListView, self).get_queryset()
+
+        search = self.request.GET.get('search')
+        emissao_inicial = self.request.GET.get('emissao_inicial')
+        emissao_final = self.request.GET.get('emissao_final')
+        vencto_inicial = self.request.GET.get('vencto_inicial')
+        vencto_final = self.request.GET.get('vencto_final')
+        situacao_aberto = self.request.GET.get('situacao_aberto')
+        situacao_pago_parcial = self.request.GET.get('situacao_pago_parcial')
+        situacao_pago_total = self.request.GET.get('situacao_pago_total')
+
+        if search:
+            queryset = queryset.filter(
+                Q(documento__icontains=search) |
+                Q(contato__razao_social__icontains=search) |
+                Q(contato__cpf_cnpj__icontains=search)
+            )
+
+        lista = []
+
+        if situacao_aberto:
+            lista.append(SituacaoFinanceiro.ABERTO)
+
+        if situacao_pago_parcial:
+            lista.append(SituacaoFinanceiro.PAGO_PARCIAL)
+
+        if situacao_pago_total:
+            lista.append(SituacaoFinanceiro.PAGO_TOTAL)
+
+        if len(lista) > 0:
+            queryset = queryset.filter(
+                situacao__in=lista
+            )
+
+        if emissao_inicial:
+            queryset = queryset.filter(
+                data_emissao__gte=emissao_inicial
+            )
+        if emissao_final:
+            queryset = queryset.filter(
+                data_emissao__lte=emissao_final
+            )
+
+        if vencto_inicial:
+            queryset = queryset.filter(
+                data_vencimento__gte=vencto_inicial
+            )
+
+        if vencto_final:
+            queryset = queryset.filter(
+                data_vencimento__lte=vencto_final
+            )
+
+        queryset = queryset.annotate(
+            vencido=Case(
+                When(situacao__in=[SituacaoFinanceiro.ABERTO, SituacaoFinanceiro.PAGO_PARCIAL],
+                     data_vencimento__lt=datetime.date.today(), then=Value(True)),
+                When(data_vencimento__gte=datetime.date.today(), then=Value(False)),
+                default=Value(False)
+            )
+        )
+        return queryset
 
 
 class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
