@@ -422,5 +422,15 @@ class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
 
 
 class ContaPagarDeleteView(UserAccessMixin, DeleteView):
-    pass
+    permission_required = ["financeiro.delete_contapagar"]
+    model = ContaPagar
+    template_name = 'financeiro/contapagar/confirm_delete.html'
+    success_url = reverse_lazy('contapagar-list')
+
+    def get(self, request, *args, **kwargs):
+        conta = ContaPagar.objects.get(pk=self.kwargs['pk'])
+        if conta.situacao != SituacaoFinanceiro.ABERTO:
+            messages.add_message(request, messages.WARNING, "Título pago ou parcialmente pago não pode ser removido.")
+            return redirect('/contapagars')
+        return super().get(request, *args, **kwargs)
 
