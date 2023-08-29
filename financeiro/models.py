@@ -84,9 +84,20 @@ class ContaPagar(GenericoModel):
     def __str__(self):
         return self.documento
 
+    @property
+    def saldo_pagar(self):
+        return self.valor_titulo - self.total_pago
+
+    @property
+    def total_pago(self) -> float:
+        total_pago = self.baixas.aggregate(saldo=Sum('valor_pago'))['saldo']
+        if total_pago is None:
+            total_pago = Decimal('0.00')
+        return total_pago
+
 
 class BaixaPagar(GenericoModel):
-    contapagar = models.ForeignKey(ContaPagar, on_delete=models.CASCADE)
+    contapagar = models.ForeignKey(ContaPagar, on_delete=models.CASCADE, related_name='baixas')
     condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT,
                                           verbose_name='Condição Pagamento')
     valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0)

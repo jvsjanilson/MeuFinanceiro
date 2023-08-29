@@ -420,6 +420,11 @@ class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     template_name = 'financeiro/contapagar/form.html'
     success_url = '/contapagars'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        return context
+
 
 class ContaPagarDeleteView(UserAccessMixin, DeleteView):
     permission_required = ["financeiro.delete_contapagar"]
