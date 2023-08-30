@@ -34,7 +34,7 @@ class ContaReceber(GenericoModel):
         total_pago = self.baixas.aggregate(saldo=Sum('valor_pago'))['saldo']
         if total_pago is None:
             total_pago = Decimal('0.00')
-        return total_pago
+        return Decimal(total_pago)
 
     class Meta:
         verbose_name = 'Conta Receber'

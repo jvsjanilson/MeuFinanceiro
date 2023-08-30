@@ -53,6 +53,6 @@ class ContaPagarForm(forms.ModelForm):
             'data_emissao': DateInputBootstrap(format='%Y-%m-%d'),
             'data_vencimento': DateInputBootstrap(format='%Y-%m-%d'),
             'valor_titulo': NumberInputBootstap(),
-            'observacao': TextInputBootstrap(),
+            'observacao': TextareaInputBootstrap(),
             'situacao': SelectBootstrap()
         }

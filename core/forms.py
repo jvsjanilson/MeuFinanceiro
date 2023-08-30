@@ -16,6 +16,20 @@ class TextInputBootstrap(forms.TextInput):
         super().__init__(attrs)
 
 
+class TextareaInputBootstrap(forms.Textarea):
+    def __init__(self, attrs=None, render_value=False):
+        old_attrs = attrs
+        if attrs is None:
+            attrs = {}
+            attrs['class'] = 'form-control form-control-sm'
+        else:
+            try:
+                if attrs['class'] != "":
+                    attrs['class'] = old_attrs['class'] + ' form-control form-control-sm'
+            except KeyError:
+                attrs['class'] = 'form-control form-control-sm'
+        super().__init__(attrs)
+
 
 class SelectBootstrap(forms.Select):
     def __init__(self, attrs=None, render_value=False):
