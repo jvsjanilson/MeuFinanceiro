@@ -12,8 +12,8 @@
         <div class="card-header">
             <div class="row d-flex align-items-center">
                 <div class="col">
-                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'contato-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <button class="text-white btn-sm btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn-sm btn bg-secondary bg-gradient" href="{% url 'contato-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </div>
                 <div class="col-auto">
                     <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
@@ -306,16 +306,16 @@
                                 {%endif%}
                             </div>
                         </div>
-    
-                    </div> 
-    
-                    
-                    
+                    </div>
+
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                {{ form.ativo.label_tag }}
-                                {{ form.ativo }} 
+
+                                <div class="form-check form-switch">
+                                    {{ form.ativo.label_tag }}
+                                    {{ form.ativo }}
+                                </div>
                             </div>
                         </div>
                     </div> 
