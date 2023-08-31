@@ -6,8 +6,8 @@
         <div class="card-header">
             <div class="row d-flex align-items-center">
                 <div class="col">
-                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'unidade-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <button class="text-white btn btn-sm bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn btn-sm bg-secondary bg-gradient" href="{% url 'unidade-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </div>
                 <div class="col-auto">
                     <h4 class="card-title">{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="mb-3">
-                        <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
+                        {{ form.codigo.label_tag }}
                         {{ form.codigo }} 
 
                         {%if form.codigo.help_text is not None %}
@@ -36,7 +36,7 @@
 
                 <div class="col-md-10">
                     <div class="mb-3">
-                        <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                        {{ form.nome.label_tag }}
                         {{ form.nome }} 
 
                         {%if form.nome.help_text is not None %}
