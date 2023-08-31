@@ -7,8 +7,8 @@
         <div class="card-header">
             <div class="row d-flex align-items-center">
                 <div class="col">
-                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'categoria-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <button class="text-white btn btn-sm bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn btn-sm bg-secondary bg-gradient" href="{% url 'categoria-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </div>
                 <div class="col-auto">
                     <h4 class="card-title">{%if object %} Editar {% else %} Nova {%endif%} {{ verbose_name }}</h4>
