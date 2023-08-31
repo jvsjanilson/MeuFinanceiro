@@ -11,8 +11,8 @@
                             <div class="mb-3">
                                 <form  method="get">
                                     <div class="input-group ">
-                                        <input name="search" id="search" class="form-control " type="search" value="{{ search }}">
-                                        <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                                        <input name="search" id="search" class="form-control form-control-sm" type="search" value="{{ search }}">
+                                        <button type="submit" class="btn btn-sm btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
                                     </div>
                                 </form>
                             </div>
@@ -20,7 +20,7 @@
                         {% if search %}
                         <div class="col-md-4 align-self-center">
                             <div class="mb-3">
-                                <a class="btn btn-danger" href="{% url 'produto-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
+                                <a class="btn btn-sm btn-danger" href="{% url 'produto-list' %}"><i class="bi bi-trash"></i> Limpa filtro</a>
                             </div>
                         </div>
                         {%endif%}
@@ -44,7 +44,7 @@
                     <div class="row">
                         <div class="col-auto">
                             {% if perms.cadastro.add_produto %}
-                            <a class="btn btn-primary " href="{% url 'produto-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                            <a class="btn btn-sm btn-primary " href="{% url 'produto-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
                             {% endif %}
                         </div>
 
@@ -56,24 +56,18 @@
                 </caption>
                     <thead class="table-secondary ">
                         <tr>
+                            <th class="text-center" style="width: 4.5rem">Ações</th>
                             <th style="width: 10rem">Codigo</th>
                             <th>Nome</th>
                             <th style="width: 10rem">Unidade</th>
                             <th style="width: 15rem">Marca</th>
                             <th style="width: 10rem" class="text-end">Preço Venda</th>
                             <th style="width: 8rem" class="text-end">Estoque</th>
-                            <th class="text-center" style="width: 6rem">Ações</th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
                         {% for m in object_list %}
                             <tr>
-                                <td>{{ m.codigo }}</td>
-                                <td>{{ m.nome }}</td>
-                                <td>{{ m.unidade }}</td>
-                                <td>{{ m.marca }}</td>
-                                <td  class="text-end">{{ m.preco_venda }}</td>
-                                <td class="text-end" >{{ m.estoque }}</td>
                                 <td class="text-center  d-flex justify-content-evenly">
                                     {% if perms.cadastro.change_produto %}
                                         <a href="{% url 'produto-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i></a>
@@ -83,6 +77,12 @@
                                         <a  href="{% url 'produto-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i></a>
                                     {%endif%} 
                                 </td>
+                                <td>{{ m.codigo }}</td>
+                                <td>{{ m.nome }}</td>
+                                <td>{{ m.unidade }}</td>
+                                <td>{{ m.marca }}</td>
+                                <td  class="text-end">{{ m.preco_venda }}</td>
+                                <td class="text-end" >{{ m.estoque }}</td>
                             </tr>
                         {% empty %}
                            <tr>

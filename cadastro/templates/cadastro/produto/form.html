@@ -6,12 +6,15 @@
     <div class="card shadow card-outline">
         
         <div class="card-header">
-            <div class="row">
-                <div class="col-12 col-md-12">
-                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
-                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'produto-list' %}"><i class="bi bi-reply"></i> Voltar</a>
-                    <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+            <div class="row d-flex align-items-center">
+                <div class="col">
+                    <button class="text-white btn btn-sm bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Salvar</button>
+                    <a class="text-white btn btn-sm bg-secondary bg-gradient" href="{% url 'produto-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                 </div>
+                <div class="col-auto">
+                   <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
+
+               </div>
             </div>
         </div>
     
@@ -21,7 +24,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="mb-3">
-                        <label for="{{form.codigo.id_for_label}}">{{form.codigo.label}}</label>
+                        {{ form.codigo.label_tag }}
                         {{ form.codigo }} 
 
                         {%if form.codigo.help_text  %}
@@ -36,7 +39,7 @@
 
                 <div class="col-md-10">
                     <div class="mb-3">
-                        <label for="{{form.nome.id_for_label}}">{{form.nome.label}}</label>
+                        {{ form.nome.label_tag }}
                         {{ form.nome }} 
 
                         {%if form.nome.help_text  %}
@@ -55,7 +58,8 @@
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.unidade.id_for_label}}">{{form.unidade.label}}</label>
+
+                        {{ form.unidade.label_tag }}
                         {{ form.unidade }} 
 
                         {%if form.unidade.help_text  %}
@@ -70,7 +74,7 @@
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.marca.id_for_label}}">{{form.marca.label}}</label>
+                        {{ form.marca.label_tag }}
                         {{ form.marca }} 
                         
                         {%if form.marca.help_text  %}
@@ -85,7 +89,7 @@
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.categoria.id_for_label}}">{{form.categoria.label}}</label>
+                        {{ form.categoria.label_tag }}
                         {{ form.categoria }} 
                         
                         {%if form.categoria.help_text  %}
@@ -103,7 +107,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.preco_compra.id_for_label}}">{{form.preco_compra.label}}</label>
+                        {{ form.preco_compra.label_tag }}
                         {{ form.preco_compra }} 
 
                         {%if form.preco_compra.help_text  %}
@@ -118,7 +122,7 @@
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.preco_venda.id_for_label}}">{{form.preco_venda.label}}</label>
+                        {{ form.preco_venda.label_tag }}
                         {{ form.preco_venda }} 
                         
                         {%if form.preco_venda.help_text  %}
@@ -133,7 +137,8 @@
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.estoque.id_for_label}}">{{form.estoque.label}}</label>
+                        
+                        {{ form.estoque.label_tag }}
                         {{ form.estoque }} 
 
                         {%if form.estoque.help_text  %}
@@ -150,8 +155,10 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="{{form.ativo.id_for_label}}">{{form.ativo.label}}</label>
-                        {{ form.ativo }} 
+                        <div class="form-check form-switch">
+                            {{ form.ativo.label_tag }}
+                            {{ form.ativo }}
+                        </div>
                     </div>
                 </div>
             </div> 
