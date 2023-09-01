@@ -115,3 +115,6 @@ tfoot tr td {
     font-size: small !important;
     vertical-align: middle !important;
 }
+label {
+    margin-bottom: 0.095rem !important;
+}
