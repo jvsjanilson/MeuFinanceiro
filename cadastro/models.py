@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Pais(GenericoModel):
-    codigo = models.IntegerField('Código')
+    codigo = models.IntegerField('Código', unique=True)
     nome = models.CharField('Nome', max_length=120)
 
     def __str__(self):
@@ -18,7 +18,7 @@ class Pais(GenericoModel):
 
 
 class Estado(GenericoModel):
-    codigo = models.IntegerField('Código')
+    codigo = models.IntegerField('Código', unique=True)
     uf = models.CharField('UF', max_length=2)
     nome = models.CharField('Nome', max_length=120)
     pais = models.ForeignKey(Pais, on_delete=models.RESTRICT, verbose_name='Pais')
@@ -32,7 +32,7 @@ class Estado(GenericoModel):
 
 
 class Municipio(GenericoModel):
-    codigo = models.IntegerField('Código')
+    codigo = models.IntegerField('Código', unique=True)
     nome = models.CharField('Nome', max_length=120)
     capital = models.BooleanField(default=False)
     estado = models.ForeignKey(Estado, on_delete=models.RESTRICT)
