@@ -3,6 +3,7 @@ from core.models import GenericoModel
 from core.validators import valida_cpfcnpj, number_only
 from cadastro.choices import TipoPagamento, TipoIntervalo, TipoVisibilidade
 from django.core.validators import MinValueValidator, MaxValueValidator
+from core.validators import letter_only
 
 
 class Pais(GenericoModel):
@@ -19,7 +20,7 @@ class Pais(GenericoModel):
 
 class Estado(GenericoModel):
     codigo = models.IntegerField('Código', unique=True)
-    uf = models.CharField('UF', max_length=2)
+    uf = models.CharField('UF', max_length=2, unique=True, validators=[letter_only])
     nome = models.CharField('Nome', max_length=120)
     pais = models.ForeignKey(Pais, on_delete=models.RESTRICT, verbose_name='Pais')
 
