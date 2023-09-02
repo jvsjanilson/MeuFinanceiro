@@ -4,12 +4,12 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
-from financeiro.models import ContaReceber, BaixaReceber, ContaPagar
+from financeiro.models import ContaReceber, BaixaReceber, ContaPagar, BaixaPagar
 from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_DELETED_SUCCESS, MSG_UPDATED_SUCCESS
 from django.db.models import Q
 from django.shortcuts import redirect
 from core.views import UserAccessMixin, InvalidFormMixin
-from financeiro.forms import ContaReceberForm, ContaPagarForm
+from financeiro.forms import ContaReceberForm, ContaPagarForm, BaixaPagarForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 from financeiro.choices import SituacaoFinanceiro
@@ -19,7 +19,7 @@ from django.db.models import Case, Value, When
 from django.contrib.messages.views import SuccessMessageMixin
 
 
-class EstornarContaReceber(UserAccessMixin, FormView):
+class EstornarContaReceberView(UserAccessMixin, FormView):
     success_url = reverse_lazy('contareceber-list')
     template_name = 'financeiro/baixareceber/estorno.html'
     form_class = BaixaReceberForm
@@ -69,13 +69,14 @@ class EstornarContaReceber(UserAccessMixin, FormView):
         return super().post(request, *args, **kwargs)
 
 
-class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
+class BaixarContaReceberView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
     template_name = 'financeiro/baixareceber/form.html'
     form_class = BaixaReceberForm
     success_url = reverse_lazy('contareceber-list')
     permission_required = ['financeiro.add_baixareceber']
     model = BaixaReceber
     fail_url = '/contarecebers'
+    success_message = 'Baixa efetuada com sucesso.'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -101,7 +102,6 @@ class BaixarContaReceber(UserAccessMixin, InvalidFormMixin, CreateView):
                                  'Valor do pagamento maior que o saldo devedor. Informe um valor menor ou igual.')
             return self.render_to_response(context)
         else:
-            messages.add_message(request, messages.SUCCESS, 'Baixa efetuada com sucesso.')
             return super().post(request, *args, **kwargs)
 
 
@@ -445,4 +445,92 @@ class ContaPagarDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteView):
             messages.add_message(request, messages.WARNING, "Título pago ou parcialmente pago não pode ser removido.")
             return redirect('/contapagars')
         return super().get(request, *args, **kwargs)
+
+
+
+class BaixarContaPagarView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
+    template_name = 'financeiro/baixapagar/form.html'
+    form_class = BaixaPagarForm
+    success_url = reverse_lazy('contapagar-list')
+    permission_required = ['financeiro.add_baixapagar']
+    model = BaixaPagar
+    fail_url = '/contapagars'
+    success_message = 'Baixa efetuada com sucesso.'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        conta = ContaPagar.objects.get(pk=self.kwargs['contapagar'])
+        context['verbose_name'] = self.model._meta.verbose_name.title
+        context['conta'] = conta
+        return context
+
+    def get(self, request, *args, **kwargs):
+        conta = ContaPagar.objects.get(pk=kwargs['contapagar'])
+        if conta.situacao == SituacaoFinanceiro.PAGO_TOTAL:
+            messages.add_message(request, messages.WARNING, 'Titulo ja foi pago totalmente.')
+            return redirect('/contapagars')
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        context = self.get_context_data()
+        conta = ContaPagar.objects.get(pk=kwargs['contapagar'])
+
+        if decimal.Decimal(request.POST.get('valor_pago')) > conta.saldo_pagar:
+            messages.add_message(request, messages.WARNING,
+                                 'Valor do pagamento maior que o saldo devedor. Informe um valor menor ou igual.')
+            return self.render_to_response(context)
+        else:
+            return super().post(request, *args, **kwargs)
+
+
+
+class EstornarContaPagarView(UserAccessMixin, FormView):
+    success_url = reverse_lazy('contapagar-list')
+    template_name = 'financeiro/baixapagar/estorno.html'
+    form_class = BaixaPagarForm
+    permission_required = ['financeiro.add_baixapagar']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        baixas = BaixaPagar.objects.filter(contapagar=self.kwargs['contapagar'])
+        conta = ContaPagar.objects.get(pk=self.kwargs['contapagar'])
+        context['baixas'] = baixas
+        context['conta'] = conta
+        return context
+
+    def get(self, request, *args, **kwargs):
+        baixas = BaixaPagar.objects.filter(contapagar=kwargs['contapagar'])
+        if len(baixas) == 0:
+            messages.add_message(request, messages.INFO, 'Sem baixa para estorno')
+            return redirect('/contapagars')
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('contapagar')
+        ids = request.POST.getlist('check')
+        baixas = self.get_context_data()['baixas']
+
+        if pk is not None:
+            if len(ids) == 0:
+                messages.add_message(request, messages.ERROR, 'Nenhum titulo foi marcado para estorno.')
+                conta = ContaPagar.objects.get(pk=request.POST.get('contapagar'))
+                return self.render_to_response({'baixas': baixas, 'conta': conta} )
+            try:
+                BaixaPagar.objects.filter(contapagar=pk, pk__in=ids).delete()
+                pagar = ContaPagar.objects.get(pk=pk)
+
+                if BaixaPagar.objects.filter(contarpagar=pk).exists():
+                    pagar.situacao = SituacaoFinanceiro.PAGO_PARCIAL
+                else:
+                    pagar.situacao = SituacaoFinanceiro.ABERTO
+
+                pagar.save()
+
+                messages.add_message(request, messages.SUCCESS, 'Titulo estornado com sucesso.')
+                return redirect('/contapagars')
+            except ProtectedError:
+                messages.add_message(request, messages.ERROR, 'Erro ao estornar titulo.')
+                return redirect('/contapagars')
+        return super().post(request, *args, **kwargs)
 
