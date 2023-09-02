@@ -16,6 +16,7 @@ from financeiro.choices import SituacaoFinanceiro
 from financeiro.forms import BaixaReceberForm
 from django.db.models import ProtectedError
 from django.db.models import Case, Value, When
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 class EstornarContaReceber(UserAccessMixin, FormView):
@@ -238,7 +239,7 @@ class ContaReceberListView(UserAccessMixin, ListView):
         return queryset
     
 
-class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
+class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
     permission_required = ["financeiro.add_contareceber"]
     model = ContaReceber
     form_class = ContaReceberForm
@@ -252,7 +253,7 @@ class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
         return context
 
     
-class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, UpdateView):
     permission_required = ["financeiro.change_contareceber"]
     model = ContaReceber
     form_class = ContaReceberForm
@@ -274,7 +275,7 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return super().get(request, *args, **kwargs)  
 
 
-class ContaReceberDeleteView(UserAccessMixin, DeleteView):
+class ContaReceberDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteView):
     permission_required = ["financeiro.delete_contareceber"]
     model = ContaReceber
     template_name = 'financeiro/contareceber/confirm_delete.html'
@@ -403,7 +404,7 @@ class ContaPagarListView(UserAccessMixin, ListView):
         return queryset
 
 
-class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
+class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, UpdateView):
     permission_required = ["financeiro.change_contapagar"]
     model = ContaPagar
     form_class = ContaPagarForm
@@ -417,7 +418,7 @@ class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
         return context
 
 
-class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
+class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
     permission_required = ["financeiro.add_contapagar"]
     model = ContaPagar
     form_class = ContaPagarForm
@@ -431,7 +432,7 @@ class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
         return context
 
 
-class ContaPagarDeleteView(UserAccessMixin, DeleteView):
+class ContaPagarDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteView):
     permission_required = ["financeiro.delete_contapagar"]
     model = ContaPagar
     template_name = 'financeiro/contapagar/confirm_delete.html'
