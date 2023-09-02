@@ -116,10 +116,13 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
                     <div class="mb-3">
                         {{ form.observacao.label_tag }}
-                        {{ form.observacao }} 
+                        {{ form.observacao }}
 
                         {%if form.observacao.help_text is not None %}
                             <span class="helptext">{{ form.observacao.help_text}}</span>

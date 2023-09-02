@@ -70,20 +70,20 @@
                                                 <i class="bi bi-list-ul"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                            {% if perms.cadastro.change_contareceber %}
+                                            {% if perms.cadastro.change_contapagar %}
                                                     <li><a class="dropdown-item" href="{% url 'contapagar-update' m.pk %}"><i class="text-primary bi bi-pencil" ></i> Editar</a></li>
                                                 {%endif%}
 
-                                                {% if perms.cadastro.delete_contareceber %}
+                                                {% if perms.cadastro.delete_contapagar %}
                                                     <li><a class="dropdown-item" href="{% url 'contapagar-delete' m.pk %}"><i class="text-danger bi bi-trash3"></i> Remover</a></li>
                                                 {%endif%}
-<!--                                                {% if perms.cadastro.add_baixareceber %}-->
-<!--                                                    <li><a class="dropdown-item" href="{% url 'baixareceber-baixar' m.pk %}"><i class="text-success bi bi-cash-stack"></i> Baixar</a></li>-->
-<!--                                                {%endif%}-->
+                                                {% if perms.cadastro.add_baixapagar %}
+                                                    <li><a class="dropdown-item" href="{% url 'baixapagar-baixar' m.pk %}"><i class="text-success bi bi-cash-stack"></i> Baixar</a></li>
+                                                {%endif%}
 
-<!--                                                {% if perms.cadastro.delete_baixareceber %}-->
-<!--                                                    <li><a class="dropdown-item" href="{% url 'baixareceber-estornar' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>-->
-<!--                                                {%endif%}-->
+                                                {% if perms.cadastro.delete_baixapagar %}
+                                                    <li><a class="dropdown-item" href="{% url 'baixapagar-estornar' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>
+                                                {%endif%}
                                             </ul>
                                         </div>
                                     </td>

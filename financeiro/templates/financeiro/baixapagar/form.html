@@ -3,13 +3,13 @@
 {% block conteudo %}
 
 <form method="post" novalidate>{% csrf_token %}
-    <input type="hidden" name="contareceber" value="{{ conta.pk }}"/>
+    <input type="hidden" name="contapagar" value="{{ conta.pk }}"/>
     <div class="card shadow card-outline">
         <div class="card-header">
             <div class="row">
                 <div class="col-12 col-md-12">
-                    <button class="text-white btn bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Baixar</button>
-                    <a class="text-white btn bg-secondary bg-gradient" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                    <button class="text-white btn btn-sm bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Baixar</button>
+                    <a class="text-white btn btn-sm bg-secondary bg-gradient" href="{% url 'contapagar-list' %}"><i class="bi bi-reply"></i> Voltar</a>
                     <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
                 </div>
             </div>
@@ -155,26 +155,7 @@
                         {%endif%}
                     </div>
                 </div>
-
-
-
-            </div> <!-- fim row -->
-            {% comment %} <div class="row">
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        {{ form.contareceber.label_tag }}
-                        {{ form.contareceber }}
-
-                        {%if form.contareceber.help_text  %}
-                            <span class="helptext">{{ form.contareceber.help_text}}</span>
-                        {%endif%}
-
-                        {% if form.errors.contareceber is not None %}
-                            {{ form.errors.contareceber }}
-                        {%endif%}
-                    </div>
-                </div>
-            </div> {% endcomment %}
+            </div> 
         </div> <!-- fim body -->
 
     </div>

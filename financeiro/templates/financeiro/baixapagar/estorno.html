@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+<form class="mt-1" method="post" novalidate> {% csrf_token %}
+    <input type="hidden" name="contapagar" value="{{ conta.pk }}">
+    <div class="form-row">
+        
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Lista das baixas</h4>
+                </div>
+
+                <div class="card-body m-1 p-1">
+                    <table class="mb-2 table table-sm table-striped table-bordered table-hover">
+                        <thead  class="table-secondary ">
+                            <tr>
+                                <th style="width: 5rem" class="text-center"><input id="ckeck-total" class="form-check-input" type="checkbox" checked /></th>
+                                <th style="width: 10rem">Documento</th>
+                                <th>Cond. Pagto</th>
+                                <th class="text-center" style="width: 7rem" >Data Baixa</th>
+                                <th style="width: 10rem" class="text-end">Valor Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for m in baixas %}
+                            <tr>
+                                <td class="text-center"><input checked value="{{m.pk}}" name="check" class="form-check-input" type="checkbox" /></td>
+                                <td>{{ m.contapagar.documento }}</td>
+                                <td>{{ m.condicaopagamento.nome }}</td>
+                                <td class="text-center" >{{ m.data_baixa }}</td>
+                                <td class="text-end" >{{ m.valor_pago }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-end fw-bold" colspan="4">Total Pago: </td>
+                                <td class="text-end fw-bold">{{ conta.total_pago }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-check-lg"></i> Confirmar estorno</button>
+                    <a class="btn btn-sm btn-secondary" href="{% url 'contapagar-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </div>
+            </div>
+        </div>
+    
+</form>
+
+{% endblock conteudo %}
