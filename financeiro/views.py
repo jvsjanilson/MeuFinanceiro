@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView
 from financeiro.models import ContaReceber, BaixaReceber, ContaPagar
-from core.constants import REGISTROS_POR_PAGINA
+from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_DELETED_SUCCESS, MSG_UPDATED_SUCCESS
 from django.db.models import Q
 from django.shortcuts import redirect
 from core.views import UserAccessMixin, InvalidFormMixin
@@ -244,6 +244,7 @@ class ContaReceberCreate(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = ContaReceberForm
     template_name = 'financeiro/contareceber/form.html'
     success_url = '/contarecebers'
+    success_message = MSG_CREATED_SUCCESS 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -257,6 +258,7 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     form_class = ContaReceberForm
     template_name = 'financeiro/contareceber/form.html'
     success_url = '/contarecebers'
+    success_message = MSG_UPDATED_SUCCESS
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -277,6 +279,7 @@ class ContaReceberDeleteView(UserAccessMixin, DeleteView):
     model = ContaReceber
     template_name = 'financeiro/contareceber/confirm_delete.html'
     success_url = reverse_lazy('contareceber-list')
+    success_message = MSG_DELETED_SUCCESS
 
     def get(self, request, *args, **kwargs):
         conta = ContaReceber.objects.get(pk=self.kwargs['pk'])
@@ -406,6 +409,7 @@ class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
     form_class = ContaPagarForm
     template_name = 'financeiro/contapagar/form.html'
     success_url = '/contapagars'
+    success_message = MSG_UPDATED_SUCCESS
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -419,6 +423,7 @@ class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
     form_class = ContaPagarForm
     template_name = 'financeiro/contapagar/form.html'
     success_url = '/contapagars'
+    success_message = MSG_CREATED_SUCCESS
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -431,6 +436,7 @@ class ContaPagarDeleteView(UserAccessMixin, DeleteView):
     model = ContaPagar
     template_name = 'financeiro/contapagar/confirm_delete.html'
     success_url = reverse_lazy('contapagar-list')
+    success_message = MSG_DELETED_SUCCESS
 
     def get(self, request, *args, **kwargs):
         conta = ContaPagar.objects.get(pk=self.kwargs['pk'])
