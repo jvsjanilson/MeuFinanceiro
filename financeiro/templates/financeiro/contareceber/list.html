@@ -51,10 +51,10 @@
                         <thead class="table-secondary ">
                             <tr>
                                 <th class="text-center" style="width: 4rem">Ações</th>
-                                <th>Documento</th>
+                                <th style="width: 10rem">Documento</th>
                                 <th>Nome do Cliente</th>
-                                <th style="width: 7rem">Data Emissão</th>
-                                <th style="width: 7rem">Data Vencto</th>
+                                <th class="text-center" style="width: 7rem">Data Emissão</th>
+                                <th class="text-center" style="width: 7rem">Data Vencto</th>
                                 <th style="width: 7rem" class="text-end">Valor</th>
                                 <th style="width: 7rem" class="text-end">Saldo Pagar</th>
                                 <th style="width: 7rem" class="text-end">Total Pago</th>
@@ -89,7 +89,7 @@
                                     </td>
                                     <td>{{ m.documento }}</td>
                                     <td>{{ m.contato }}</td>
-                                    <td >{{ m.data_emissao }}</td>
+                                    <td class="text-center" >{{ m.data_emissao }}</td>
                                     <td class="text-center {% if m.vencido == True %}text-danger{% endif %} ">{% if m.vencido == True %}<span class="text-danger">●</span>{% endif %} {{ m.data_vencimento }}</td>
                                     <td class="text-end">{{ m.valor_titulo }}</td>
                                     <td class="text-end">{{ m.saldo_pagar }}</td>
