@@ -11,15 +11,15 @@
                             <div class="col-md-8 ">
                                 <div class="mb-3">
                                     <div class="input-group ">
-                                        <input placeholder="Documento, Nome do Cliente e CPF/CNPJ" autofocus name="search" id="search" class="form-control" type="search" value="{{ search }}">
-                                        <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
+                                        <input placeholder="Documento, Nome do Cliente e CPF/CNPJ" autofocus name="search" id="search" class="form-control form-control-sm" type="search" value="{{ search }}">
+                                        <button type="submit" class="btn btn-sm btn-secondary"><i class="bi bi-search"></i> Pesquisar</button>
                                     </div>
                                 </div>
                             </div>
                             {% if search or emissao_inicial or emissao_final or vencto_inicial or vencto_final or situacao_aberto or situacao_pago_parcial or situacao_pago_total %}
                             <div class="col-md-4 align-self-center">
                                 <div class="mb-3">
-                                    <a class="btn btn-danger" href="{% url 'contapagar-list' %}"><i class="bi bi-trash"></i> Limpar</a>
+                                    <a class="btn btn-sm btn-danger" href="{% url 'contapagar-list' %}"><i class="bi bi-trash"></i> Limpar</a>
                                 </div>
                             </div>
                             {%endif%}
@@ -34,7 +34,7 @@
             <div class="row mb-2">
                 <div class="col-auto ">
                     {% if perms.cadastro.add_contareceber %}
-                    <a class="btn btn-primary " href="{% url 'contapagar-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
+                    <a class="btn btn-sm btn-primary " href="{% url 'contapagar-create' %}" ><i class="bi bi-plus-circle"></i>  {{ verbose_name }}</a>
                     {% endif %}
                 </div>
 
@@ -50,7 +50,7 @@
                     
                         <thead class="table-secondary ">
                             <tr>
-                                <th class="text-center" style="width: 4rem">Ações</th>
+                                <th class="text-center" style="width: 4.5rem">Ações</th>
                                 <th>Documento</th>
                                 <th>Nome do Fornecedor</th>
                                 <th style="width: 7rem">Data Emissão</th>
@@ -63,8 +63,8 @@
                         </thead>
                         <tbody class="table-group-divider">
                             {% for m in object_list %}
-                                    <tr >
-                                        <td class="text-center ">
+                                <tr >
+                                    <td class="text-center">
                                         <div class="btn-group d-grid">
                                             <button  class="btn btn-secondary btn-sm dropdown-toggle option-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-list-ul"></i>
@@ -88,7 +88,7 @@
                                         </div>
                                     </td>
                                     <td>{{ m.documento }}</td>
-                                    <td>{{ m.contato }}</td>
+                                    <td title="{% if m.contato.cpf_cnpj is not Nome %} {{m.contato.cpf_cnpj}}{%endif%}" >{{ m.contato }}</td>
                                     <td >{{ m.data_emissao }}</td>
                                     <td class="text-center {% if m.vencido == True %}text-danger{% endif %} ">{% if m.vencido == True %}<span class="text-danger">●</span>{% endif %} {{ m.data_vencimento }}</td>
                                     <td class="text-end">{{ m.valor_titulo }}</td>
@@ -96,7 +96,7 @@
                                     <td class="text-end">{{ m.total_pago }}</td>
                                     <td class="text-center {% if m.situacao != 1 %} text-primary {%endif%} ">{{ m.get_situacao_display }}</td>
 
-                                </tr>
+                            </tr>
                             {% empty %}
                             <tr>
                                 <td class="text-center" colspan="9">Sem registro</td>

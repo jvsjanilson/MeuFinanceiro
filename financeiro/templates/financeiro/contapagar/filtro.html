@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-auto">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle"
+            <button class="btn btn-sm btn-secondary dropdown-toggle"
                     type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">{% if situacao_aberto or situacao_pago_parcial or situacao_pago_total %}<span>●</span>{%endif%} Situação
             </button>
@@ -28,50 +28,40 @@
     </div>
 
     <div class="col-auto">
-    <div class="dropdown">
-        <button   class="btn btn-secondary dropdown-toggle"
-                type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">{% if emissao_inicial or emissao_final or vencto_inicial or vencto_final %}<span>●</span>{%endif%} Período</button>
-        <div style="width: 11rem" class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-             <div class="row">
-                <div class="col-12" >
-                    <label for="emissao_inicial">Emissão Inicial</label>
-                    <input type="date" id="emissao_inicial" name="emissao_inicial" value="{{ emissao_inicial }}" class="form-control form-control-sm" />
+        <div class="dropdown">
+            <button  class="btn btn-sm btn-secondary dropdown-toggle"
+                    type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">{% if emissao_inicial or emissao_final or vencto_inicial or vencto_final %}<span>●</span>{%endif%} Período</button>
+            <div style="width: 11rem" class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                <div class="row">
+                    <div class="col-12" >
+                        <label for="emissao_inicial">Emissão Inicial</label>
+                        <input type="date" id="emissao_inicial" name="emissao_inicial" value="{{ emissao_inicial }}" class="form-control form-control-sm" />
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12" >
-                    <label for="emissao_final">Emissão Final</label>
-                    <input type="date" id="emissao_final" name="emissao_final" value="{{ emissao_final }}" class="form-control form-control-sm" />
+                <div class="row">
+                    <div class="col-12" >
+                        <label for="emissao_final">Emissão Final</label>
+                        <input type="date" id="emissao_final" name="emissao_final" value="{{ emissao_final }}" class="form-control form-control-sm" />
+                    </div>
                 </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-12" >
-                    <label for="vencto_inicial">Vecto Inicial</label>
-                    <input type="date" id="vencto_inicial" name="vencto_inicial" value="{{ vencto_inicial }}" class="form-control form-control-sm" />
+                <hr>
+                <div class="row">
+                    <div class="col-12" >
+                        <label for="vencto_inicial">Vecto Inicial</label>
+                        <input type="date" id="vencto_inicial" name="vencto_inicial" value="{{ vencto_inicial }}" class="form-control form-control-sm" />
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12" >
-                    <label for="vencto_final">Vecto Final</label>
-                    <input type="date" id="vencto_final" name="vencto_final" value="{{ vencto_final }}" class="form-control form-control-sm" />
+                <div class="row">
+                    <div class="col-12" >
+                        <label for="vencto_final">Vecto Final</label>
+                        <input type="date" id="vencto_final" name="vencto_final" value="{{ vencto_final }}" class="form-control form-control-sm" />
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-    </div>
-    {% comment %} <div class="col-4">
-        <div class="mb-3">
-            <input class="form-control" type="date" name="data_inicial" value="{{ data_inicial }}"/>
-        </div>
-    </div>
-    <div class="col-4">
-        <div class="mb-3">
-            <input class="form-control" type="date" name="data_final" value="{{ data_final }}" />
-        </div>
-    </div>  {% endcomment %}
 </div>
