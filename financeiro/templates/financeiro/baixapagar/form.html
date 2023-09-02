@@ -6,10 +6,12 @@
     <input type="hidden" name="contapagar" value="{{ conta.pk }}"/>
     <div class="card shadow card-outline">
         <div class="card-header">
-            <div class="row">
-                <div class="col-12 col-md-12">
+            <div class="row d-flex align-items-center">
+                <div class="col">
                     <button class="text-white btn btn-sm bg-success bg-gradient" type="submit" ><i class="bi bi-save"></i> Baixar</button>
                     <a class="text-white btn btn-sm bg-secondary bg-gradient" href="{% url 'contapagar-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+                </div>
+                <div class="col-auto">
                     <h4 class="card-title">{%if object %} Editar {% else %} Novo {%endif%} {{ verbose_name }}</h4>
                 </div>
             </div>
