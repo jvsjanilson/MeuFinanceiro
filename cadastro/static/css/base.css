@@ -113,8 +113,13 @@ fieldset > legend {
 
 tfoot tr td {
     font-size: small !important;
-    vertical-align: middle !important;
+     vertical-align: middle !important;
 }
+
 label {
     margin-bottom: 0.095rem !important;
+}
+
+caption {
+    margin-left: 0.188rem;
 }
