@@ -4,6 +4,14 @@ from itertools import cycle
 from core.constants import LENGTH_CNPJ, LENGTH_CPF
 from django.core.validators import  RegexValidator
 
+def valor_limite_pago(self, saldo_pagar, field = 'valor_pago'):
+    """
+     Valida se o valor pago é maior que o saldo, caso seja retorna error
+    """
+    if self.valor_pago > saldo_pagar:
+        raise ValidationError({field: 'Informe valor igual ou menor'})
+
+    
 
 def valida_cpfcnpj(value):
     if len(value) == LENGTH_CNPJ:

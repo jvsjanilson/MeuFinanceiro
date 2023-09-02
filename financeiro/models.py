@@ -5,7 +5,7 @@ from cadastro.models import CondicaoPagamento, Contato
 from django.core.validators import MinValueValidator
 from django.db.models import Sum
 from decimal import Decimal
-from core.validators import alfa_numerico
+from core.validators import alfa_numerico, valor_limite_pago
 from django.utils import timezone
 
 
@@ -55,6 +55,10 @@ class BaixaReceber(GenericoModel):
         limit_value=Decimal('0.01'))])
     data_baixa = models.DateField()
 
+    def clean(self) -> None:
+        valor_limite_pago(self, self.contareceber.saldo_pagar)
+        return super().clean()
+
     def __str__(self):
         return f'Documento: {self.contareceber.documento}'
 
@@ -103,8 +107,12 @@ class BaixaPagar(GenericoModel):
     valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    valor_pago = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(limit_value=Decimal('0.01'), message='Informe um valor maior que 0,00')])
     data_baixa = models.DateField()
 
+    def clean(self) -> None:
+        valor_limite_pago(self, self.contapagar.saldo_pagar)
+        return super().clean()
+    
     def __str__(self):
         return f'Documento: {self.contapagar.documento}'

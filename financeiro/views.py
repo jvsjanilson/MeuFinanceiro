@@ -1,4 +1,3 @@
-import decimal
 import datetime
 from typing import Any
 from django.http import HttpRequest, HttpResponse
@@ -91,18 +90,6 @@ class BaixarContaReceberView(UserAccessMixin, InvalidFormMixin, SuccessMessageMi
             messages.add_message(request, messages.WARNING, 'Titulo ja foi pago totalmente.')
             return redirect('/contarecebers')
         return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        context = self.get_context_data()
-        conta = ContaReceber.objects.get(pk=kwargs['contareceber'])
-
-        if decimal.Decimal(request.POST.get('valor_pago')) > conta.saldo_pagar:
-            messages.add_message(request, messages.WARNING,
-                                 'Valor do pagamento maior que o saldo devedor. Informe um valor menor ou igual.')
-            return self.render_to_response(context)
-        else:
-            return super().post(request, *args, **kwargs)
 
 
 def checa_filtro_preenchido(request):
@@ -335,8 +322,7 @@ class ContaPagarListView(UserAccessMixin, ListView):
 
         if search:
             context['search'] = search
-        print(emissao_inicial)
-        print(context)
+
         return context
 
     def get_queryset(self):
@@ -447,7 +433,6 @@ class ContaPagarDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteView):
         return super().get(request, *args, **kwargs)
 
 
-
 class BaixarContaPagarView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
     template_name = 'financeiro/baixapagar/form.html'
     form_class = BaixaPagarForm
@@ -470,19 +455,6 @@ class BaixarContaPagarView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixi
             messages.add_message(request, messages.WARNING, 'Titulo ja foi pago totalmente.')
             return redirect('/contapagars')
         return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        context = self.get_context_data()
-        conta = ContaPagar.objects.get(pk=kwargs['contapagar'])
-
-        if decimal.Decimal(request.POST.get('valor_pago')) > conta.saldo_pagar:
-            messages.add_message(request, messages.WARNING,
-                                 'Valor do pagamento maior que o saldo devedor. Informe um valor menor ou igual.')
-            return self.render_to_response(context)
-        else:
-            return super().post(request, *args, **kwargs)
-
 
 
 class EstornarContaPagarView(UserAccessMixin, FormView):
@@ -520,7 +492,7 @@ class EstornarContaPagarView(UserAccessMixin, FormView):
                 BaixaPagar.objects.filter(contapagar=pk, pk__in=ids).delete()
                 pagar = ContaPagar.objects.get(pk=pk)
 
-                if BaixaPagar.objects.filter(contarpagar=pk).exists():
+                if BaixaPagar.objects.filter(contapagar=pk).exists():
                     pagar.situacao = SituacaoFinanceiro.PAGO_PARCIAL
                 else:
                     pagar.situacao = SituacaoFinanceiro.ABERTO
