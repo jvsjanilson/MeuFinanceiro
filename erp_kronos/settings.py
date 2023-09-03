@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # 'core.middleware.LoggedUserMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,15 +86,21 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         "NAME": "db_django",
         "USER": "root",
-        "PASSWORD": "psmaster",
+        "PASSWORD": "Ci5458om!",
         "HOST": "localhost",
         "PORT": "3308",
         "OPTIONS": {
-            "charset": "utf8mb4"
+            "charset": "utf8"
         }
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
