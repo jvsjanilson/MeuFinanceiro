@@ -8,6 +8,7 @@
 {% block conteudo %}
 
 <form method="post" novalidate enctype="multipart/form-data">
+    <input type="hidden" name='id' id="id" value="{%if object %}{{object.id}}{%endif%}">
     <div class="card shadow card-outline">
         <div class="card-header">
             <div class="row d-flex align-items-center">
