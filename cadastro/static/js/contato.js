@@ -50,6 +50,7 @@ async function consultaCep(cep) {
  */
 async function loadMunicipios(estado) {
     let municipioSelected = django.jQuery("#id_municipio").val();
+    let pk = django.jQuery("#id").val();
      django.jQuery("#id_municipio option").remove();
     if (estado != "" && estado != undefined) {
        await django.jQuery.ajax({
@@ -58,7 +59,7 @@ async function loadMunicipios(estado) {
             success: (res) => {
                 data = JSON.parse(res);
                 data.forEach(m => {
-                    if (municipioSelected == "")
+                    if (pk == "")
                     {
                         django.jQuery("#id_municipio").append(`
                             <option ${m.fields.capital ? 'selected' : ''}
