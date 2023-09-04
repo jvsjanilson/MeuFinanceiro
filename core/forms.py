@@ -3,7 +3,6 @@ from django import forms
 
 class TextInputBootstrap(forms.TextInput):
     def __init__(self, attrs=None, render_value=False):
-        old_attrs = attrs
         if attrs is None:
             attrs = {}
             attrs['class'] = 'form-control form-control-sm'
@@ -18,7 +17,6 @@ class TextInputBootstrap(forms.TextInput):
 
 class TextareaInputBootstrap(forms.Textarea):
     def __init__(self, attrs=None, render_value=False):
-        old_attrs = attrs
         if attrs is None:
             attrs = {}
             attrs['class'] = 'form-control form-control-sm'
@@ -33,7 +31,6 @@ class TextareaInputBootstrap(forms.Textarea):
 
 class SelectBootstrap(forms.Select):
     def __init__(self, attrs=None, render_value=False):
-        old_attrs = attrs
         if attrs is None:
             attrs = {}
             attrs['class'] = 'form-select form-select-sm'
@@ -49,7 +46,6 @@ class SelectBootstrap(forms.Select):
 
 class NumberInputBootstap(forms.NumberInput):
     def __init__(self, attrs=None, render_value=False):
-        old_attrs = attrs
         if attrs is None:
             attrs = {}
             attrs['class'] = 'form-control form-control-sm'
@@ -64,7 +60,6 @@ class NumberInputBootstap(forms.NumberInput):
 
 class CheckboxInputBootstrap(forms.CheckboxInput):
     def __init__(self, attrs=None, render_value=False):
-        old_attrs = attrs
         if attrs is None:
             attrs = {}
             attrs['class'] = 'form-check-input'
@@ -80,8 +75,6 @@ class CheckboxInputBootstrap(forms.CheckboxInput):
 
 class DateInputBootstrap(forms.DateInput):
     def __init__(self, attrs=None, render_value=False, format=None):
-
-        old_attrs = attrs
         if attrs is None:
             attrs = {}
             attrs['class'] = 'form-control form-control-sm'
