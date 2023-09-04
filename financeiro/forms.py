@@ -22,11 +22,11 @@ class ContaReceberForm(forms.ModelForm):
 class BaixaReceberForm(forms.ModelForm):
     class Meta:
         model = BaixaReceber
-        fields = ['contareceber', 'condicaopagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago',
+        fields = ['contareceber', 'formapagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago',
                   'data_baixa']
         widgets = {
             'contareceber': SelectBootstrap(),
-            'condicaopagamento': SelectBootstrap(),
+            'formapagamento': SelectBootstrap(),
             'valor_juros': NumberInputBootstap(),
             'valor_multa': NumberInputBootstap(),
             'valor_desconto': NumberInputBootstap(),
@@ -56,11 +56,11 @@ class ContaPagarForm(forms.ModelForm):
 class BaixaPagarForm(forms.ModelForm):
     class Meta:
         model = BaixaPagar
-        fields = ['contapagar', 'condicaopagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago',
+        fields = ['contapagar', 'formapagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago',
                   'data_baixa']
         widgets = {
             'contapagar': SelectBootstrap(),
-            'condicaopagamento': SelectBootstrap(),
+            'formapagamento': SelectBootstrap(),
             'valor_juros': NumberInputBootstap(),
             'valor_multa': NumberInputBootstap(),
             'valor_desconto': NumberInputBootstap(),
