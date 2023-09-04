@@ -145,15 +145,15 @@
                 
                 <div class="col-md-3">
                     <div class="mb-3">
-                        {{ form.condicaopagamento.label_tag }}
-                        {{ form.condicaopagamento }}
+                        {{ form.formapagamento.label_tag }}
+                        {{ form.formapagamento }}
 
-                        {%if form.condicaopagamento.help_text  %}
-                            <span class="helptext">{{ form.condicaopagamento.help_text}}</span>
+                        {%if form.formapagamento.help_text  %}
+                            <span class="helptext">{{ form.formapagamento.help_text}}</span>
                         {%endif%}
 
-                        {% if form.errors.condicaopagamento is not None %}
-                            {{ form.errors.condicaopagamento }}
+                        {% if form.errors.formapagamento is not None %}
+                            {{ form.errors.formapagamento }}
                         {%endif%}
                     </div>
                 </div>
