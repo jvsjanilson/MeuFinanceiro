@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import GenericoModel
 from financeiro.choices import SituacaoFinanceiro
-from cadastro.models import CondicaoPagamento, Contato
+from cadastro.models import FormaPagamento, Contato
 from django.core.validators import MinValueValidator
 from django.db.models import Sum
 from decimal import Decimal
@@ -43,8 +43,8 @@ class ContaReceber(GenericoModel):
 
 class BaixaReceber(GenericoModel):
     contareceber = models.ForeignKey(ContaReceber, on_delete=models.CASCADE, related_name='baixas')
-    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT,
-                                          verbose_name='Condição Pagamento')
+    formapagamento = models.ForeignKey(FormaPagamento, on_delete=models.RESTRICT,
+                                          verbose_name='Forma de Pagamento')
     valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(
         limit_value=Decimal('0.00'))])
     valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0, validators=[MinValueValidator(
@@ -102,8 +102,8 @@ class ContaPagar(GenericoModel):
 
 class BaixaPagar(GenericoModel):
     contapagar = models.ForeignKey(ContaPagar, on_delete=models.CASCADE, related_name='baixas')
-    condicaopagamento = models.ForeignKey(CondicaoPagamento, on_delete=models.RESTRICT,
-                                          verbose_name='Condição Pagamento')
+    formapagamento = models.ForeignKey(FormaPagamento, on_delete=models.RESTRICT,
+                                          verbose_name='Forma de Pagamento')
     valor_juros = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_multa = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     valor_desconto = models.DecimalField(max_digits=15, decimal_places=2, default=0)
