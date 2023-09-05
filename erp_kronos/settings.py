@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from django.conf.locale.pt_BR import formats
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v-#6rkii_v7o+3z+0k!36(z^jr3sxbjfy&l^slwr*j5d6+swt5'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 #ALLOWED_HOSTS = ['192.168.0.{}'.format(i) for i in range(256)]
 ALLOWED_HOSTS = []
@@ -83,12 +84,12 @@ WSGI_APPLICATION = 'erp_kronos.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        "NAME": "db_django",
-        "USER": "root",
-        "PASSWORD": "Ci5458om!",
-        "HOST": "localhost",
-        "PORT": "3308",
+        'ENGINE': config('DB_ENGINE'),
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PASSWORD'),
+        "HOST": config('DB_HOST'),
+        "PORT": config('DB_PORT'),
         "OPTIONS": {
             "charset": "utf8"
         }
@@ -98,7 +99,7 @@ DATABASES = {
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": "mydatabase",
+#         "NAME": "db.sqlite",
 #     }
 # }
 
