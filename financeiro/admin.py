@@ -14,8 +14,8 @@ class ContaReceberAdmin(admin.ModelAdmin):
 
 @admin.register(BaixaReceber)
 class BaixaReceberAdmin(admin.ModelAdmin):
-    list_display = ('contareceber', 'condicaopagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa')
-    fields = ['contareceber', 'condicaopagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa']
+    list_display = ('contareceber', 'formapagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa')
+    fields = ['contareceber', 'formapagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa']
     search_fields = ('contareceber__documento', )
     list_per_page = REGISTROS_POR_PAGINA
     
@@ -31,8 +31,8 @@ class ContaPagarAdmin(admin.ModelAdmin):
 
 @admin.register(BaixaPagar)
 class BaixaPagarAdmin(admin.ModelAdmin):
-    list_display = ('contapagar', 'condicaopagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa')
-    fields = ['contapagar', 'condicaopagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa']
+    list_display = ('contapagar', 'formapagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa')
+    fields = ['contapagar', 'formapagamento', 'valor_juros', 'valor_multa', 'valor_desconto', 'valor_pago', 'data_baixa']
     search_fields = ('contapagar__documento', )
     list_per_page = REGISTROS_POR_PAGINA
     
