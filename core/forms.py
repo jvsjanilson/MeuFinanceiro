@@ -84,7 +84,7 @@ class DateInputBootstrap(forms.DateInput):
                 if attrs['class'] != "":
                     attrs['class'] += ' form-control form-control-sm'
                 if attrs['type'] != "":
-                    attrs['type'] += ' date'
+                    attrs['type'] = 'date'
             except KeyError:
                 attrs['class'] = 'form-control form-control-sm'
                 attrs['type'] = 'date'
