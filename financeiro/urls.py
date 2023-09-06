@@ -1,7 +1,7 @@
 from django.urls import path
 from financeiro.views import ContaReceberListView, ContaReceberCreate, ContaReceberUpdateView, \
     ContaReceberDeleteView, BaixarContaReceberView, EstornarContaReceberView, ContaPagarListView, \
-    ContaPagarCreateView, ContaPagarUpdateView, ContaPagarDeleteView, BaixarContaPagarView, EstornarContaPagarView
+    ContaPagarCreateView, ContaPagarUpdateView, ContaPagarDeleteView, BaixarContaPagarView, EstornarContaPagarView, FluxoCaixaView
 
 urlpatterns = [
     # Contas a pagar
@@ -19,4 +19,7 @@ urlpatterns = [
     path("contarecebers/<int:pk>/delete/", ContaReceberDeleteView.as_view(), name="contareceber-delete"),
     path("baixarecebers/<int:contareceber>/baixar", BaixarContaReceberView.as_view(), name="baixareceber-baixar"),
     path("baixarecebers/<int:contareceber>/estornar", EstornarContaReceberView.as_view(), name="baixareceber-estornar"),
+
+    # fluxo de caixa
+    path("fluxocaixa/", FluxoCaixaView.as_view(), name="fluxocaixa-list"),
 ]
