@@ -1,20 +1,28 @@
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
-<div class="container">
-
-
+<div class="container-fluid">
     <form>
         <div class="row d-flex align-items-center">
             
-            <div class="col-auto">
+            <div class="col-auto ">
                 <h4>{{ titulo }}</h4>
 
             </div>
 
             <div class="col d-flex justify-content-end">
-                <div class="row d-flex align-items-center">
+                <div class="row ">
 
+                    <div class="col">
+                        
+                        <div class="mb-3">
+                            <label for="data_inicial">Tipo Fluxo</label>
+                            <select name="tipo_fluxo" id="tipo_fluxo" class="form-select form-select-sm" >
+                                <option {%if tipo_fluxo == "1"%}selected{%endif%}  value="1">Resumo por dia</option>
+                            </select>
+                            
+                        </div>
+                    </div>
                     <div class="col">
                         
                         <div class="mb-3">
@@ -32,39 +40,46 @@
                             
                         </div>
                     </div>
-                    <div class="col-auto">
-
-                        <button class="btn btn-sm btn-primary" type="submit">Filtrar</button>
-                        <a class="btn btn-sm btn-secondary" href="{% url 'fluxocaixa-list' %}">Limpar</a>
+                    <div class="col-auto  d-flex align-items-end">
+                        <div class="mb-3">
+                            <button class="btn btn-sm btn-primary" type="submit">Filtrar</button>
+                            <a class="btn btn-sm btn-secondary" href="{% url 'fluxopagamentos-list' %}">Limpar</a>
+                        </div>
                     </div>
                     
                 </div>
          
         </div>
         
-
         <table class="table table-sm table-bordered table-striped">
-            <thead>
+            <thead class="table-secondary ">
                 <tr>
-                    <th>Data Pagto</th>
-                    <th>Valor Entrada</th>
-                    <th>Valor Saída</th>
+                    <th class="text-center">Data Pagto</th>
+                    <th class="text-center">Total Entradas</th>
+                    <th class="text-center">Total Saídas</th>
+                    <th class="text-center">Saldo do dia</th>
+                    
                 </tr>
             </thead>
-            <tbody>
-                {% for r in recebers %}
+            <tbody  class="table-group-divider">
+               {% for r in recebers %}
                     <tr>
-                        <td>{{ r.data_baixa}}</td>
-                        <td>{{ r.total_receber_pago }}</td>
-                        <td>{{r.total_pagar_pago}}</td>
+                        <td class="text-center">{{ r.data_baixa}}</td>
+                        <td class="text-center">{{ r.total_receber_pago }}</td>
+                        <td class="text-center">{{r.total_pagar_pago}}</td>
+                        <td class="text-center">{{r.saldo}}</td>
+                        
                     </tr>
-                {% endfor %}
-    
+                    {% endfor %} 
+                    
+                    <tr>
+                        <th class="text-end" colspan="3">Saldo Geral</th>
+                        <td class="text-center fw-bold">{{ saldo }}</td>
+                    </tr>
             </tbody>
         </table>
-       
-    </div>
-</form>
-
-    
+     
+    </form>
+</div>
+   
 {% endblock conteudo%}

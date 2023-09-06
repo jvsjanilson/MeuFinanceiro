@@ -21,5 +21,5 @@ urlpatterns = [
     path("baixarecebers/<int:contareceber>/estornar", EstornarContaReceberView.as_view(), name="baixareceber-estornar"),
 
     # fluxo de caixa
-    path("fluxocaixa/", FluxoCaixaView.as_view(), name="fluxocaixa-list"),
+    path("fluxopagamentos/", FluxoCaixaView.as_view(), name="fluxopagamentos-list"),
 ]

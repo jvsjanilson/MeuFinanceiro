@@ -18,37 +18,106 @@ from django.db.models import ProtectedError
 from django.db.models import Case, Value, When
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum
+from decimal import Decimal
+
+def fluxo_pagamento_resumo_dia(data_inicial, data_final) -> list:
+    from django.db import connection
+    cursor = connection.cursor()
+    cursor.execute(
+        """
+            SELECT 
+                q.data_baixa,
+                q.total_pagar_pago,
+                q.total_receber_pago,
+                SUM(q.total_receber_pago-q.total_pagar_pago) AS saldo
+            FROM  (
+                SELECT 
+                    data_baixa,
+                    SUM(
+                        case 
+                            when tipo = 'pagar' then 
+                                br_total_pago
+                            ELSE 
+                            0
+                        END 
+                    ) AS total_pagar_pago,
+                    
+                    SUM(
+                        case 
+                            when tipo = 'receber' then 
+                            br_total_pago
+                        ELSE 
+                            0
+                        END 
+                    ) AS total_receber_pago
+                FROM (
+                    (
+                        SELECT 
+                            'receber' AS tipo,
+                            br.data_baixa, 
+                            SUM(COALESCE(br.valor_pago,0)) AS br_total_pago
+                        FROM financeiro_baixareceber br
+                        GROUP BY br.data_baixa
+                        ORDER by br.data_baixa
+                    )
+                    UNION
+                    (
+                        SELECT 
+                            'pagar' AS tipo,
+                            br.data_baixa, 
+                            SUM(COALESCE(br.valor_pago,0)) AS bp_total_pago
+                        FROM financeiro_baixapagar br
+                        GROUP BY br.data_baixa
+                        ORDER by br.data_baixa
+                    )
+                ) t
+                GROUP BY data_baixa
+            ) q where q.data_baixa >= %s  and q.data_baixa <= %s
+            GROUP BY q.data_baixa
+            ORDER BY q.data_baixa
+        """
+        , [data_inicial, data_final]
+    )
+    
+    columns = [col[0] for col in cursor.description]
+    rows =[dict(zip(columns, row)) for row in cursor.fetchall()]
+    saldo = Decimal('0.00')
+    for i in rows:
+        saldo += i['saldo']
+    return [saldo, rows]
 
 
 class FluxoCaixaView(TemplateView):
     template_name = 'financeiro/fluxo/list.html'
+    tipos_fluxo = {'1': 'Resumo por dia'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = 'Fluxo de caixa'
         data_inicial = self.request.GET.get('data_inicial')
         data_final = self.request.GET.get('data_final')
+        tipo_fluxo = self.request.GET.get('tipo_fluxo')
+
+        if tipo_fluxo is None:
+            tipo_fluxo = '1'
+
+        context['titulo'] = f'Fluxo de pagamento - {self.tipos_fluxo[tipo_fluxo]}'
+        context['tipo_fluxo'] = tipo_fluxo
+
+        if (data_final == ""):
+            data_final = None
+
+        if (data_inicial == ""):
+            data_inicial = None
         
-        if data_final is not None and data_inicial is not None:
-            context['data_inicial'] = data_inicial
-            context['data_final'] = data_final
-            
-            receber = BaixaReceber.objects.values('data_baixa').order_by('data_baixa').annotate(
-                total_receber_pago=Sum('valor_pago'), total_pagar_pago=Sum(0)
-                ).filter(
-                    Q(data_baixa__gte = data_inicial) &
-                    Q(data_baixa__lte = data_final)
-                )
+        context['data_inicial'] = data_inicial
+        context['data_final'] = data_final
+        context['saldo'] = Decimal('0.00')
 
-            for i in receber:
-                pagar = BaixaPagar.objects.values('data_baixa').filter(data_baixa=i['data_baixa']).annotate(total=Sum('valor_pago'))
+        if [data_final, data_inicial] is not None:
+            context['saldo'], context['recebers'] = fluxo_pagamento_resumo_dia(data_inicial, data_final)
 
-                if pagar.exists():
-                    i['total_pagar_pago'] =  (pagar[0]['total'])
-
-            
-            context['recebers'] = receber
         return context
+        
 
 
 class EstornarContaReceberView(UserAccessMixin, FormView):
