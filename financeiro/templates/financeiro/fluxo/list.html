@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+<div class="container">
+
+
+    <form>
+        <div class="row d-flex align-items-center">
+            
+            <div class="col-auto">
+                <h4>{{ titulo }}</h4>
+
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <div class="row d-flex align-items-center">
+
+                    <div class="col">
+                        
+                        <div class="mb-3">
+                            <label for="data_inicial">Data Inicial</label>
+                            <input type="date" name="data_inicial" id="data_inicial" class="form-control form-control-sm" value="{{ data_inicial }}">
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+
+                        <div class="mb-3">
+                            <label for="data_final">Data Final</label>
+                            <input type="date" name="data_final" id="data_final" class="form-control form-control-sm" value="{{ data_final }}">
+                            
+                        </div>
+                    </div>
+                    <div class="col-auto">
+
+                        <button class="btn btn-sm btn-primary" type="submit">Filtrar</button>
+                        <a class="btn btn-sm btn-secondary" href="{% url 'fluxocaixa-list' %}">Limpar</a>
+                    </div>
+                    
+                </div>
+         
+        </div>
+        
+
+        <table class="table table-sm table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Data Pagto</th>
+                    <th>Valor Entrada</th>
+                    <th>Valor Saída</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in recebers %}
+                    <tr>
+                        <td>{{ r.data_baixa}}</td>
+                        <td>{{ r.total_receber_pago }}</td>
+                        <td>{{r.total_pagar_pago}}</td>
+                    </tr>
+                {% endfor %}
+    
+            </tbody>
+        </table>
+       
+    </div>
+</form>
+
+    
+{% endblock conteudo%}

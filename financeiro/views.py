@@ -1,8 +1,9 @@
 import datetime
-from typing import Any
+from typing import Any, Dict
+from django import http
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
-from django.views.generic import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, DeleteView, FormView, TemplateView
 from financeiro.models import ContaReceber, BaixaReceber, ContaPagar, BaixaPagar
 from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_DELETED_SUCCESS, MSG_UPDATED_SUCCESS
 from django.db.models import Q
@@ -16,6 +17,38 @@ from financeiro.forms import BaixaReceberForm
 from django.db.models import ProtectedError
 from django.db.models import Case, Value, When
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Sum
+
+
+class FluxoCaixaView(TemplateView):
+    template_name = 'financeiro/fluxo/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Fluxo de caixa'
+        data_inicial = self.request.GET.get('data_inicial')
+        data_final = self.request.GET.get('data_final')
+        
+        if data_final is not None and data_inicial is not None:
+            context['data_inicial'] = data_inicial
+            context['data_final'] = data_final
+            
+            receber = BaixaReceber.objects.values('data_baixa').order_by('data_baixa').annotate(
+                total_receber_pago=Sum('valor_pago'), total_pagar_pago=Sum(0)
+                ).filter(
+                    Q(data_baixa__gte = data_inicial) &
+                    Q(data_baixa__lte = data_final)
+                )
+
+            for i in receber:
+                pagar = BaixaPagar.objects.values('data_baixa').filter(data_baixa=i['data_baixa']).annotate(total=Sum('valor_pago'))
+
+                if pagar.exists():
+                    i['total_pagar_pago'] =  (pagar[0]['total'])
+
+            
+            context['recebers'] = receber
+        return context
 
 
 class EstornarContaReceberView(UserAccessMixin, FormView):
