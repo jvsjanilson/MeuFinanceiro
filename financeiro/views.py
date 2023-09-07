@@ -246,16 +246,16 @@ class ContaReceberListView(UserAccessMixin, ListView):
         if situacao_pago_total is not None:
             context['situacao_pago_total'] = situacao_pago_total
 
-        if emissao_inicial is None and emissao_inicial != "":
+        if emissao_inicial is not None and emissao_inicial != "":
             context['emissao_inicial'] = emissao_inicial
 
         if emissao_final is not None and emissao_final != "":
             context['emissao_final'] = emissao_final
 
-        if vencto_inicial is None and vencto_inicial != "":
+        if vencto_inicial is not None and vencto_inicial != "":
             context['vencto_inicial'] = vencto_inicial
 
-        if vencto_final is None and vencto_final != "":
+        if vencto_final is not None and vencto_final != "":
             context['vencto_final'] = vencto_final
 
         if search:
