@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.contrib.auth.mixins import  PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import redirect_to_login
 from django.db.models.deletion import RestrictedError
 from django.contrib import messages
@@ -30,7 +30,8 @@ class InvalidFormMixin:
         for field in form.errors:
             form[field].field.widget.attrs['class'] += ' is-invalid'
         return self.render_to_response(self.get_context_data(form=form))
-    
+
+
 class DeleteExceptionMixin:
     """
         Autor: Janilson Varela
@@ -38,12 +39,15 @@ class DeleteExceptionMixin:
         Mixim para tratar a deleçao do registro, em caso de ter algum 
         vinculo com outra tabela e que o cascade seja restric
     """
-    def post(self, request, *args, **kwargs):
+
+    def __init__(self):
         self.object = self.get_object()
+
+    def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         try:
             res = super().post(request, *args, **kwargs)
-        except RestrictedError as ex:
+        except RestrictedError:
             messages.add_message(request, messages.ERROR, f'Não é possível excluir {self.model._meta.verbose_name}')
             return self.render_to_response(context)
 

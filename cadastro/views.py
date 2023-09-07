@@ -4,12 +4,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from cadastro.models import Unidade, Marca, Categoria, Pais, Estado, Municipio, Produto, \
     Contato, FormaPagamento, CondicaoPagamento
 from core.constants import REGISTROS_POR_PAGINA, MSG_CREATED_SUCCESS, MSG_UPDATED_SUCCESS, \
-    MSG_DELETED_SUCCESS, MSG_FORM_ERROR
+    MSG_DELETED_SUCCESS
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
     PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
 from core.views import UserAccessMixin, InvalidFormMixin, DeleteExceptionMixin
@@ -18,21 +18,21 @@ import requests
 from django.db.models import Case, Value, When
 
 
-def consulta_cep(request, cep):
+def consulta_cep(cep):
     consulta = requests.get(f'https://viacep.com.br/ws/{cep}/json')
     json = consulta.json()
-    municipios = Municipio.objects.filter(estado__uf=json['uf']).values('id', 'nome').annotate(
+    lista_municipios = Municipio.objects.filter(estado__uf=json['uf']).values('id', 'nome').annotate(
         selected=Case(
             When(codigo=json['ibge'], then=Value(True)),
             default=Value(False)
         )
     )
 
-    json["municipios"] = list(municipios)
+    json["municipios"] = list(lista_municipios)
     return JsonResponse(json)
 
 
-def municipios(request, estado):
+def municipios(estado):
     data = serialize("json", Municipio.objects.filter(estado=estado), fields=('nome', 'capital'))
     return HttpResponse(data)
 

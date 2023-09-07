@@ -61,6 +61,7 @@
           </ul>
         </li>
         
+        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Gestão Financeira
@@ -74,7 +75,9 @@
                 <li><a class="dropdown-item" href="{% url 'contareceber-list' %}">Contas a Receber</a></li>
               {% endif %}
 
-              <li><a class="dropdown-item" href="{% url 'fluxopagamentos-list' %}">Fluxo de pagamentos</a></li>
+              {% if perms.financeiro.fluxo_contareceber %}
+                <li><a class="dropdown-item" href="{% url 'fluxopagamentos-list' %}">Fluxo de pagamentos</a></li>
+              {% endif %}
           </ul>
 
         </li>

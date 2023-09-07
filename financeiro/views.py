@@ -1,6 +1,5 @@
 import datetime
-from typing import Any, Dict
-from django import http
+from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView, TemplateView
@@ -17,8 +16,8 @@ from financeiro.forms import BaixaReceberForm
 from django.db.models import ProtectedError
 from django.db.models import Case, Value, When
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Sum
 from decimal import Decimal
+
 
 def fluxo_pagamento_resumo_dia(data_inicial, data_final) -> list:
     from django.db import connection
@@ -75,21 +74,21 @@ def fluxo_pagamento_resumo_dia(data_inicial, data_final) -> list:
             ) q where q.data_baixa >= %s  and q.data_baixa <= %s
             GROUP BY q.data_baixa
             ORDER BY q.data_baixa
-        """
-        , [data_inicial, data_final]
+        """, [data_inicial, data_final]
     )
     
     columns = [col[0] for col in cursor.description]
-    rows =[dict(zip(columns, row)) for row in cursor.fetchall()]
+    rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
     saldo = Decimal('0.00')
     for i in rows:
         saldo += i['saldo']
     return [saldo, rows]
 
 
-class FluxoCaixaView(TemplateView):
+class FluxoCaixaView(UserAccessMixin, TemplateView):
     template_name = 'financeiro/fluxo/list.html'
     tipos_fluxo = {'1': 'Resumo por dia'}
+    permission_required = ['financeiro.fluxo_contareceber']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -103,10 +102,10 @@ class FluxoCaixaView(TemplateView):
         context['titulo'] = f'Fluxo de pagamento - {self.tipos_fluxo[tipo_fluxo]}'
         context['tipo_fluxo'] = tipo_fluxo
 
-        if (data_final == ""):
+        if data_final == "":
             data_final = None
 
-        if (data_inicial == ""):
+        if data_inicial == "":
             data_inicial = None
         
         context['data_inicial'] = data_inicial
@@ -118,7 +117,6 @@ class FluxoCaixaView(TemplateView):
 
         return context
         
-
 
 class EstornarContaReceberView(UserAccessMixin, FormView):
     success_url = reverse_lazy('contareceber-list')
@@ -150,7 +148,7 @@ class EstornarContaReceberView(UserAccessMixin, FormView):
             if len(ids) == 0:
                 messages.add_message(request, messages.ERROR, 'Nenhum titulo foi marcado para estorno.')
                 conta = ContaReceber.objects.get(pk=request.POST.get('contareceber'))
-                return self.render_to_response({'baixas': baixas, 'conta': conta} )
+                return self.render_to_response({'baixas': baixas, 'conta': conta})
             try:
                 BaixaReceber.objects.filter(contareceber=pk, pk__in=ids).delete()
                 receber = ContaReceber.objects.get(pk=pk)
@@ -204,8 +202,9 @@ def checa_filtro_preenchido(request):
     situacao_pago_parcial = request.GET.get('situacao_pago_parcial')
     situacao_pago_total = request.GET.get('situacao_pago_total')
 
-    if (search == "" and emissao_inicial == "" and emissao_final == "" and vencto_inicial == "" 
-        and vencto_final == "" and situacao_pago_total is None and situacao_pago_parcial is None and situacao_aberto is None):
+    if (search == "" and emissao_inicial == "" and emissao_final == "" and vencto_inicial == "" and
+            vencto_final == "" and situacao_pago_total is None and situacao_pago_parcial is None and
+            situacao_aberto is None):
         return True
     else:
         return False
@@ -320,7 +319,8 @@ class ContaReceberListView(UserAccessMixin, ListView):
 
         queryset = queryset.annotate(
             vencido=Case(
-                When(situacao__in=[SituacaoFinanceiro.ABERTO, SituacaoFinanceiro.PAGO_PARCIAL], data_vencimento__lt=datetime.date.today() , then=Value(True)),
+                When(situacao__in=[SituacaoFinanceiro.ABERTO, SituacaoFinanceiro.PAGO_PARCIAL],
+                     data_vencimento__lt=datetime.date.today(), then=Value(True)),
                 When(data_vencimento__gte=datetime.date.today(), then=Value(False)),
                 default=Value(False)
             )
@@ -357,7 +357,6 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMi
     
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        
         if self.object.situacao != 1:
             messages.add_message(request, messages.WARNING, 'Titulo pago ou parcialmente pago não pode ser editado.')
             return redirect('/contarecebers')
@@ -589,7 +588,7 @@ class EstornarContaPagarView(UserAccessMixin, FormView):
             if len(ids) == 0:
                 messages.add_message(request, messages.ERROR, 'Nenhum titulo foi marcado para estorno.')
                 conta = ContaPagar.objects.get(pk=request.POST.get('contapagar'))
-                return self.render_to_response({'baixas': baixas, 'conta': conta} )
+                return self.render_to_response({'baixas': baixas, 'conta': conta})
             try:
                 BaixaPagar.objects.filter(contapagar=pk, pk__in=ids).delete()
                 pagar = ContaPagar.objects.get(pk=pk)
@@ -607,4 +606,3 @@ class EstornarContaPagarView(UserAccessMixin, FormView):
                 messages.add_message(request, messages.ERROR, 'Erro ao estornar titulo.')
                 return redirect('/contapagars')
         return super().post(request, *args, **kwargs)
-
