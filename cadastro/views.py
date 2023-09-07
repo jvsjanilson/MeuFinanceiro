@@ -1,3 +1,4 @@
+from typing import Any
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -9,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from cadastro.forms import ProdutoForm, UnidadeForm, ContatoForm, CategoriaForm, MarcaForm, \
     PaisForm, EstadoForm, MuncipioForm, FormaPagamentoForm, CondicaoPagamentoForm
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from django.urls import reverse_lazy, reverse
 from core.views import UserAccessMixin, InvalidFormMixin, DeleteExceptionMixin
@@ -369,6 +370,10 @@ class MunicipioListView(UserAccessMixin, ListView):
     template_name = 'cadastro/municipio/list.html'
     paginate_by = REGISTROS_POR_PAGINA
 
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        print(request.GET.get('search'))
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
@@ -383,6 +388,7 @@ class MunicipioListView(UserAccessMixin, ListView):
     def get_queryset(self):
         queryset = super(MunicipioListView, self).get_queryset()
         search = self.request.GET.get('search')
+
         if search:
             return queryset.filter(
                 Q(codigo__icontains=search) |
