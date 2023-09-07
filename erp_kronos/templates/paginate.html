@@ -31,14 +31,14 @@
 {% endif %} {% endcomment %}
 
 
-
+{% load filtros %}
 
 {% if is_paginated %}
 <nav aria-label="navegacao-paginacao">
     <ul class="pagination mb-1">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1{% if search %}&search={{ search }}{% endif %}">&laquo; Primeiro</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}">Anterior</a></li>
+            <li class="page-item"><a class="page-link" href="{% pagination_filtros request 1 %}">&laquo; Primeiro</a></li>
+            <li class="page-item"><a class="page-link" href="{% pagination_filtros request page_obj.previous_page_number %}">Anterior</a></li>
         {% else %}
             <li class="page-item disabled"><a class="page-link" href="#">&laquo; Primeiro</a></li>
             <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
@@ -50,9 +50,10 @@
 
         {% if page_obj.has_next %}
 
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}">Próximo</a></li>
-            
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}">Último &raquo;</a></li>
+            <li class="page-item"><a class="page-link" href="{% pagination_filtros request page_obj.next_page_number %}">Próximo</a></li>
+           
+            <li class="page-item"><a class="page-link" href="{% pagination_filtros request page_obj.paginator.num_pages %}">Último &raquo;</a></li>
+
         {% else %}
             <li class="page-item disabled"><a class="page-link" href="#">Próximo</a></li>
             <li class="page-item disabled"><a class="page-link" href="#">Último &raquo;</a></li>

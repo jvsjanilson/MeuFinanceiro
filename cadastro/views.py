@@ -371,7 +371,6 @@ class MunicipioListView(UserAccessMixin, ListView):
     paginate_by = REGISTROS_POR_PAGINA
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        print(request.GET.get('search'))
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
