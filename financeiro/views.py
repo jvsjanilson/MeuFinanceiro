@@ -1,5 +1,6 @@
-import datetime
+from datetime import datetime
 from typing import Any
+from django import http
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView, TemplateView
@@ -90,12 +91,32 @@ class FluxoCaixaView(UserAccessMixin, TemplateView):
     tipos_fluxo = {'1': 'Resumo por dia'}
     permission_required = ['financeiro.fluxo_contareceber']
 
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        params = request.GET
+        if len(params) > 0:
+            try:
+                
+                if params['tipo_fluxo'] is None or params['tipo_fluxo'] == "":
+                    messages.add_message(request, messages.ERROR, 'Tipo do fluxo não informado')
+                elif params['data_inicial'] is None or params['data_inicial'] == "":
+                    messages.add_message(request, messages.ERROR, 'Data Inicial deve ser informado')
+                elif params['data_final'] is None or params['data_final'] == "":
+                    messages.add_message(request, messages.ERROR, 'Data Final deve ser informado')
+
+                data_inicial = datetime.strptime(params['data_inicial'], "%Y-%m-%d").date()
+                data_final = datetime.strptime( params['data_final'], "%Y-%m-%d").date()
+                if (data_inicial.year != data_final.year):
+                    messages.add_message(request, messages.ERROR, 'Informe o mesmo ano na data inicial e final')                    
+            except:
+                pass
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         data_inicial = self.request.GET.get('data_inicial')
         data_final = self.request.GET.get('data_final')
         tipo_fluxo = self.request.GET.get('tipo_fluxo')
-
+        
         if tipo_fluxo is None:
             tipo_fluxo = '1'
 
@@ -112,8 +133,11 @@ class FluxoCaixaView(UserAccessMixin, TemplateView):
         context['data_final'] = data_final
         context['saldo'] = Decimal('0.00')
 
-        if [data_final, data_inicial] is not None:
-            context['saldo'], context['recebers'] = fluxo_pagamento_resumo_dia(data_inicial, data_final)
+        if not any(x is None for x in [data_inicial, data_final]):
+            d_inicial = datetime.strptime(data_inicial, "%Y-%m-%d").date()
+            d_final = datetime.strptime(data_final, "%Y-%m-%d").date()
+            if (d_inicial.year == d_final.year):            
+                context['saldo'], context['recebers'] = fluxo_pagamento_resumo_dia(data_inicial, data_final)
 
         return context
         
