@@ -1,6 +1,5 @@
-from datetime import datetime
+import datetime
 from typing import Any
-from django import http
 from django.http import HttpRequest, HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, FormView, TemplateView
@@ -93,9 +92,8 @@ class FluxoCaixaView(UserAccessMixin, TemplateView):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         params = request.GET
-        if len(params) > 0:
-            try:
-                
+        try:
+            if len(params) > 0:
                 if params['tipo_fluxo'] is None or params['tipo_fluxo'] == "":
                     messages.add_message(request, messages.ERROR, 'Tipo do fluxo não informado')
                 elif params['data_inicial'] is None or params['data_inicial'] == "":
@@ -103,12 +101,13 @@ class FluxoCaixaView(UserAccessMixin, TemplateView):
                 elif params['data_final'] is None or params['data_final'] == "":
                     messages.add_message(request, messages.ERROR, 'Data Final deve ser informado')
 
-                data_inicial = datetime.strptime(params['data_inicial'], "%Y-%m-%d").date()
-                data_final = datetime.strptime( params['data_final'], "%Y-%m-%d").date()
-                if (data_inicial.year != data_final.year):
-                    messages.add_message(request, messages.ERROR, 'Informe o mesmo ano na data inicial e final')                    
-            except:
-                pass
+                data_inicial = datetime.datetime.strptime(params['data_inicial'], "%Y-%m-%d").date()
+                data_final = datetime.datetime.strptime(params['data_final'], "%Y-%m-%d").date()
+                if data_inicial.year != data_final.year:
+                    messages.add_message(request, messages.ERROR, 'Informe o mesmo ano na data inicial e final')
+        except ValueError:
+            pass
+
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -134,9 +133,9 @@ class FluxoCaixaView(UserAccessMixin, TemplateView):
         context['saldo'] = Decimal('0.00')
 
         if not any(x is None for x in [data_inicial, data_final]):
-            d_inicial = datetime.strptime(data_inicial, "%Y-%m-%d").date()
-            d_final = datetime.strptime(data_final, "%Y-%m-%d").date()
-            if (d_inicial.year == d_final.year):            
+            d_inicial = datetime.datetime.strptime(data_inicial, "%Y-%m-%d").date()
+            d_final = datetime.datetime.strptime(data_final, "%Y-%m-%d").date()
+            if d_inicial.year == d_final.year:
                 context['saldo'], context['recebers'] = fluxo_pagamento_resumo_dia(data_inicial, data_final)
 
         return context
@@ -374,6 +373,10 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMi
     success_url = '/contarecebers'
     success_message = MSG_UPDATED_SUCCESS
 
+    def __init__(self):
+        super().__init__()
+        self.object = None
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
@@ -523,10 +526,21 @@ class ContaPagarUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixi
     success_url = '/contapagars'
     success_message = MSG_UPDATED_SUCCESS
 
+    def __init__(self):
+        super().__init__()
+        self.object = None
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['verbose_name'] = self.model._meta.verbose_name.title
         return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.situacao != 1:
+            messages.add_message(request, messages.WARNING, 'Titulo pago ou parcialmente pago não pode ser editado.')
+            return redirect('/contapagars')
+        return super().get(request, *args, **kwargs)
 
 
 class ContaPagarCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
