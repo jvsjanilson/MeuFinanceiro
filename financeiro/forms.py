@@ -35,7 +35,6 @@ class BaixaReceberForm(forms.ModelForm):
         }
 
 
-
 class ContaPagarForm(forms.ModelForm):
     class Meta:
         model = ContaPagar
