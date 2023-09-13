@@ -8,7 +8,7 @@ def valor_limite_pago(self, saldo_pagar, field = 'valor_pago'):
     """
      Valida se o valor pago é maior que o saldo, caso seja retorna error
     """
-    if self.valor_pago > saldo_pagar:
+    if self.valor_pago - self.valor_juros - self.valor_multa + self.valor_desconto > saldo_pagar:
         raise ValidationError({field: 'Informe valor igual ou menor'})
 
     

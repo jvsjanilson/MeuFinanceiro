@@ -32,7 +32,10 @@ class ContaPagar(GenericoModel):
 
     @property
     def saldo_pagar(self):
-        return self.valor_titulo - self.total_pago
+        valor_pago = self.valor_titulo - self.total_pago
+        if valor_pago < 0:
+            valor_pago = Decimal('0.00')
+        return valor_pago
 
     @property
     def total_pago(self) -> float:
