@@ -2,10 +2,9 @@ from django import forms
 
 
 class TextInputBootstrap(forms.TextInput):
-    def __init__(self, attrs=None, render_value=False):
+    def __init__(self, attrs=None):
         if attrs is None:
-            attrs = {}
-            attrs['class'] = 'form-control form-control-sm'
+            attrs = {'class': 'form-control form-control-sm'}
         else:
             try:
                 if attrs['class'] != "":
@@ -16,10 +15,9 @@ class TextInputBootstrap(forms.TextInput):
 
 
 class TextareaInputBootstrap(forms.Textarea):
-    def __init__(self, attrs=None, render_value=False):
+    def __init__(self, attrs=None):
         if attrs is None:
-            attrs = {}
-            attrs['class'] = 'form-control form-control-sm'
+            attrs = {'class': 'form-control form-control-sm'}
         else:
             try:
                 if attrs['class'] != "":
@@ -30,10 +28,9 @@ class TextareaInputBootstrap(forms.Textarea):
 
 
 class SelectBootstrap(forms.Select):
-    def __init__(self, attrs=None, render_value=False):
+    def __init__(self, attrs=None):
         if attrs is None:
-            attrs = {}
-            attrs['class'] = 'form-select form-select-sm'
+            attrs = {'class': 'form-select form-select-sm'}
         else:
             try:
                 if attrs['class'] != "":
@@ -43,12 +40,10 @@ class SelectBootstrap(forms.Select):
         super().__init__(attrs)
 
 
-
 class NumberInputBootstap(forms.NumberInput):
-    def __init__(self, attrs=None, render_value=False):
+    def __init__(self, attrs=None):
         if attrs is None:
-            attrs = {}
-            attrs['class'] = 'form-control form-control-sm'
+            attrs = {'class': 'form-control form-control-sm'}
         else:
             try:
                 if attrs['class'] != "":
@@ -59,10 +54,9 @@ class NumberInputBootstap(forms.NumberInput):
 
 
 class CheckboxInputBootstrap(forms.CheckboxInput):
-    def __init__(self, attrs=None, render_value=False):
+    def __init__(self, attrs=None):
         if attrs is None:
-            attrs = {}
-            attrs['class'] = 'form-check-input'
+            attrs = {'class': 'form-check-input'}
         else:
             try:
                 if attrs['class'] != "":
@@ -72,13 +66,12 @@ class CheckboxInputBootstrap(forms.CheckboxInput):
         super().__init__(attrs)    
 
 
-
 class DateInputBootstrap(forms.DateInput):
-    def __init__(self, attrs=None, render_value=False, format=None):
+
+    def __init__(self, attrs=None, format=None):
+        self.format = format or None
         if attrs is None:
-            attrs = {}
-            attrs['class'] = 'form-control form-control-sm'
-            attrs['type'] = 'date'
+            attrs = {'class': 'form-control form-control-sm', 'type': 'date'}
         else:
             try:
                 if attrs['class'] != "":
@@ -88,6 +81,4 @@ class DateInputBootstrap(forms.DateInput):
             except KeyError:
                 attrs['class'] = 'form-control form-control-sm'
                 attrs['type'] = 'date'
-        super().__init__(attrs)
-        self.format = format or None
-
+        super().__init__(attrs, format)
