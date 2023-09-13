@@ -82,5 +82,3 @@ class EstornarContaReceberView(UserAccessMixin, FormView):
                 messages.add_message(request, messages.ERROR, 'Erro ao estornar titulo.')
                 return redirect('/contarecebers')
         return super().post(request, *args, **kwargs)
-
-

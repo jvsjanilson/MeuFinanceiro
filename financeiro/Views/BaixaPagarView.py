@@ -47,6 +47,7 @@ class ListaBaixaPagarView(UserAccessMixin, TemplateView):
         context['conta'] = conta
         return context
 
+
 class EstornarContaPagarView(UserAccessMixin, FormView):
     success_url = reverse_lazy('contapagar-list')
     template_name = 'financeiro/baixapagar/estorno.html'
