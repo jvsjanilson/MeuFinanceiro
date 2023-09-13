@@ -4,5 +4,5 @@ from financeiro.Views.ContaPagarView import (ContaPagarListView, ContaPagarCreat
                                              ContaPagarDeleteView)
 
 from financeiro.Views.BaixaReceberView import BaixarContaReceberView, EstornarContaReceberView
-from financeiro.Views.BaixaPagarView import BaixarContaPagarView, EstornarContaPagarView
+from financeiro.Views.BaixaPagarView import BaixarContaPagarView, EstornarContaPagarView, ListaBaixaPagarView
 from financeiro.Views.FluxoView import FluxoCaixaView

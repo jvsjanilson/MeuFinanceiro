@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from financeiro.forms import BaixaPagarForm
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, TemplateView
 from financeiro.choices import SituacaoFinanceiro
 from django.shortcuts import redirect
 from django.db.models import ProtectedError
@@ -34,11 +34,24 @@ class BaixarContaPagarView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixi
         return super().get(request, *args, **kwargs)
 
 
+class ListaBaixaPagarView(UserAccessMixin, TemplateView):
+    success_url = reverse_lazy('contapagar-list')
+    template_name = 'financeiro/baixapagar/list.html'
+    permission_required = ['financeiro.view_baixapagar']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        baixas = BaixaPagar.objects.filter(contapagar=self.kwargs['contapagar'])
+        conta = ContaPagar.objects.get(pk=self.kwargs['contapagar'])
+        context['baixas'] = baixas
+        context['conta'] = conta
+        return context
+
 class EstornarContaPagarView(UserAccessMixin, FormView):
     success_url = reverse_lazy('contapagar-list')
     template_name = 'financeiro/baixapagar/estorno.html'
     form_class = BaixaPagarForm
-    permission_required = ['financeiro.add_baixapagar']
+    permission_required = ['financeiro.undo_baixapagar']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
