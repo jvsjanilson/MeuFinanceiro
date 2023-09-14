@@ -46,6 +46,14 @@ class ListaBaixaPagarView(UserAccessMixin, TemplateView):
         context['baixas'] = baixas
         context['conta'] = conta
         return context
+    
+    def get(self, request, *args, **kwargs):
+        baixas = BaixaPagar.objects.filter(contapagar=kwargs['contapagar'])
+
+        if len(baixas) == 0:
+            messages.add_message(request, messages.INFO, 'Sem baixa para visualizar')
+            return redirect('/contapagars')
+        return super().get(request, *args, **kwargs)
 
 
 class EstornarContaPagarView(UserAccessMixin, FormView):
