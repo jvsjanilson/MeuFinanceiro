@@ -12,3 +12,10 @@ def pagination_filtros(request, page_number):
         querystring += f"&{q[0]}={q[1]}"
 
     return querystring
+
+@register.simple_tag
+def page_current(request):
+    page_number = request.GET.get('page', 1)
+    if page_number == 1:
+        return ""
+    return f'?page={page_number}'
