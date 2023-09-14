@@ -53,8 +53,8 @@
                                 <th class="text-center" style="width: 4.5rem">Ações</th>
                                 <th>Documento</th>
                                 <th>Nome do Fornecedor</th>
-                                <th style="width: 7rem">Data Emissão</th>
-                                <th style="width: 7rem">Data Vencto</th>
+                                <th style="width: 7rem" class="text-center">Data Emissão</th>
+                                <th style="width: 7rem" class="text-center">Data Vencto</th>
                                 <th style="width: 7rem" class="text-end">Valor</th>
                                 <th style="width: 7rem" class="text-end">Saldo Pagar</th>
                                 <th style="width: 7rem" class="text-end">Total Pago</th>
@@ -63,7 +63,7 @@
                         </thead>
                         <tbody class="table-group-divider">
                             {% for m in object_list %}
-                                <tr >
+                                <tr class="{% if m.situacao == 2 %} titulo-pago {%endif%} ">
                                     <td class="text-center">
                                         <div class="btn-group d-grid">
                                             <button  class="btn btn-secondary btn-sm dropdown-toggle option-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -95,7 +95,7 @@
                                     </td>
                                     <td>{{ m.documento }}</td>
                                     <td title="{% if m.contato.cpf_cnpj is not Nome %} {{m.contato.cpf_cnpj}}{%endif%}" >{{ m.contato }}</td>
-                                    <td >{{ m.data_emissao }}</td>
+                                    <td class="text-center">{{ m.data_emissao }}</td>
                                     <td class="text-center {% if m.vencido == True %}text-danger{% endif %} ">{% if m.vencido == True %}<span class="text-danger">●</span>{% endif %} {{ m.data_vencimento }}</td>
                                     <td class="text-end">{{ m.valor_titulo }}</td>
                                     <td class="text-end">{{ m.saldo_pagar }}</td>
