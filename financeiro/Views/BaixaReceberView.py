@@ -2,12 +2,44 @@ from financeiro.models import ContaReceber, BaixaReceber
 from core.views import UserAccessMixin, InvalidFormMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from financeiro.forms import BaixaReceberForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, TemplateView
 from financeiro.choices import SituacaoFinanceiro
 from django.shortcuts import redirect
 from django.db.models import ProtectedError
+from django.http import HttpResponseRedirect
+import logging
+
+
+
+
+class ListaBaixaReceberView(UserAccessMixin, TemplateView):
+    success_url = reverse_lazy('contareceber-list')
+    template_name = 'financeiro/baixareceber/list.html'
+    permission_required = ['financeiro.view_baixareceber']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        baixas = BaixaReceber.objects.filter(contareceber=self.kwargs['contareceber'])
+        conta = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
+        context['baixas'] = baixas
+        context['conta'] = conta
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        page_number = request.GET.get('page', 1)
+        baixas = BaixaReceber.objects.filter(contareceber=kwargs['contareceber'])
+        conta = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
+        if len(baixas) == 0:
+            messages.add_message(request, messages.INFO, f'Documento: {conta.documento}. Sem registro de baixa')
+            if page_number == 1:
+                redirect_url = reverse('contareceber-list')
+            else:
+                redirect_url = reverse('contareceber-list') + f'?page={page_number}'
+            return HttpResponseRedirect(redirect_url)
+        return super().get(request, *args, **kwargs)
+
 
 
 class BaixarContaReceberView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):

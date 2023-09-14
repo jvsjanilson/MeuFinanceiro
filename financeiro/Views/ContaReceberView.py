@@ -11,7 +11,7 @@ from django.db.models import Case, Value, When
 from django.contrib.messages.views import SuccessMessageMixin
 from financeiro.forms import ContaReceberForm
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 
 class ContaReceberListView(UserAccessMixin, ListView):
@@ -21,6 +21,7 @@ class ContaReceberListView(UserAccessMixin, ListView):
     paginate_by = REGISTROS_POR_PAGINA
 
     def get(self, request, *args, **kwargs):
+        print('get contareceberlistview')
         if checa_filtro_preenchido(request):
             return redirect('/contarecebers')
         return super().get(request, *args, **kwargs)
@@ -137,7 +138,7 @@ class ContaReceberCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMi
     model = ContaReceber
     form_class = ContaReceberForm
     template_name = 'financeiro/contareceber/form.html'
-    success_url = '/contarecebers'
+    success_url = reverse_lazy('contareceber-list')
     success_message = MSG_CREATED_SUCCESS
 
     def get_context_data(self, **kwargs):
@@ -151,7 +152,7 @@ class ContaReceberUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMi
     model = ContaReceber
     form_class = ContaReceberForm
     template_name = 'financeiro/contareceber/form.html'
-    success_url = '/contarecebers'
+    success_url = reverse_lazy('contareceber-list')
     success_message = MSG_UPDATED_SUCCESS
 
     def __init__(self):

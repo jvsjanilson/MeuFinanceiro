@@ -3,6 +3,6 @@ from financeiro.Views.ContaReceberView import (ContaReceberListView, ContaRecebe
 from financeiro.Views.ContaPagarView import (ContaPagarListView, ContaPagarCreateView, ContaPagarUpdateView,
                                              ContaPagarDeleteView)
 
-from financeiro.Views.BaixaReceberView import BaixarContaReceberView, EstornarContaReceberView
+from financeiro.Views.BaixaReceberView import BaixarContaReceberView, EstornarContaReceberView, ListaBaixaReceberView
 from financeiro.Views.BaixaPagarView import BaixarContaPagarView, EstornarContaPagarView, ListaBaixaPagarView
 from financeiro.Views.FluxoView import FluxoCaixaView

@@ -1,0 +1,51 @@
+{% extends 'main.html' %}
+{% block title %} {{ verbose_name }} {% endblock title %}
+{% block conteudo %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="text-center">Visualização das baixas</h4>
+    </div>
+
+    <div class="card-body m-1 p-1">
+        <table class="mb-2 table table-sm table-striped table-bordered table-hover">
+            <thead  class="table-secondary ">
+                <tr>
+                    <th style="width: 10rem">Documento</th>
+                    <th>Forma de Pagto</th>
+                    <th style="width: 10rem" class="text-end">Valor juros</th>
+                    <th style="width: 10rem" class="text-end">Valor multa</th>
+                    <th style="width: 10rem" class="text-end">Valor desconto</th>
+                    <th class="text-center" style="width: 7rem" >Data baixa</th>
+                    <th style="width: 10rem" class="text-end">Valor pago</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for m in baixas %}
+                <tr>
+                    <td>{{ m.contareceber.documento }}</td>
+                    <td>{{ m.formapagamento.nome }}</td>
+                    <td class="text-end" >{{ m.valor_juros }}</td>
+                    <td class="text-end" >{{ m.valor_multa }}</td>
+                    <td class="text-end" >{{ m.valor_desconto }}</td>
+                    <td class="text-center" >{{ m.data_baixa }}</td>
+                    <td class="text-end" >{{ m.valor_pago }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-end fw-bold" colspan="6">Total Pago: </td>
+                    <td class="text-end fw-bold">{{ conta.total_pago }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="card-footer">
+    
+        <a class="btn btn-sm btn-secondary" href="{% url 'contareceber-list' %}"><i class="bi bi-reply"></i> Voltar</a>
+    </div>
+</div>
+
+{% endblock conteudo %}

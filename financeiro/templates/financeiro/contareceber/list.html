@@ -1,7 +1,8 @@
+
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
-
+{% load filtros %}
     <div class="card shadow card-outline mb-1">
         <div class="card-header" style="">
             <form  method="get">
@@ -63,7 +64,7 @@
                         </thead>
                         <tbody class="table-group-divider">
                             {% for m in object_list %}
-                                    <tr >
+                                    <tr  class="{% if m.situacao == 2 %} titulo-pago {%endif%}">
                                         <td class="text-center ">
                                         <div class="btn-group d-grid">
                                             <button  class="btn btn-secondary btn-sm dropdown-toggle option-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,6 +84,10 @@
 
                                                 {% if perms.cadastro.delete_baixareceber %}
                                                     <li><a class="dropdown-item" href="{% url 'baixareceber-estornar' m.pk %}"><i class="text-danger bi bi-arrow-counterclockwise"></i> Estornar</a></li>
+                                                {%endif%}
+
+                                                {% if perms.financeiro.view_baixareceber %}
+                                                    <li><a class="dropdown-item" href="{% url 'baixareceber-baixas' m.pk %}{% page_current request %}"><i class="text-primary bi bi-eye"></i> Ver Baixas</a></li>
                                                 {%endif%}
                                             </ul>
                                         </div>
