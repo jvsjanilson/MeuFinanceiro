@@ -8,7 +8,7 @@ from django.views.generic import CreateView, FormView, TemplateView
 from financeiro.choices import SituacaoFinanceiro
 from django.shortcuts import redirect
 from django.db.models import ProtectedError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import logging
 
 
@@ -27,16 +27,25 @@ class ListaBaixaReceberView(UserAccessMixin, TemplateView):
         context['conta'] = conta
         return context
     
+   
     def get(self, request, *args, **kwargs):
         page_number = request.GET.get('page', 1)
+       
+        querystring = f"?page={page_number}"
+        
+        for q in request.GET.items():
+            if 'page' not in q[0]:
+                querystring += f"&{q[0]}={q[1]}"
+        
         baixas = BaixaReceber.objects.filter(contareceber=kwargs['contareceber'])
         conta = ContaReceber.objects.get(pk=self.kwargs['contareceber'])
         if len(baixas) == 0:
             messages.add_message(request, messages.INFO, f'Documento: {conta.documento}. Sem registro de baixa')
-            if page_number == 1:
+            if page_number == "1":
+                print('passou')
                 redirect_url = reverse('contareceber-list')
             else:
-                redirect_url = reverse('contareceber-list') + f'?page={page_number}'
+                redirect_url = reverse('contareceber-list') + querystring
             return HttpResponseRedirect(redirect_url)
         return super().get(request, *args, **kwargs)
 
