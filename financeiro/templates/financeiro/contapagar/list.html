@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} {{ verbose_name }} {% endblock title %}
 {% block conteudo %}
-
+{% load filtros %}
     <div class="card shadow card-outline mb-1">
         <div class="card-header" style="">
             <form  method="get">
@@ -87,7 +87,7 @@
                                                 {%endif%}
                                                 
                                                 {% if perms.financeiro.view_baixapagar %}
-                                                    <li><a class="dropdown-item" href="{% url 'baixapagar-baixas' m.pk %}"><i class="text-primary bi bi-eye"></i> Ver Baixas</a></li>
+                                                    <li><a class="dropdown-item" href="{% url 'baixapagar-baixas' m.pk %}{% page_current request %}"><i class="text-primary bi bi-eye"></i> Ver Baixas</a></li>
                                                 {%endif%}
 
                                             </ul>

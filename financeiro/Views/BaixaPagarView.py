@@ -2,12 +2,13 @@ from financeiro.models import ContaPagar, BaixaPagar
 from core.views import UserAccessMixin, InvalidFormMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from financeiro.forms import BaixaPagarForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.views.generic import CreateView, FormView, TemplateView
 from financeiro.choices import SituacaoFinanceiro
 from django.shortcuts import redirect
 from django.db.models import ProtectedError
+from django.http import HttpResponseRedirect
 
 
 class BaixarContaPagarView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
@@ -48,11 +49,22 @@ class ListaBaixaPagarView(UserAccessMixin, TemplateView):
         return context
     
     def get(self, request, *args, **kwargs):
+        page_number = request.GET.get('page', 1)
+        querystring = f"?page={page_number}"
+        
+        for q in request.GET.items():
+            if 'page' not in q[0]:
+                querystring += f"&{q[0]}={q[1]}"
+        
         baixas = BaixaPagar.objects.filter(contapagar=kwargs['contapagar'])
-
+        conta = ContaPagar.objects.get(pk=self.kwargs['contapagar'])
         if len(baixas) == 0:
-            messages.add_message(request, messages.INFO, 'Sem baixa para visualizar')
-            return redirect('/contapagars')
+            messages.add_message(request, messages.INFO, f'Documento: {conta.documento}. Sem registro de baixa')
+            if page_number == "1":
+                redirect_url = reverse('contapagar-list')
+            else:
+                redirect_url = reverse('contapagar-list') + querystring
+            return HttpResponseRedirect(redirect_url)
         return super().get(request, *args, **kwargs)
 
 
