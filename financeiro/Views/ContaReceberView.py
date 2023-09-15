@@ -21,7 +21,6 @@ class ContaReceberListView(UserAccessMixin, ListView):
     paginate_by = REGISTROS_POR_PAGINA
 
     def get(self, request, *args, **kwargs):
-        print('get contareceberlistview')
         if checa_filtro_preenchido(request):
             return redirect('/contarecebers')
         return super().get(request, *args, **kwargs)

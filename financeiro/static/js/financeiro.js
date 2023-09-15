@@ -1,15 +1,14 @@
 django.jQuery().ready(function(){
     checkAllEstorno();
-    django.jQuery("#id_valor_juros, #id_valor_multa, #id_valor_desconto").bind('keyup change click',(e) => {
-        let valor = e.target.value
+    django.jQuery("#id_valor_juros, #id_valor_multa, #id_valor_desconto").bind('change click',(e) => {
         comp = ['id_valor_juros','id_valor_multa', 'id_valor_desconto'].filter((i) => i != e.target.id)
         
-        if (valor == "") {
-            valor = 0.0
+        if (e.target.value == "") {
+            e.target.value = 0.0
         }
         let soma = 0;
         soma = somaValores(comp)
-        if (valor > 0 || soma > 0)
+        if (e.target.value > 0 || soma > 0)
         {
             django.jQuery("#id_valor_pago").prop("readonly", true)
             django.jQuery("#id_valor_pago").css("background-color", "#e9ecef")
@@ -22,7 +21,7 @@ django.jQuery().ready(function(){
             )
 
         } else {
-            e.target.value = 0
+            e.target.value = 0.0
             django.jQuery("#id_valor_pago").css("background-color", "white")
             django.jQuery("#id_valor_pago").val(
                 
