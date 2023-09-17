@@ -6,3 +6,5 @@ venv
 .env
 migrations
 *.jpeg
+*.jpg
+*.png
