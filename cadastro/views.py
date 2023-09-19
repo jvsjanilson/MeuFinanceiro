@@ -18,6 +18,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 import requests
 from django.db.models import Case, Value, When
 
+from cadastro.Views.UnidadeView import UnidadeListView, UnidadeCreateView, UnidadeUpdateView, UnidadeDeleteView
+from cadastro.Views.MarcaView import MarcaListView, MarcaCreateView, MarcaUpdateView, MarcaDeleteView
+
 
 def consulta_cep(cep):
     consulta = requests.get(f'https://viacep.com.br/ws/{cep}/json')
@@ -40,137 +43,6 @@ def municipios(estado):
 
 class Home(LoginRequiredMixin, TemplateView):
     template_name = 'base.html'
-
-
-class UnidadeListView(UserAccessMixin, ListView):
-    permission_required = ["cadastro.view_unidade"]
-    model = Unidade
-    template_name = 'cadastro/unidade/list.html'
-    paginate_by = REGISTROS_POR_PAGINA
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['verbose_name'] = self.model._meta.verbose_name.title
-        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
-        search = self.request.GET.get('search')
-
-        if search:
-            context['search'] = search
-
-        return context
-
-    def get_queryset(self):
-        queryset = super(UnidadeListView, self).get_queryset()
-        search = self.request.GET.get('search')
-        if search:
-            return queryset.filter(
-                Q(codigo__icontains=search) |
-                Q(nome__icontains=search)
-            )
-        return queryset
-
-
-class UnidadeCreateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, CreateView):
-    permission_required = ["cadastro.add_unidade"]
-    model = Unidade
-    form_class = UnidadeForm
-    template_name = 'cadastro/unidade/form.html'
-    success_url = '/unidades'
-    success_message = MSG_CREATED_SUCCESS
-    fail_url = '/unidades'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['verbose_name'] = self.model._meta.verbose_name.title
-        return context
-        
-
-class UnidadeUpdateView(UserAccessMixin, InvalidFormMixin, SuccessMessageMixin, UpdateView):
-    permission_required = ["cadastro.change_unidade"]
-    model = Unidade
-    form_class = UnidadeForm
-    template_name = 'cadastro/unidade/form.html'
-    success_url = '/unidades'
-    success_message = MSG_UPDATED_SUCCESS
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['verbose_name'] = self.model._meta.verbose_name.title
-        return context
-    
-    def form_invalid(self, form):
-        return super().form_invalid(form)
-
-
-class UnidadeDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
-    permission_required = ["cadastro.delete_unidade"]
-    model = Unidade
-    template_name = 'cadastro/unidade/confirm_delete.html'
-    success_url = reverse_lazy('unidade-list')
-    success_message = MSG_DELETED_SUCCESS
-
-
-class MarcaListView(UserAccessMixin, ListView):
-    permission_required = ["cadastro.view_marca"]
-    model = Marca
-    template_name = 'cadastro/marca/list.html'
-    paginate_by = REGISTROS_POR_PAGINA
-    ordering = ('-id',)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['verbose_name'] = self.model._meta.verbose_name.title
-        context['verbose_name_plural'] = self.model._meta.verbose_name_plural.title
-        search = self.request.GET.get('search')
-
-        if search:
-            context['search'] = search
-
-        return context
-
-    def get_queryset(self):
-        queryset = super(MarcaListView, self).get_queryset()
-        search = self.request.GET.get('search')
-        if search:
-            return queryset.filter(
-                Q(nome__icontains=search)
-            )
-        return queryset
-
-
-class MarcaCreateView(UserAccessMixin, InvalidFormMixin, CreateView):
-    permission_required = ["cadastro.add_marca"]
-    model = Marca
-    form_class = MarcaForm
-    template_name = 'cadastro/marca/form.html'
-    success_url = '/marcas'
-    fail_url = '/marcas'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['verbose_name'] = self.model._meta.verbose_name.title
-        return context
-
-
-class MarcaUpdateView(UserAccessMixin, InvalidFormMixin, UpdateView):
-    permission_required = ["cadastro.change_marca"]
-    model = Marca
-    form_class = MarcaForm
-    template_name = 'cadastro/marca/form.html'
-    success_url = '/marcas'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['verbose_name'] = self.model._meta.verbose_name.title
-        return context
-
-
-class MarcaDeleteView(UserAccessMixin, SuccessMessageMixin, DeleteExceptionMixin, DeleteView):
-    permission_required = ["cadastro.delete_marca"]
-    model = Marca
-    template_name = 'cadastro/marca/confirm_delete.html'
-    success_url = '/marcas'
-    success_message = MSG_DELETED_SUCCESS
 
 
 class CategoriaListView(UserAccessMixin, ListView):
