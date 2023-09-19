@@ -36,12 +36,9 @@ class DeleteExceptionMixin:
     """
         Autor: Janilson Varela
         Data: 19/08/2023
-        Mixim para tratar a deleçao do registro, em caso de ter algum 
+        Mixim para tratar a deleçao do registro, em caso de ter algum
         vinculo com outra tabela e que o cascade seja restric
     """
-
-    def __init__(self):
-        self.object = self.get_object()
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
