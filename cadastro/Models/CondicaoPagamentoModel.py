@@ -24,3 +24,4 @@ class CondicaoPagamento(GenericoModel):
     class Meta:
         verbose_name = 'Condição de Pagamento'
         verbose_name_plural = 'Condições de Pagamento'
+        ordering = ["id"]

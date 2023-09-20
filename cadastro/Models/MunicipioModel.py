@@ -12,6 +12,7 @@ class Municipio(GenericoModel):
     class Meta:
         verbose_name = 'Município'
         verbose_name_plural = 'Municípios'
+        ordering = ["id"]
 
     def __str__(self):
         return self.nome

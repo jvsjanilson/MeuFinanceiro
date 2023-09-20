@@ -16,3 +16,4 @@ class FormaPagamento(GenericoModel):
     class Meta:
         verbose_name = 'Forma de Pagamento'
         verbose_name_plural = 'Formas de Pagamento'
+        ordering = ["id"]

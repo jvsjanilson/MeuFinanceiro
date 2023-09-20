@@ -20,3 +20,4 @@ class Produto(GenericoModel):
     class Meta:
         verbose_name = 'Produto'
         verbose_name_plural = 'Produtos'
+        ordering = ["id"]

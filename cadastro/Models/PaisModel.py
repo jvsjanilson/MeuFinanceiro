@@ -12,3 +12,4 @@ class Pais(GenericoModel):
     class Meta:
         verbose_name = 'País'
         verbose_name_plural = 'Países'
+        ordering = ["id"]
