@@ -7,12 +7,13 @@ from cadastro.views import UnidadeListView, UnidadeCreateView, \
     MunicipioDeleteView, ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, \
     ContatoListView, ContatoCreateView, ContatoUpdateView, ContatoDeleteView, municipios, FormaPagamentoListView, \
     FormaPagamentoDeleteView, FormaPagamentoCreateView, FormaPagamentoUpdateView, CondicaoPagamentoListView, \
-    CondicaoPagamentoCreateView, CondicaoPagamentoUpdateView, CondicaoPagamentoDeleteView, consulta_cep
+    CondicaoPagamentoCreateView, CondicaoPagamentoUpdateView, CondicaoPagamentoDeleteView, consulta_cep, consulta_cnpj
         
 
 urlpatterns = [
     path('api/municipios/<int:estado>', municipios),
     path('api/consulta/cep/<str:cep>', consulta_cep),
+    path('api/consulta/cnpj/<str:cnpj>', consulta_cnpj),
 
     path("condicaopagamentos/", CondicaoPagamentoListView.as_view(), name="condicaopagamento-list"),
     path("condicaopagamentos/create", CondicaoPagamentoCreateView.as_view(), name="condicaopagamento-create"),

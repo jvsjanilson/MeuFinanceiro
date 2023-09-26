@@ -10,8 +10,48 @@ django.jQuery().ready(function(){
             consultaCep(cep)
         }
     });
+
+     django.jQuery("#cpfcnpj-search").on('click', function(e) {
+
+        let cnpj = django.jQuery("#id_cpf_cnpj").val()
+        if (cnpj) {
+            ( cnpj != "" && cnpj.length == 14) ?  consultaCnpj(cnpj) : alert('Informe um cnpj');
+
+        } else {
+            alert('Informe um cnpj');
+        }
+    });
   
 });
+
+function consultaCnpj(cnpj) {
+    django.jQuery.ajax({
+        method: 'get',
+        url: '/api/consulta/cnpj/'+cnpj,
+        success: (res) => {
+
+            if (res) {
+                django.jQuery("#id_razao_social").val(res.razao_social);
+                django.jQuery("#id_bairro").val(res.estabelecimento.bairro);
+                django.jQuery("#id_cep").val(res.estabelecimento.cep);
+                django.jQuery("#id_endereco").val(`${res.estabelecimento.tipo_logradouro} ${res.estabelecimento.logradouro}`);
+                django.jQuery("#id_numero").val(res.estabelecimento.numero);
+                django.jQuery("#id_nome_fantasia").val(res.estabelecimento.nome_fantasia);
+                django.jQuery("#id_email").val(res.estabelecimento.email);
+                if (res.estabelecimento.ddd1 != null && res.estabelecimento.telefone1 != null)
+                    django.jQuery("#id_fone").val(`(${res.estabelecimento.ddd1}) ${res.estabelecimento.telefone1}`);
+                django.jQuery("#id_municipio").val(res.estabelecimento.cidade.cidade_pk);
+                django.jQuery("#id_estado option").each((_, e) =>  {
+                    if (e.innerText == res.estabelecimento.estado.sigla)
+                        django.jQuery(e).prop("selected","selected");
+                });
+                loadMunicipios(django.jQuery("#id_estado").val(), res.estabelecimento.cidade.cidade_pk);
+
+
+            }
+        }
+    })
+}
 
 async function consultaCep(cep) {
     await django.jQuery.ajax({
@@ -48,10 +88,10 @@ async function consultaCep(cep) {
  * o estado informado por parametro
  * @param {int} estado 
  */
-async function loadMunicipios(estado) {
-    let municipioSelected = django.jQuery("#id_municipio").val();
+async function loadMunicipios(estado, municipio = undefined) {
+
     let pk = django.jQuery("#id").val();
-     django.jQuery("#id_municipio option").remove();
+    django.jQuery("#id_municipio option").remove();
     if (estado != "" && estado != undefined) {
        await django.jQuery.ajax({
             method: 'get',
@@ -61,18 +101,39 @@ async function loadMunicipios(estado) {
                 data.forEach(m => {
                     if (pk == "")
                     {
-                        django.jQuery("#id_municipio").append(`
-                            <option ${m.fields.capital ? 'selected' : ''}
-                                value=${m.pk}>${m.fields.nome}
-                            </option>
-                        `);
+                        if (municipio == undefined) {
+                            django.jQuery("#id_municipio").append(`
+                               <option ${m.fields.capital ? 'selected' : ''}
+                                    value=${m.pk}>${m.fields.nome}
+                                </option>
+                            `);
+                        } else {
+                            if (Number.isInteger(municipio)) {
+                                 django.jQuery("#id_municipio").append(`
+                                    <option ${municipio == m.pk ? 'selected' : ''}
+                                        value=${m.pk}>${m.fields.nome}
+                                    </option>
+                                `);
+                            }
+                        }
+
                     }
                     else {
-                        django.jQuery("#id_municipio").append(`
-                            <option ${municipioSelected == m.pk ? 'selected' : ''}
-                                value=${m.pk}>${m.fields.nome}
-                            </option>
-                        `);
+                        console.log(municipio)
+                        if (municipio == undefined) {
+                             django.jQuery("#id_municipio").append(`
+                               <option ${m.fields.capital ? 'selected' : ''}
+                                    value=${m.pk}>${m.fields.nome}
+                                </option>
+                            `);
+                        }
+                        else {
+                            django.jQuery("#id_municipio").append(`
+                                <option ${municipio == m.pk ? 'selected' : ''}
+                                    value=${m.pk}>${m.fields.nome}
+                                </option>
+                            `);
+                        }
                     }
                 });
 

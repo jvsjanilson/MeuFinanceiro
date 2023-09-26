@@ -15,3 +15,19 @@ from cadastro.Views.CondicaoPagamentoView import (CondicaoPagamentoListView, Con
 from cadastro.Views.HomeView import Home
 from cadastro.Views.ApiExternaView import consulta_cep
 from cadastro.Views.ApiInternaView import municipios
+from django.http import JsonResponse
+import requests
+import json
+from cadastro.models import Municipio
+
+
+def consulta_cnpj(request, cnpj):
+    res = requests.get(f'https://publica.cnpj.ws/cnpj/{cnpj}')
+    if res.status_code == 200:
+        json_parse = json.loads(res.text)
+        cidade = Municipio.objects.filter(codigo=json_parse['estabelecimento']['cidade']['ibge_id']).first()
+        json_parse['estabelecimento']['cidade']['cidade_pk'] = cidade.pk
+
+        return JsonResponse(json_parse)
+    else:
+        return JsonResponse({"status": res.status_code})

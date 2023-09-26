@@ -40,8 +40,12 @@ class DeleteExceptionMixin:
         vinculo com outra tabela e que o cascade seja restric
     """
 
+    def __init__(self):
+        self.object = None
+
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
+        self.object = self.get_object()
         try:
             res = super().post(request, *args, **kwargs)
         except RestrictedError:
