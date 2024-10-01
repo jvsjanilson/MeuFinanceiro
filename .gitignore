@@ -8,3 +8,4 @@ migrations
 *.jpeg
 *.jpg
 *.png
+staticfiles/
